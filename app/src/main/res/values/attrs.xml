@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TabsView">
+        <attr name="tab_text" format="string" />
+        <attr name="tab_ui_style" format="integer" />
+    </declare-styleable>
+    
+
+</resources>

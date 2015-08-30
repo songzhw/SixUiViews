@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TabsView -->
+    <color name="white">#ffffff</color>
+    <color name="tabs_view_white_text_color">#f8f8f8</color>
+    <color name="tabs_view_black_bg">#353d43</color>
+    <color name="tabs_view_black_text_color">#353d43</color>
+    <color name="tabs_view_white_bg">#f6f5fa</color>
+    <color name="tabs_view_black_bg_titlebar">#21292c</color>
+
+</resources>
