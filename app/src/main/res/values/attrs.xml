@@ -5,6 +5,9 @@
         <attr name="tab_text" format="string" />
         <attr name="tab_ui_style" format="integer" />
     </declare-styleable>
-    
+
+    <declare-styleable name="MaxHeightRelativeLayout">
+        <attr name="max_height" format="dimension" />
+    </declare-styleable>
 
 </resources>
