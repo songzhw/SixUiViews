@@ -30,5 +30,15 @@ However, sometimes, we do need the ViewGroup whose height is "wrap_content", but
 
 ## 4. Progress and Done View
 
+## 5. RichTextView
+* (1). Syntax : the markdown syntax (, which can be cross-platform). 
+* (2). Parse  : Do not use HtmpParse.jar or MardownParse.jar. I want to do it myself.   "markdown --->  SpannableString"
+* (3). View   : Do not use WebView, which may have some problems. I want to use TextView. <p>
+
+And I think, too much rich element is actually not that much needed. <br/>
+```Bold, italic, background, textColor, textSize, strikeThroughLine, underline, and phone call``` is my first target.
+
+
+
 
 
