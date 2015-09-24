@@ -4,7 +4,7 @@
  * UiUtil.java
  * Copyright 2014 NetEase. All rights reserved. 
  */
-package cn.song.open.util;
+package cn.six.open.util;
 
 import android.content.Context;
 import android.util.TypedValue;

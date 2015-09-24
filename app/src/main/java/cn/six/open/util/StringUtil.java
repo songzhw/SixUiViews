@@ -1,4 +1,4 @@
-package cn.song.open.util;
+package cn.six.open.util;
 
 public class StringUtil {
 	

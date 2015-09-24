@@ -1,9 +1,9 @@
-package cn.song.open.view.spinprize;
+package cn.six.open.view.spinprize;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-import cn.song.open.R;
+import cn.six.open.R;
 
 
 public class SpinPrizeActivity extends Activity {

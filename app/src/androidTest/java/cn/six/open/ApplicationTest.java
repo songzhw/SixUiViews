@@ -1,4 +1,4 @@
-package cn.song.sixuiviews;
+package cn.six.open;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

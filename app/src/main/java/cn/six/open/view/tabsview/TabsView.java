@@ -1,4 +1,4 @@
-package cn.song.open.view.tabsview;
+package cn.six.open.view.tabsview;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,8 +7,8 @@ import java.util.List;
 
 
 
-import cn.song.open.R;
-import cn.song.open.util.UiUtil;
+import cn.six.open.R;
+import cn.six.open.util.UiUtil;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;

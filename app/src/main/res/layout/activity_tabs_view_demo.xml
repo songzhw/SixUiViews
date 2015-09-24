@@ -5,7 +5,7 @@
     android:layout_height= "match_parent"
     android:orientation="vertical"
     >
-    <cn.song.open.view.tabsview.TabsView
+    <cn.six.open.view.tabsview.TabsView
         android:id="@+id/tabsview_demo"
         android:layout_width= "330dp"
         android:layout_height= "50dp"

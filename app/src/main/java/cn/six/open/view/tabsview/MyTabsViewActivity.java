@@ -1,6 +1,6 @@
-package cn.song.open.view.tabsview;
+package cn.six.open.view.tabsview;
 
-import cn.song.open.R;
+import cn.six.open.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;

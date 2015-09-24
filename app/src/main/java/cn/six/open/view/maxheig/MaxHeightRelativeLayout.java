@@ -3,7 +3,7 @@
  * @date 2015-01-26
  * MaxHeightRelativeLayout.java
  */
-package cn.song.open.view.maxheig;
+package cn.six.open.view.maxheig;
 
 
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import cn.song.open.R;
+import cn.six.open.R;
 
 
 public class MaxHeightRelativeLayout extends RelativeLayout {

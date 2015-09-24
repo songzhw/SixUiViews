@@ -1,4 +1,4 @@
-package cn.song.open.view.spinprize;
+package cn.six.open.view.spinprize;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import cn.song.open.R;
+import cn.six.open.R;
 
 
 /**
