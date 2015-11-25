@@ -1,9 +1,4 @@
-/**
- * @author hzsongzhengwang
- * @date 2014年12月12日
- * UiUtil.java
- * Copyright 2014 NetEase. All rights reserved. 
- */
+
 package cn.six.open.util;
 
 import android.content.Context;
