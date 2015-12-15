@@ -45,3 +45,6 @@ So I did some work to meet my need.
 
 
 
+## Reference
+1. https://github.com/baoyongzhang/android-ActionSheet   ActionSheet for Android
+2. http://blog.csdn.net/qq_16064871/article/details/50224635   Bounced ScrollView
