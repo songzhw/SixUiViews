@@ -1,4 +1,4 @@
-package cn.six.open.others.colormask;
+package cn.six.open.view.colormask;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -6,10 +6,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import cn.six.open.R;
+import cn.six.open.others.colormask.ColorMaskUtil;
+import cn.six.open.view.colormask.OneColorMaskUtil;
 
 /**
  * Created by songzhw on 2015/12/21

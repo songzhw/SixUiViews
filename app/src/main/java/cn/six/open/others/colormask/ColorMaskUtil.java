@@ -9,6 +9,8 @@ import android.graphics.PorterDuff;
 
 /**
  * Created by songzhw on 2015/12/21
+ *
+ * see : https://github.com/rengwuxian/MaterialEditText
  */
 public class ColorMaskUtil {
     private static int iconSize = 64;
