@@ -25,26 +25,24 @@ import cn.six.open.R;
  *
  * see : https://github.com/jhw-dev/CircleLoadingView
  */
-public class CircleLoadingView extends View {
-    private Bitmap mOriginBitmap;
-    private Bitmap mResult;
-    private Paint mGrayPaint;
-    private Paint mArcPaint;
-    private Paint mRingPaint;
-    private Paint mCirclePaint;
-    private Paint mNormalPaint;
-    private RectF mRectF;
-    private int mRingRadius;
-    private int mCircleRadius;
-    private float mCircleRadiusMax;
-    private float mCircleStep;
-    private float mCenterX;
-    private float mCenterY;
-    private float mAnimationDuration;
-    private int mCircleStrokeSize;
-    private int mPercent;
-    private int mAnimationState;
 
+/*
+  cl_circleRadius [dimension]         --> 中间那个圆的半径
+  cl_circleStrokeSize [dimension]     --> 圆的边框大小
+  cl_fillAnimationDuration [integer]  --> 最后扩散动画的时间
+  cl_src [dimension]                  --> 背景的 BitmapDrawable 资源
+ */
+public class CircleLoadingView extends View {
+    private Bitmap originalBitmap, resultBitmap;
+    private Paint grayPaint, arcPaint, ringPaint, circlePaint, normalPaint;
+    private RectF rect;
+
+    private int ringRadius, circleRadius, circleStrokeSize, percentage, animationState;
+    private float circleRadiusMax, circleStep, centerX, centerY, animationDuration;
+
+    public static final int STATE_RUNNING = 0;
+    public static final int STATE_EXPAND = 1;
+    public static final int STATE_FINISHED = 2;
 
     public CircleLoadingView(Context context) {
         this(context, null);
@@ -56,29 +54,27 @@ public class CircleLoadingView extends View {
 
     public CircleLoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        animationState = STATE_FINISHED;
+
         ColorMatrix cm = new ColorMatrix();
         cm.setScale(0.382f, 0.382f, 0.382f, 1f);
         ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-        mGrayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mGrayPaint.setColorFilter(f);
-        mArcPaint = new Paint((Paint.ANTI_ALIAS_FLAG));
-        mRingPaint = new Paint((Paint.ANTI_ALIAS_FLAG));
-        mCirclePaint = new Paint((Paint.ANTI_ALIAS_FLAG));
-        mNormalPaint = new Paint((Paint.ANTI_ALIAS_FLAG));
-        mAnimationState = 2;
-        final TypedArray typedArray = context
-                .obtainStyledAttributes(attrs, R.styleable.CircleLoadingView);
+        grayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        grayPaint.setColorFilter(f);
+
+        arcPaint = new Paint((Paint.ANTI_ALIAS_FLAG));
+        ringPaint = new Paint((Paint.ANTI_ALIAS_FLAG));
+        circlePaint = new Paint((Paint.ANTI_ALIAS_FLAG));
+        normalPaint = new Paint((Paint.ANTI_ALIAS_FLAG));
+
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircleLoadingView);
         try {
-            Drawable drawable = typedArray
-                    .getDrawable(R.styleable.CircleLoadingView_cl_src);
-            mCircleRadius = typedArray
-                    .getDimensionPixelSize(R.styleable.CircleLoadingView_cl_circleRadius, -1);
-            mAnimationDuration = typedArray
-                    .getFloat(R.styleable.CircleLoadingView_cl_fillAnimationDuration, 800);
-            mCircleStrokeSize = typedArray
-                    .getDimensionPixelSize(R.styleable.CircleLoadingView_cl_circleStrokeSize, -1);
+            Drawable drawable = typedArray .getDrawable(R.styleable.CircleLoadingView_cl_src);
+            circleRadius = typedArray .getDimensionPixelSize(R.styleable.CircleLoadingView_cl_circleRadius, -1);
+            animationDuration = typedArray .getFloat(R.styleable.CircleLoadingView_cl_fillAnimationDuration, 800);
+            circleStrokeSize = typedArray .getDimensionPixelSize(R.styleable.CircleLoadingView_cl_circleStrokeSize, -1);
             if (drawable instanceof BitmapDrawable) {
-                mOriginBitmap = ((BitmapDrawable) drawable).getBitmap();
+                originalBitmap = ((BitmapDrawable) drawable).getBitmap();
                 initRect();
             }
         } finally {
@@ -87,7 +83,7 @@ public class CircleLoadingView extends View {
     }
 
     public void setImageBitmap(Bitmap bm) {
-        this.mOriginBitmap = bm;
+        this.originalBitmap = bm;
         initRect();
     }
 
@@ -99,72 +95,72 @@ public class CircleLoadingView extends View {
         }
         if (w > 0 && h > 0) {
 
-            if (mCircleRadius < 0) {
-                mCircleRadius = mRingRadius = w / 4;
+            if (circleRadius < 0) {
+                circleRadius = ringRadius = w / 4;
             } else {
-                mRingRadius = mCircleRadius;
+                ringRadius = circleRadius;
             }
-            mCenterX = w / 2f;
-            mCenterY = h / 2f;
-            mResult = Bitmap.createScaledBitmap(mOriginBitmap, w, h, true);
-            mRectF = new RectF((w / 2 - mCircleRadius), (h / 2 - mCircleRadius),
-                    w / 2 + mCircleRadius,
-                    h / 2 + mCircleRadius);
-            mRingPaint.setStyle(Paint.Style.STROKE);
-            if (mCircleStrokeSize < 0) {
-                mCircleStrokeSize = w / 36;
+            centerX = w / 2f;
+            centerY = h / 2f;
+            resultBitmap = Bitmap.createScaledBitmap(originalBitmap, w, h, true);
+            rect = new RectF((w / 2 - circleRadius), (h / 2 - circleRadius),
+                    w / 2 + circleRadius,
+                    h / 2 + circleRadius);
+            ringPaint.setStyle(Paint.Style.STROKE);
+            if (circleStrokeSize < 0) {
+                circleStrokeSize = w / 36;
             }
-            mRingPaint.setStrokeWidth(mCircleStrokeSize);
-            mCircleRadiusMax = (float) Math.sqrt(w * w + h * h) / 2f;
-            mCircleStep = (mCircleRadiusMax - mCircleRadius) / (mAnimationDuration / 25);
+            ringPaint.setStrokeWidth(circleStrokeSize);
+            circleRadiusMax = (float) Math.sqrt(w * w + h * h) / 2f;
+            circleStep = (circleRadiusMax - circleRadius) / (animationDuration / 25);
             Matrix m = new Matrix();
-            RectF src = new RectF(0, 0, mOriginBitmap.getWidth(), mOriginBitmap.getHeight());
+            RectF src = new RectF(0, 0, originalBitmap.getWidth(), originalBitmap.getHeight());
             RectF dst = new RectF(0, 0, this.getWidth(), this.getHeight());
             m.setRectToRect(src, dst, Matrix.ScaleToFit.CENTER);
-            Shader shader = new BitmapShader(mOriginBitmap, Shader.TileMode.CLAMP,
+            Shader shader = new BitmapShader(originalBitmap, Shader.TileMode.CLAMP,
                     Shader.TileMode.CLAMP);
             shader.setLocalMatrix(m);
-            mArcPaint.setShader(shader);
-            mRingPaint.setShader(shader);
-            mCirclePaint.setShader(shader);
+            arcPaint.setShader(shader);
+            ringPaint.setShader(shader);
+            circlePaint.setShader(shader);
         }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (mOriginBitmap == null) {
+        if (originalBitmap == null) {
             return;
         }
-        int percent = mPercent;
+        int percent = percentage;
         if (percent == 0) {
             int saveCount = canvas.save();
-            canvas.drawBitmap(mResult, 0, 0, mGrayPaint);
+            canvas.drawBitmap(resultBitmap, 0, 0, grayPaint);
             canvas.restoreToCount(saveCount);
         } else if (percent < 100) {
             int saveCount = canvas.save();
-            canvas.drawBitmap(mResult, 0, 0, mGrayPaint);
-            canvas.drawCircle(mCenterX, mCenterY, mRingRadius, mRingPaint);
-            canvas.drawArc(mRectF, -90, (float) ((percent / 100.0) * 360.0), true, mArcPaint);
-            if (mAnimationState == 2) {
-                mAnimationState = 0;
+            canvas.drawBitmap(resultBitmap, 0, 0, grayPaint);
+            canvas.drawCircle(centerX, centerY, ringRadius, ringPaint);
+            canvas.drawArc(rect, -90, (float) ((percent / 100.0) * 360.0), true, arcPaint);
+            if (animationState == STATE_FINISHED) {
+                animationState = STATE_RUNNING;
             }
             canvas.restoreToCount(saveCount);
-        } else if (percent == 100 && mAnimationState == 0) {
+        } else if (percent == 100 && animationState == STATE_RUNNING) {
             int saveCount = canvas.save();
-            canvas.drawBitmap(mResult, 0, 0, mGrayPaint);
-            canvas.drawCircle(mCenterX, mCenterY, mCircleRadius, mCirclePaint);
-            mCircleRadius += mCircleStep;
-            mAnimationState = 1;
+            canvas.drawBitmap(resultBitmap, 0, 0, grayPaint);
+            canvas.drawCircle(centerX, centerY, circleRadius, circlePaint);
+            circleRadius += circleStep;
+            animationState = STATE_EXPAND;
             postInvalidateDelayed(100);
             canvas.restoreToCount(saveCount);
-        } else if (mAnimationState == 1) {
+        } else if (animationState == STATE_EXPAND) {
             int saveCount = canvas.save();
-            canvas.drawBitmap(mResult, 0, 0, mGrayPaint);
-            canvas.drawCircle(mCenterX, mCenterY, mCircleRadius, mCirclePaint);
-            mCircleRadius += mCircleStep;
-            if (mCircleRadius >= mCircleRadiusMax) {
-                mAnimationState = 2;
-                mCircleRadius = mRingRadius;
+            canvas.drawBitmap(resultBitmap, 0, 0, grayPaint);
+            canvas.drawCircle(centerX, centerY, circleRadius, circlePaint);
+            circleRadius += circleStep;
+            if (circleRadius >= circleRadiusMax) {
+                animationState = STATE_FINISHED;
+                circleRadius = ringRadius;
             } else {
                 postInvalidateDelayed(25);
             }
@@ -172,7 +168,7 @@ public class CircleLoadingView extends View {
 
         } else {
             int saveCount = canvas.save();
-            canvas.drawBitmap(mResult, 0, 0, mNormalPaint);
+            canvas.drawBitmap(resultBitmap, 0, 0, normalPaint);
             canvas.restoreToCount(saveCount);
         }
     }
@@ -181,17 +177,17 @@ public class CircleLoadingView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         if (w != oldw || h != oldh) {
-            if (mResult != null) {
-                mResult = null;
+            if (resultBitmap != null) {
+                resultBitmap = null;
             }
-            if (mOriginBitmap != null) {
+            if (originalBitmap != null) {
                 initRect();
             }
         }
     }
 
     public void setPercent(int percent) {
-        this.mPercent = percent;
+        this.percentage = percent;
         postInvalidate();
     }
 }
