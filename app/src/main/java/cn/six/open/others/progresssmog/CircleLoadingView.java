@@ -155,14 +155,14 @@ public class CircleLoadingView extends View {
             canvas.restoreToCount(saveCount);
         } else if (animationState == STATE_EXPAND) {
             int saveCount = canvas.save();
-            canvas.drawBitmap(resultBitmap, 0, 0, grayPaint);
-            canvas.drawCircle(centerX, centerY, circleRadius, circlePaint);
-            circleRadius += circleStep;
-            if (circleRadius >= circleRadiusMax) {
+            canvas.drawBitmap(resultBitmap, 0, 0, grayPaint); //仍是灰色背景
+            canvas.drawCircle(centerX, centerY, circleRadius, circlePaint); // 画透明效果
+            circleRadius += circleStep; // 透明圆的半径越来越大
+            if (circleRadius >= circleRadiusMax) { // 超过图片的大小后，就停止了，不再invalidate()了
                 animationState = STATE_FINISHED;
                 circleRadius = ringRadius;
             } else {
-                postInvalidateDelayed(25);
+                postInvalidateDelayed(25); // 否则就每隔一段时间就invalidate(). 不要马上刷新，不会CPU和内存吃不住
             }
             canvas.restoreToCount(saveCount);
 

@@ -43,6 +43,9 @@ public class SmogSplitActivity extends Activity {
         OpenMaskView openView = new OpenMaskView(this);
         layout.addView(openView, new LayoutParams(350, 350));
 
+        ExpandMaskView expandView = new ExpandMaskView(this);
+        layout.addView(expandView, new LayoutParams(350, 350));
+
         setContentView(layout);
     }
 }
@@ -73,6 +76,7 @@ class OpenMaskView extends GrayMaskView{
     protected Paint ringPaint, arcPaint;
     protected float centerX, centerY, radius;
     protected RectF rect;
+    protected Shader shader;
 
     public OpenMaskView(Context context) {
         super(context);
@@ -92,12 +96,12 @@ class OpenMaskView extends GrayMaskView{
                     w2 / 2 + radius,
                     h2 / 2 + radius);
 
-            Matrix m = new Matrix();
-            RectF src = new RectF(0, 0, w2, h2);
-            RectF dst = new RectF(0, 0, w2, h2);
-            m.setRectToRect(src, dst, Matrix.ScaleToFit.CENTER);
-            Shader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-            shader.setLocalMatrix(m);
+//            Matrix m = new Matrix();
+//            RectF src = new RectF(0, 0, w2, h2);
+//            RectF dst = new RectF(0, 0, w2, h2);
+//            m.setRectToRect(src, dst, Matrix.ScaleToFit.CENTER);
+            shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+//            shader.setLocalMatrix(m);
 
             ringPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             ringPaint.setStyle(Paint.Style.STROKE);
@@ -117,5 +121,26 @@ class OpenMaskView extends GrayMaskView{
         canvas.drawArc(rect, -90, 45, true, arcPaint);
         canvas.restoreToCount(saveCount);
 
+    }
+}
+
+class ExpandMaskView extends OpenMaskView{
+    private Paint circlePaint;
+
+    public ExpandMaskView(Context context) {
+        super(context);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        circlePaint.setShader(shader); // it's not stroke style !
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        canvas.drawBitmap(bitmap, 0, 0 , grayPaint);
+        canvas.drawCircle(centerX, centerY, radius + 20, circlePaint);
     }
 }
