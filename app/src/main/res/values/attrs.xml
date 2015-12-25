@@ -17,4 +17,11 @@
         <attr name="cl_src" format="integer"/>
     </declare-styleable>
 
+    <declare-styleable name="timeline_style" >
+        <attr name="marker" format="color|reference"/>
+        <attr name="line" format="color|reference"/>
+        <attr name="marker_size" format="dimension"/>
+        <attr name="line_size" format="dimension"/>
+    </declare-styleable>
+
 </resources>
