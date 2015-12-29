@@ -69,7 +69,7 @@ public class CircleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        tempCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR);
+        tempCanvas.drawColor(0xffffff, PorterDuff.Mode.CLEAR); //Each frame starts from clearing whole canvas by drawing color with CLEAR mode.
         tempCanvas.drawCircle(getWidth() / 2, getHeight() / 2, outerCircleRadiusProgress * maxCircleSize, circlePaint);
         tempCanvas.drawCircle(getWidth() / 2, getHeight() / 2, innerCircleRadiusProgress * maxCircleSize, maskPaint);
         canvas.drawBitmap(tempBitmap, 0, 0, null);
@@ -91,6 +91,8 @@ public class CircleView extends View {
     }
 
     private void updateCircleColor() {
+        // For skilled eye there is one more thing - our outer circle changes its color based on current progress.
+        // It’s done by ArgbEvaluator class which transforms two colors based on given fraction
         float colorProgress = (float) UiUtil.clamp(outerCircleRadiusProgress, 0.5, 1);
         colorProgress = (float) UiUtil.mapValueFromRangeToRange(colorProgress, 0.5f, 1f, 0f, 1f);
         this.circlePaint.setColor((Integer) argbEvaluator.evaluate(colorProgress, START_COLOR, END_COLOR));

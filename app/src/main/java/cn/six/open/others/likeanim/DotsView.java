@@ -15,7 +15,7 @@ import cn.six.open.util.UiUtil;
  */
 public class DotsView extends View {
     private static final int DOTS_COUNT = 7;
-    private static final int OUTER_DOTS_POSITION_ANGLE = 51;
+    private static final int OUTER_DOTS_POSITION_ANGLE = 51; // 51 * 7 = 357, 约等于360，正好一周了
 
     private static final int COLOR_1 = 0xFFFFC107;
     private static final int COLOR_2 = 0xFFFF9800;
