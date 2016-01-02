@@ -43,6 +43,11 @@ So I did some work to meet my need.
 A scratchcard is a small card, where one or more areas contain concealed information which can be revealed by scratching off an opaque covering.
 Applications include cards sold for gambling (especially lottery games and quizzes), or free-of-charge cards for quizzes, and to conceal confidential information such as PINs for telephone calling cards and other prepaid services.
 
+![](/pic/Scratch001.jpg)
+![](/pic/Scratch002.jpg)
+![](/pic/Scratch003.jpg)
+![](/pic/Scratch004.jpg)
+
 In some app, Scratch Card effect is used to conceal some lottery information.
 
 I was write this view in 2013.11, however, it has a unpleasant problem: when you touch the screen, the path you draw is black, rather than the transparent color that I want.
