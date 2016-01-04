@@ -11,55 +11,53 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 
 /**
- * Created by songzhw on 1/3/16.
+ * Created by songzhw on 2016/01/03.
  */
 public class ScratchCardView extends ImageView {
-    private static final float MINP = 0.25f;
-    private static final float MAXP = 0.75f;
-    private Bitmap mBitmap;
-    private Canvas mBitmapCanvas;
-    private Path mPath;
-    private Paint mBitmapPaint, mPaint;
+    private Bitmap tempBitamp;
+    private Canvas tempCanvas;
+    private Path fingerPath;
+    private Paint paint, fingerPaint;
 
     private float mX, mY;
     private static final float TOUCH_TOLERANCE = 4;
 
     public ScratchCardView(Context c) {
         super(c);
-        mPath = new Path();
-        mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+        fingerPath = new Path();
+        paint = new Paint(Paint.DITHER_FLAG);
 
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPaint.setDither(true);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(150);
-        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        fingerPaint = new Paint();
+        fingerPaint.setAntiAlias(true);
+        fingerPaint.setDither(true);
+        fingerPaint.setStyle(Paint.Style.STROKE);
+        fingerPaint.setStrokeJoin(Paint.Join.ROUND);
+        fingerPaint.setStrokeCap(Paint.Cap.ROUND);
+        fingerPaint.setStrokeWidth(150);
+        fingerPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        mBitmapCanvas = new Canvas(mBitmap);
-        mBitmapCanvas.drawColor(0xFFAAAAAA);//draw the background
+        tempBitamp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        tempCanvas = new Canvas(tempBitamp);
+        tempCanvas.drawColor(0xFFAAAAAA);//draw the gray mask above the picture
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         // commit the path to our offscreen. When finger are up, the path will be saved.
-        mBitmapCanvas.drawPath(mPath, mPaint);
+        tempCanvas.drawPath(fingerPath, fingerPaint);
 
-        canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-//            canvas.drawPath(mPath, mPaint);//so the paint will have the eraser effect when users select "eraser"
+        canvas.drawBitmap(tempBitamp, 0, 0, paint);
+//            canvas.drawPath(fingerPath, fingerPaint);//so the paint will have the eraser effect when users select "eraser"
     }
 
     private void touch_start(float x, float y) {
-        mPath.reset();
-        mPath.moveTo(x, y);
+        fingerPath.reset();
+        fingerPath.moveTo(x, y);
         mX = x;
         mY = y;
     }
@@ -69,18 +67,18 @@ public class ScratchCardView extends ImageView {
         float dy = Math.abs(y - mY);
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
             //actually, i found the two lines below will both get the job done. maybe the first one is more sensitive?
-            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);//二次方曲线
-//    mPath.quadTo(mX, mY, x, y);
+            fingerPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);//二次方曲线
+//    fingerPath.quadTo(mX, mY, x, y);
             mX = x;
             mY = y;
         }
     }
 
     private void touch_up() {
-        mPath.lineTo(mX, mY);//when omit this line, this will still work!
+        fingerPath.lineTo(mX, mY);//when omit this line, this will still work!
 
         // kill this so we don't double draw
-        mPath.reset();
+        fingerPath.reset();
     }
 
     @Override

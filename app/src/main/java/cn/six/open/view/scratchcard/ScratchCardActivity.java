@@ -1,23 +1,15 @@
 /**
  *  *    GuagualeView.java
  *  *    
- *  *    Create by zhengwang.szw on 2013年11月8日
+ *  *    Create by zhengwang.szw on 2013-11-08
  *  
  */
 package cn.six.open.view.scratchcard;
 
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PorterDuffXfermode;
-import android.view.MotionEvent;
 import android.app.Activity;
-import android.graphics.*;
 import android.os.Bundle;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import cn.six.open.R;
 
