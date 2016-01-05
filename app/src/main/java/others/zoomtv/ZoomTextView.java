@@ -1,4 +1,4 @@
-package cn.six.open.others.zoomtv;
+package others.zoomtv;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

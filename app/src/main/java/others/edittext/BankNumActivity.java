@@ -1,4 +1,4 @@
-package cn.six.open.others.edittext;
+package others.edittext;
 
 import android.app.Activity;
 import android.os.Bundle;

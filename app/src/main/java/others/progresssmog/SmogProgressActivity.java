@@ -1,4 +1,4 @@
-package cn.six.open.others.progresssmog;
+package others.progresssmog;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package cn.six.open.others.timeline;
+package others.timeline;
 
 /**
  * Created by HP-HP on 05-12-2015.

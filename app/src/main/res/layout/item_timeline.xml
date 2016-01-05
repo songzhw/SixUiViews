@@ -6,7 +6,7 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
-    <cn.six.open.others.timeline.TimelineView
+    <others.timeline.TimelineView
         android:id="@+id/time_marker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

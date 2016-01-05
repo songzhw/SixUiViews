@@ -1,4 +1,4 @@
-package cn.six.open.others.likeanim.split;
+package others.likeanim.split;
 
 import android.animation.ArgbEvaluator;
 import android.app.Activity;

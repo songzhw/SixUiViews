@@ -1,4 +1,4 @@
-package cn.six.open.others.bounceview;
+package others.bounceview;
 
 import android.content.Context;
 import android.graphics.Rect;

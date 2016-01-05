@@ -1,4 +1,4 @@
-package cn.six.open.others.colormask;
+package others.colormask;
 
 import android.content.Context;
 import android.graphics.Bitmap;

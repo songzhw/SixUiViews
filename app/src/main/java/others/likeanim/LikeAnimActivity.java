@@ -1,9 +1,8 @@
-package cn.six.open.others.likeanim;
+package others.likeanim;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import cn.six.open.util.UiUtil;
 

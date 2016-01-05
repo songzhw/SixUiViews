@@ -1,4 +1,4 @@
-package cn.six.open.others.likeanim;
+package others.likeanim;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

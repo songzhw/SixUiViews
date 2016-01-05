@@ -6,7 +6,7 @@
 
     <TextView android:layout_width="fill_parent" android:layout_height="50dp" android:text="Title" android:gravity="center"/>
 
-    <cn.six.open.others.bounceview.BounceScrollView
+    <others.bounceview.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ccc"
@@ -127,6 +127,6 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </cn.six.open.others.bounceview.BounceScrollView>
+    </others.bounceview.BounceScrollView>
 
 </LinearLayout>

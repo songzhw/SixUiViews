@@ -8,7 +8,7 @@
     <Button android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:onClick="startAnim" android:text="Start Anim"/>
 
-    <cn.six.open.others.progresssmog.CircleLoadingView
+    <others.progresssmog.CircleLoadingView
         android:id="@+id/pb_smog"
         android:layout_width="100dp" android:layout_height="100dp" android:layout_margin="10dp"
         app:cl_circleRadius="25dp"

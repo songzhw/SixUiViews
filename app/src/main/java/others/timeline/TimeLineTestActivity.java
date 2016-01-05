@@ -1,4 +1,4 @@
-package cn.six.open.others.timeline;
+package others.timeline;
 
 import android.app.Activity;
 import android.os.Bundle;

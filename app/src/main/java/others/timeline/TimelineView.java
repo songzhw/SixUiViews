@@ -1,4 +1,4 @@
-package cn.six.open.others.timeline;
+package others.timeline;
 
 import android.content.Context;
 import android.content.res.TypedArray;
