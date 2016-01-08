@@ -8,4 +8,10 @@
     <color name="tabs_view_white_bg">#f6f5fa</color>
     <color name="tabs_view_black_bg_titlebar">#21292c</color>
 
+    <!-- Swipe-Card -->
+    <color name="bel_red_text">#F37B61</color>
+    <color name="bel_grey_text">#4A4C54</color>
+    <color name="bel_lightgrey_text">#72747A</color>
+    <color name="background_material_light">#f4f5f9</color>
+
 </resources>
