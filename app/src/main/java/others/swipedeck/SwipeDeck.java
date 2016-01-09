@@ -93,6 +93,32 @@ public class SwipeDeck extends FrameLayout {
     }
 
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        // if we don't have an adapter, we don't need to do anything
+        if (mAdapter == null || mAdapter.getCount() == 0) {
+            nextAdapterCard = 0;
+            removeAllViewsInLayout();
+            return;
+        }
+
+        //pull in views from the adapter at the position the top of the deck is set to
+        //stop when you get to for cards or the end of the adapter
+        int childCount = getChildCount();
+        for (int i = childCount; i < NUMBER_OF_CARDS; ++i) {
+            addNextCard();
+        }
+        for (int i = 0; i < getChildCount(); ++i) {
+            positionItem(i);
+        }
+        //position the new children we just added and set up the top card with a listener etc
+    }
+
+
+
+
     public void setAdapter(Adapter adapter) {
         mAdapter = adapter;
 
@@ -131,28 +157,6 @@ public class SwipeDeck extends FrameLayout {
         throw new UnsupportedOperationException("Not supported");
     }
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-
-        // if we don't have an adapter, we don't need to do anything
-        if (mAdapter == null || mAdapter.getCount() == 0) {
-            nextAdapterCard = 0;
-            removeAllViewsInLayout();
-            return;
-        }
-
-        //pull in views from the adapter at the position the top of the deck is set to
-        //stop when you get to for cards or the end of the adapter
-        int childCount = getChildCount();
-        for (int i = childCount; i < NUMBER_OF_CARDS; ++i) {
-            addNextCard();
-        }
-        for (int i = 0; i < getChildCount(); ++i) {
-            positionItem(i);
-        }
-        //position the new children we just added and set up the top card with a listener etc
-    }
 
     private void removeTopCard() {
         View child = getChildAt(0);
@@ -230,42 +234,6 @@ public class SwipeDeck extends FrameLayout {
         child.animate()
                 .setDuration(200)
                 .y(paddingTop + index * CARD_SPACING);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-
-        int width;
-        int height;
-
-        if (widthMode == MeasureSpec.EXACTLY) {
-            //Must be this size
-            width = widthSize;
-        } else if (widthMode == MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
-            width = widthSize;
-        } else {
-            //Be whatever you want
-            width = widthSize;
-        }
-
-        //Measure Height
-        if (heightMode == MeasureSpec.EXACTLY) {
-            //Must be this size
-            height = heightSize;
-        } else if (heightMode == MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
-            height = heightSize;
-        } else {
-            //Be whatever you want
-            height = heightSize;
-        }
-        setMeasuredDimension(width, height);
     }
 
 
