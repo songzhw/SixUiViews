@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="common_bg">#C5EDCC</color>
+
     <!-- TabsView -->
     <color name="white">#ffffff</color>
     <color name="tabs_view_white_text_color">#f8f8f8</color>

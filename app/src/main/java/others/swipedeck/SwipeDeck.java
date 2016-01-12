@@ -297,15 +297,6 @@ public class SwipeDeck extends FrameLayout {
         rightImageResource = imageResource;
     }
 
-    public interface SwipeEventCallback {
-        //returning the object position in the adapter
-        void cardSwipedLeft(int position);
-        void cardSwipedRight(int position);
-        void cardsDepleted();
-    }
 
-    public interface CardPositionCallback {
-        void xPos(Float x);
-        void yPos(Float y);
-    }
+
 }
