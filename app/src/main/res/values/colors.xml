@@ -16,4 +16,10 @@
     <color name="bel_lightgrey_text">#72747A</color>
     <color name="background_material_light">#f4f5f9</color>
 
+    <!-- app lock -->
+    <color name="pin__default_activity_background">#FAFAFA</color>
+    <color name="pin__default_description_text">#54000000</color>
+    <color name="pin__default_item_background">#3C9ADF</color>
+    <color name="pin__default_item_text">#FAFAFA</color>
+
 </resources>
