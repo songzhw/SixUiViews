@@ -71,10 +71,10 @@ public class TrianglifyView extends View {
                 R.styleable.TrianglifyView, 0, 0);
 
         try {
-            cellSize = a.getInteger(R.styleable.TrianglifyView_cellSize, Default.cellSize);
-            variance = a.getInteger(R.styleable.TrianglifyView_variance, Default.variance);
-            bleedX = a.getInteger(R.styleable.TrianglifyView_bleedX, Default.bleedX);
-            bleedY = a.getInteger(R.styleable.TrianglifyView_bleedY, Default.bleedY);
+            cellSize = a.getInteger(R.styleable.TrianglifyView_cellSize, TriDefault.cellSize);
+            variance = a.getInteger(R.styleable.TrianglifyView_variance, TriDefault.variance);
+            bleedX = a.getInteger(R.styleable.TrianglifyView_bleedX, TriDefault.bleedX);
+            bleedY = a.getInteger(R.styleable.TrianglifyView_bleedY, TriDefault.bleedY);
         } finally {
             a.recycle();
         }
@@ -118,10 +118,4 @@ public class TrianglifyView extends View {
     }
 }
 
-class Default {
 
-    static int cellSize = 200;
-    static int variance = 50;
-    static int bleedX = cellSize;
-    static int bleedY = cellSize;
-}

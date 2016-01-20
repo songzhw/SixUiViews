@@ -24,6 +24,7 @@ public class DelaunayTriangulator implements Triangulator {
 
     @Override
     public Vector<Triangle> triangulate(Vector<Point> pointSet) {
+        System.out.println("szw trianglator 01 point: "+pointSet.size());
         Preconditions.checkNotNull(pointSet);
         Preconditions.checkArgument(pointSet.size() >= 3, "Can't triangulate less than 3 points");
         triangulation = new Triangulation();
@@ -90,10 +91,14 @@ public class DelaunayTriangulator implements Triangulator {
         triangulation.removeTrianglesUsing(superTriangle.b);
         triangulation.removeTrianglesUsing(superTriangle.c);
 
+        System.out.println("szw trianglator 02 trian : " + triangulation.getTriangles().size());
+        i = 0;
         return triangulation.getTriangles();
     }
 
+    private int i = 0;
     private void legalizeEdge(Triangle triangle, Edge edge, Point vertex) {
+        System.out.println("szw @@@@ legalizeEdge() = "+(i++));
         Triangle neighbourTriangle = triangulation.findNeighbour(triangle, edge);
 
         if (neighbourTriangle != null) {

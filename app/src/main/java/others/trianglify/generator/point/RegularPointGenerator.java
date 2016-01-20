@@ -47,6 +47,7 @@ public class RegularPointGenerator implements PointGenerator {
             }
         }
 
+        System.out.println("szw PointGen "+points.size());
         return points;
     }
 }
