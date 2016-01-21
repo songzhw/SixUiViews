@@ -44,6 +44,7 @@ public class RegularPointGenerator implements PointGenerator {
                 int x = i + random.nextInt(variance);
                 int y = j + random.nextInt(variance);
                 points.add(new Point(x, y));
+                System.out.println("one, two = "+j+" ; "+i);
             }
         }
 

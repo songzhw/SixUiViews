@@ -92,13 +92,14 @@ public class DelaunayTriangulator implements Triangulator {
         triangulation.removeTrianglesUsing(superTriangle.c);
 
         System.out.println("szw trianglator 02 trian : " + triangulation.getTriangles().size());
+        System.out.println("szw trianglator legalizeEdge "+i+" times");
         i = 0;
         return triangulation.getTriangles();
     }
 
     private int i = 0;
     private void legalizeEdge(Triangle triangle, Edge edge, Point vertex) {
-        System.out.println("szw @@@@ legalizeEdge() = "+(i++));
+        i++;
         Triangle neighbourTriangle = triangulation.findNeighbour(triangle, edge);
 
         if (neighbourTriangle != null) {

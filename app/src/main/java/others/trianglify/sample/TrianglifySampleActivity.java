@@ -27,6 +27,8 @@ public class TrianglifySampleActivity extends AppCompatActivity {
     Spinner colorControl;
     Button saveToGallery;
 
+    private int cellSize, variance;
+
     private ImageExporter exporter;
 
     @Override
@@ -48,6 +50,13 @@ public class TrianglifySampleActivity extends AppCompatActivity {
         exporter = new ImageExporter();
     }
 
+    public void genTrianglify(View v){
+        trianglifyView.setDrawingCacheEnabled(false);
+        trianglifyView.setCellSize(cellSize);
+        trianglifyView.setVariance(variance);
+        trianglifyView.setDrawingCacheEnabled(true);
+    }
+
     public void saveToGallery(View v) {
         exportViewToImage();
     }
@@ -63,10 +72,9 @@ public class TrianglifySampleActivity extends AppCompatActivity {
 
     private void initCellSizeControl() {
         cellSizeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                this.progress = progress;
+                cellSize = (progress == 0) ? 200 : progress * 10;
             }
 
             @Override
@@ -76,22 +84,15 @@ public class TrianglifySampleActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                System.out.println("--- szw stopSeek(Cell Size)");
-                if (progress > 0) {
-                    trianglifyView.setDrawingCacheEnabled(false);
-                    trianglifyView.setCellSize(progress * 10);
-                    trianglifyView.setDrawingCacheEnabled(true);
-                }
             }
         });
     }
 
     private void initVarianceControl() {
         varianceControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                this.progress = progress;
+                variance = progress;
             }
 
             @Override
@@ -101,10 +102,6 @@ public class TrianglifySampleActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                System.out.println("--- szw stopSeek(Variance)");
-                trianglifyView.setDrawingCacheEnabled(false);
-                trianglifyView.setVariance(progress);
-                trianglifyView.setDrawingCacheEnabled(true);
             }
         });
     }

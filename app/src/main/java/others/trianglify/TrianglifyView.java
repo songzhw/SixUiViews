@@ -116,6 +116,12 @@ public class TrianglifyView extends View {
         triangleRenderer = new TriangleRenderer(new BrewerColorGenerator(color));
         invalidate();
     }
+
+    public void clear(){
+        points.clear();
+        triangles.clear();
+//        System.gc();
+    }
 }
 
 
