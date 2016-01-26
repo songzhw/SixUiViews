@@ -37,17 +37,17 @@ public class SwipeDeckActivity extends AppCompatActivity {
         cardStack.setEventCallback(new SwipeEventCallback() {
             @Override
             public void cardSwipedLeft(int position) {
-                Log.i("MainActivity", "card was swiped left, position in adapter: " + position);
+                Log.i("szw", "card was swiped left, position in adapter: " + position);
             }
 
             @Override
             public void cardSwipedRight(int position) {
-                Log.i("MainActivity", "card was swiped right, position in adapter: " + position);
+                Log.i("szw", "card was swiped right, position in adapter: " + position);
             }
 
             @Override
             public void cardsDepleted() {
-                Log.i("MainActivity", "no more cards");
+                Log.i("szw", "no more cards");
             }
 
         });
