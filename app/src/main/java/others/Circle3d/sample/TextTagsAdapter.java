@@ -34,7 +34,7 @@ public class TextTagsAdapter extends TagsAdapter {
 
     @Override
     public View getView(Context context, int position, ViewGroup parent) {
-        System.out.println("szw getView( "+position+" )"); // why three times [0-12] getView()?
+//        System.out.println("szw getView( "+position+" )"); // why three times [0-12] getView()?
         TextView tv = new TextView(context);
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(100, 100);
         tv.setLayoutParams(lp);
