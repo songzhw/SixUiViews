@@ -139,11 +139,13 @@ public class TagCloudView extends ViewGroup implements Runnable, TagsAdapter.OnD
     }
 
 
-    private int left, right, top, bottom;
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         System.out.println("szw onLayout() "+changed+" ; "+l+" ; "+t+" ; "+r+" ; "+b);
-        left = l; right = r; top = t; bottom = b;
+        reLayoutChildren();
+    }
+
+    private void reLayoutChildren() {
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
@@ -160,10 +162,11 @@ public class TagCloudView extends ViewGroup implements Runnable, TagsAdapter.OnD
         }
     }
 
+
     private void updateChild() {
         System.out.println("szw updateChild() -- requestLayout()");
 //        requestLayout();
-        onLayout(false, left,top,right,bottom);
+        reLayoutChildren();
     }
 
     @Override
