@@ -107,7 +107,7 @@ public class TagCloudView extends ViewGroup implements Runnable, TagsAdapter.OnD
         WindowManager wm = (WindowManager) getContext() .getSystemService(Context.WINDOW_SERVICE);
 
         Point point = new Point();
-        wm.getDefaultDisplay().getSize(point);
+        wm.getDefaultDisplay().getSize(point); // getSize() since API Level 13.  若要兼容2.x， 可以用.getWidth() 与 getHeight();
         int screenWidth = point.x;
         int screenHeight = point.y;
         minSize = screenHeight < screenWidth ? screenHeight : screenWidth;
@@ -118,6 +118,7 @@ public class TagCloudView extends ViewGroup implements Runnable, TagsAdapter.OnD
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        System.out.println("szw onMeasure()");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         int contentWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -137,26 +138,12 @@ public class TagCloudView extends ViewGroup implements Runnable, TagsAdapter.OnD
         setMeasuredDimension(dimensionX, dimensionY);
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        System.out.println("szw onAttach"); // 旋转屏幕时会调用这个方法。 onDetach() --> onAttach()
-        super.onAttachedToWindow();
-        handler.post(this);
-    }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        System.out.println("szw onDettach"); // 旋转屏幕时会调用这个方法。
-        super.onDetachedFromWindow();
-        handler.removeCallbacksAndMessages(null);
-    }
-
-    private void updateChild() {
-        requestLayout();
-    }
-
+    private int left, right, top, bottom;
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        System.out.println("szw onLayout() "+changed+" ; "+l+" ; "+t+" ; "+r+" ; "+b);
+        left = l; right = r; top = t; bottom = b;
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
@@ -172,6 +159,29 @@ public class TagCloudView extends ViewGroup implements Runnable, TagsAdapter.OnD
             }
         }
     }
+
+    private void updateChild() {
+        System.out.println("szw updateChild() -- requestLayout()");
+//        requestLayout();
+        onLayout(false, left,top,right,bottom);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        System.out.println("szw onAttach"); // 旋转屏幕时会调用这个方法。 onDetach() --> onAttach()
+        super.onAttachedToWindow();
+        handler.post(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        System.out.println("szw onDettach"); // 旋转屏幕时会调用这个方法。
+        super.onDetachedFromWindow();
+        handler.removeCallbacksAndMessages(null);
+    }
+
+
+
 
 
     private void initFromAdapter() {
@@ -257,6 +267,7 @@ public class TagCloudView extends ViewGroup implements Runnable, TagsAdapter.OnD
     }
 
     private void processTouch() {
+        System.out.println("szw processTouch() -- move");
         if (mTagCloud != null) {
             mTagCloud.setAngleX(mAngleX);
             mTagCloud.setAngleY(mAngleY);
@@ -265,6 +276,7 @@ public class TagCloudView extends ViewGroup implements Runnable, TagsAdapter.OnD
         updateChild();
     }
 
+    // adapter's data have changed !
     @Override
     public void onChange() {
         initFromAdapter();
@@ -272,6 +284,7 @@ public class TagCloudView extends ViewGroup implements Runnable, TagsAdapter.OnD
 
     @Override
     public void run() {
+        System.out.println("szw run()");
         if (!isOnTouch && mode != MODE_DISABLE) {
             if (mode == MODE_DECELERATE) {
                 if (mAngleX > 0.04f) {
