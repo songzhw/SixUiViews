@@ -145,6 +145,46 @@ public class SwipeDeck extends FrameLayout {
         requestLayout();
     }
 
+    private void addNextCard() {
+        if (nextAdapterCard < mAdapter.getCount()) {
+            // TODO: Make view recycling work
+            // TODO: Instead of removing the view from here and adding it again when it's swiped
+            // ... don't remove and add to this instance: don't call removeView & addView in sequence.
+            View newBottomChild = mAdapter.getView(nextAdapterCard, null/*lastRemovedView*/, this);
+            this.lastRemovedView = null;
+
+            //set the initial Y value so card appears from under the deck
+            newBottomChild.setY(paddingTop);
+            addAndMeasureChild(newBottomChild);
+            nextAdapterCard++;
+        }
+        setZTranslations();
+        setupTopCard(nextAdapterCard);
+    }
+
+    /**
+     * Adds a view as a child view and takes care of measuring it
+     *
+     * @param child The view to add
+     */
+    private void addAndMeasureChild(View child) {
+        ViewGroup.LayoutParams params = child.getLayoutParams();
+        if (params == null) {
+            params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        }
+        addViewInLayout(child, -1, params, true);
+        int itemWidth = getWidth() - (paddingLeft + paddingRight);
+        int itemHeight = getHeight() - (paddingTop + paddingBottom);
+        child.measure(MeasureSpec.EXACTLY | itemWidth, MeasureSpec.EXACTLY | itemHeight); //MeasureSpec.UNSPECIFIED
+
+        //ensure that if there's a left and right image set their alpha to 0 initially
+        //alpha animation is handled in the swipe listener
+        if(leftImageResource != 0) child.findViewById(leftImageResource).setAlpha(0);
+        if(rightImageResource != 0) child.findViewById(rightImageResource).setAlpha(0);
+    }
+
+
+
     public Adapter getAdapter() {
         return mAdapter;
     }
@@ -174,22 +214,7 @@ public class SwipeDeck extends FrameLayout {
         }
     }
 
-    private void addNextCard() {
-        if (nextAdapterCard < mAdapter.getCount()) {
-            // TODO: Make view recycling work
-            // TODO: Instead of removing the view from here and adding it again when it's swiped
-            // ... don't remove and add to this instance: don't call removeView & addView in sequence.
-            View newBottomChild = mAdapter.getView(nextAdapterCard, null/*lastRemovedView*/, this);
-            this.lastRemovedView = null;
 
-            //set the initial Y value so card appears from under the deck
-            newBottomChild.setY(paddingTop);
-            addAndMeasureChild(newBottomChild);
-            nextAdapterCard++;
-        }
-        setZTranslations();
-        setupTopCard(nextAdapterCard);
-    }
 
     private void setZTranslations() {
         int count = getChildCount();
@@ -198,26 +223,7 @@ public class SwipeDeck extends FrameLayout {
         }
     }
 
-    /**
-     * Adds a view as a child view and takes care of measuring it
-     *
-     * @param child The view to add
-     */
-    private void addAndMeasureChild(View child) {
-        ViewGroup.LayoutParams params = child.getLayoutParams();
-        if (params == null) {
-            params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        }
-        addViewInLayout(child, -1, params, true);
-        int itemWidth = getWidth() - (paddingLeft + paddingRight);
-        int itemHeight = getHeight() - (paddingTop + paddingBottom);
-        child.measure(MeasureSpec.EXACTLY | itemWidth, MeasureSpec.EXACTLY | itemHeight); //MeasureSpec.UNSPECIFIED
 
-        //ensure that if there's a left and right image set their alpha to 0 initially
-        //alpha animation is handled in the swipe listener
-        if(leftImageResource != 0) child.findViewById(leftImageResource).setAlpha(0);
-        if(rightImageResource != 0) child.findViewById(rightImageResource).setAlpha(0);
-    }
 
     /**
      * Positions the children at the "correct" positions

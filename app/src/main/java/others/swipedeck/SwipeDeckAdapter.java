@@ -43,7 +43,7 @@ public class SwipeDeckAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        System.out.println("szw getView() pos = " + position);
+//        System.out.println("szw getView() pos = " + position);
         View v = convertView;
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -33,7 +33,15 @@ public class MySwipeDeck extends FrameLayout {
             return;
         }
 
-        System.out.println("szw onMeasure() 111");
+
+        // onMeasure() may be called many times. And we do not want too many duplicate addView()
+        if(this.getChildCount() >= adapter.getCount()){
+            System.out.println("szw onMeausre() : 111");
+            return;
+        }
+
+
+        System.out.println("szw onMeausre() : 2222222");
         int childCount = adapter.getCount();
         for(int i = 0 ; i < childCount ; i++){
             View child = adapter.getView(i, null/*last removed view*/, this);
