@@ -21,23 +21,20 @@ public class MySwipeDeck extends FrameLayout {
         super(context, attrs);
     }
 
-
+    // onMeasure() --> onMeasure() --> onSizeChanged() --> onLayout()
+    //  --> onMeasure() --> onLayout()
+    //  : It's the "onSizeChanged()" only be called once!
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        System.out.println("szw onSizeChanged()");
 
         // in this places, the adapter is already not null !
         if(adapter == null || adapter.getCount() == 0 ){
+            System.out.println("szw onMeasure() 000");
             removeAllViewsInLayout();
             return;
         }
-
-
-        // onMeasure() may be called many times. And we do not want too many duplicate addView()
-        if(this.getChildCount() >= adapter.getCount()){
-            return;
-        }
-
 
         int childCount = adapter.getCount();
         for(int i = 0 ; i < childCount ; i++){
@@ -57,10 +54,12 @@ public class MySwipeDeck extends FrameLayout {
         super.onLayout(changed, left, top, right, bottom);
 
         if(adapter == null || adapter.getCount() == 0 ){
+            System.out.println("szw onLayout() 000");
             removeAllViewsInLayout();
             return;
         }
 
+        System.out.println("szw onLayout() 111");
         int childCount = this.getChildCount();
         View aChild = this.getChildAt(0);
         int childWidth = aChild.getMeasuredWidth();
