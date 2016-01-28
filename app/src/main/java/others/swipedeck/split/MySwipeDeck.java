@@ -28,7 +28,6 @@ public class MySwipeDeck extends FrameLayout {
 
         // in this places, the adapter is already not null !
         if(adapter == null || adapter.getCount() == 0 ){
-            System.out.println("szw onMeausre() : 0000");
             removeAllViewsInLayout();
             return;
         }
@@ -36,12 +35,10 @@ public class MySwipeDeck extends FrameLayout {
 
         // onMeasure() may be called many times. And we do not want too many duplicate addView()
         if(this.getChildCount() >= adapter.getCount()){
-            System.out.println("szw onMeausre() : 111");
             return;
         }
 
 
-        System.out.println("szw onMeausre() : 2222222");
         int childCount = adapter.getCount();
         for(int i = 0 ; i < childCount ; i++){
             View child = adapter.getView(i, null/*last removed view*/, this);
@@ -60,18 +57,22 @@ public class MySwipeDeck extends FrameLayout {
         super.onLayout(changed, left, top, right, bottom);
 
         if(adapter == null || adapter.getCount() == 0 ){
-            System.out.println("szw onLayout() : 0000");
             removeAllViewsInLayout();
             return;
         }
 
         int childCount = this.getChildCount();
-        System.out.println("szw onLayout() : 111");
+        View aChild = this.getChildAt(0);
+        int childWidth = aChild.getMeasuredWidth();
+        int childheight = aChild.getMeasuredHeight();
+        int left2 = (getWidth() - childWidth)/2 - 50;
+        int top2 = (getHeight() - childheight)/2 - 50;
         for(int i = 0 ; i < childCount ; i++){
             View child = this.getChildAt(i);
             ViewCompat.setTranslationZ(child, 10 - i);
 
-            child.layout(0, 0, child.getMeasuredWidth() + i * 20, child.getMeasuredHeight()  + i * 20 );
+            int step = i * 25;
+            child.layout(left2 + step, top2 + step, left2 + childWidth + step, top2 + childheight + step );
         }
 
     }
@@ -81,5 +82,5 @@ public class MySwipeDeck extends FrameLayout {
     }
 
     private BaseAdapter adapter;
-//    private int index = 0;
+
 }
