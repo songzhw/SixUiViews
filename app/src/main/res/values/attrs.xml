@@ -63,4 +63,12 @@
         <attr name="darkColor" format="color"/>
     </declare-styleable>
 
+    <declare-styleable name="InfinityLoading">
+        <attr name="infl_backColor" format="color" />
+        <attr name="infl_progressColor" format="color" />
+        <attr name="infl_strokeWidth" format="dimension" />
+        <attr name="infl_drawBack" format="boolean" />
+        <attr name="infl_reverse" format="boolean" />
+    </declare-styleable>
+
 </resources>
