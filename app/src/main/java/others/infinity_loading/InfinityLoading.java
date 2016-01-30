@@ -9,11 +9,14 @@ import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
+
 
 import cn.six.open.R;
 
@@ -33,7 +36,7 @@ public class InfinityLoading extends View {
 
     private Paint backPaint = new Paint();
     private Paint progressPaint = new Paint();
-    private Paint progressEndPaint = new Paint();
+//    private Paint progressEndPaint = new Paint();
 
     private Path backPath = new Path();
     private Path progressPath = new Path();
@@ -90,9 +93,9 @@ public class InfinityLoading extends View {
         progressPaint.setStyle(Paint.Style.STROKE);
         progressPaint.setStrokeWidth(strokeWidth);
 
-        progressEndPaint = new Paint(progressPaint);
-        progressEndPaint.setStyle(Paint.Style.FILL);
-        progressEndPaint.setStrokeWidth(strokeWidth / 2);
+//        progressEndPaint = new Paint(progressPaint);
+//        progressEndPaint.setStyle(Paint.Style.FILL);
+//        progressEndPaint.setStrokeWidth(strokeWidth / 2);
     }
 
     private void initPath() {
@@ -133,60 +136,6 @@ public class InfinityLoading extends View {
             restored = false;
         } else {
             progressEndOffset = minProgressLength;
-        }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        updateProgress();
-
-        if (drawBack) {
-            canvas.drawPath(backPath, backPaint);
-        }
-        canvas.drawPath(progressPath, progressPaint);
-        canvas.drawCircle(progressStartCoords[0], progressStartCoords[1], strokeWidth / 2, progressEndPaint);
-        canvas.drawCircle(progressEndCoords[0], progressEndCoords[1], strokeWidth / 2, progressEndPaint);
-
-        invalidate();
-    }
-
-    private void updateProgress() {
-        progressPath.reset();
-        if (reverse) {
-            if (progressStartOffset < 0)
-                progressStartOffset += backPathLength;
-            if (progressEndOffset < 0)
-                progressEndOffset += backPathLength;
-        } else {
-            if (progressStartOffset > backPathLength)
-                progressStartOffset -= backPathLength;
-            if (progressEndOffset > backPathLength)
-                progressEndOffset -= backPathLength;
-        }
-        if (progressEndOffset > progressStartOffset) {
-            backPathMeasure.getSegment(progressStartOffset, progressEndOffset, progressPath, true);
-        } else {
-            backPathMeasure.getSegment(progressStartOffset, backPathLength, progressPath, true);
-            backPathMeasure.getSegment(0, progressEndOffset, progressPath, true);
-        }
-        progressPath.rLineTo(0, 0);
-
-        backPathMeasure.getPosTan(progressStartOffset, progressStartCoords, tempTan);
-        backPathMeasure.getPosTan(progressEndOffset, progressEndCoords, tempTan);
-
-        progressStartOffset += normalSpeed;
-        progressEndOffset += normalSpeed;
-        if (isGrowing) {
-            progressStartOffset += growSpeed;
-        } else {
-            progressEndOffset += growSpeed;
-        }
-        double progressLength = Math.abs(progressEndOffset - progressStartOffset);
-        if (progressLength < minProgressLength
-                || progressLength > backPathLength - minProgressLength) {
-            isGrowing = !isGrowing;
         }
     }
 
@@ -235,6 +184,72 @@ public class InfinityLoading extends View {
         initPaints();
         initPath();
         invalidate();
+    }
+
+
+
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        updateProgress();
+
+        if (drawBack) {
+            canvas.drawPath(backPath, backPaint);
+        }
+        canvas.drawPath(progressPath, progressPaint);
+//        canvas.drawCircle(progressStartCoords[0], progressStartCoords[1], strokeWidth / 2, progressEndPaint);
+//        canvas.drawCircle(progressEndCoords[0], progressEndCoords[1], strokeWidth / 2, progressEndPaint);
+
+//        System.out.println("szw onDraw()s");
+//        invalidate();
+        handler.sendEmptyMessageDelayed(11, 25);
+    }
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            invalidate();
+        }
+    };
+
+    private void updateProgress() {
+        progressPath.reset();
+        if (reverse) {
+            if (progressStartOffset < 0)
+                progressStartOffset += backPathLength;
+            if (progressEndOffset < 0)
+                progressEndOffset += backPathLength;
+        } else {
+            if (progressStartOffset > backPathLength)
+                progressStartOffset -= backPathLength;
+            if (progressEndOffset > backPathLength)
+                progressEndOffset -= backPathLength;
+        }
+        if (progressEndOffset > progressStartOffset) {
+            backPathMeasure.getSegment(progressStartOffset, progressEndOffset, progressPath, true);
+        } else {
+            backPathMeasure.getSegment(progressStartOffset, backPathLength, progressPath, true);
+            backPathMeasure.getSegment(0, progressEndOffset, progressPath, true);
+        }
+        progressPath.rLineTo(0, 0);
+
+        backPathMeasure.getPosTan(progressStartOffset, progressStartCoords, tempTan);
+        backPathMeasure.getPosTan(progressEndOffset, progressEndCoords, tempTan);
+
+        progressStartOffset += normalSpeed;
+        progressEndOffset += normalSpeed;
+        if (isGrowing) {
+            progressStartOffset += growSpeed;
+        } else {
+            progressEndOffset += growSpeed;
+        }
+        double progressLength = Math.abs(progressEndOffset - progressStartOffset);
+        if (progressLength < minProgressLength
+                || progressLength > backPathLength - minProgressLength) {
+            isGrowing = !isGrowing;
+        }
     }
 
     @Override
