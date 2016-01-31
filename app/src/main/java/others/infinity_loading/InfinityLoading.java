@@ -44,7 +44,7 @@ public class InfinityLoading extends View {
 
     private RectF bounds = new RectF(0, 0, 10, 10);
     private float[] progressStartCoords = new float[2];
-    private float[] progressEndCoords = new float[2];
+//    private float[] progressEndCoords = new float[2];
     private float[] tempTan = new float[2];
     private float normalSpeed = 1f;
     private float growSpeed = 3f;
@@ -87,9 +87,9 @@ public class InfinityLoading extends View {
         progressPaint.setStyle(Paint.Style.STROKE);
         progressPaint.setStrokeWidth(strokeWidth);
 
-        progressEndPaint = new Paint(progressPaint);
-        progressEndPaint.setStyle(Paint.Style.FILL);
-        progressEndPaint.setStrokeWidth(strokeWidth / 2);
+//        progressEndPaint = new Paint(progressPaint);
+//        progressEndPaint.setStyle(Paint.Style.FILL);
+//        progressEndPaint.setStrokeWidth(strokeWidth / 2);
     }
 
     private void initPath() {
@@ -158,8 +158,8 @@ public class InfinityLoading extends View {
             canvas.drawPath(backPath, backPaint);
         }
         canvas.drawPath(progressPath, progressPaint);
-        canvas.drawCircle(progressStartCoords[0], progressStartCoords[1], strokeWidth / 2, progressEndPaint);
-        canvas.drawCircle(progressEndCoords[0], progressEndCoords[1], strokeWidth / 2, progressEndPaint);
+//        canvas.drawCircle(progressStartCoords[0], progressStartCoords[1], strokeWidth / 2, progressEndPaint);
+//        canvas.drawCircle(progressEndCoords[0], progressEndCoords[1], strokeWidth / 2, progressEndPaint);
 
         handler.sendEmptyMessageDelayed(11, 20);
     }
@@ -194,7 +194,7 @@ public class InfinityLoading extends View {
         progressPath.rLineTo(0, 0);
 
         backPathMeasure.getPosTan(progressStartOffset, progressStartCoords, tempTan);
-        backPathMeasure.getPosTan(progressEndOffset, progressEndCoords, tempTan);
+//        backPathMeasure.getPosTan(progressEndOffset, progressEndCoords, tempTan);
 
         progressStartOffset += normalSpeed;
         progressEndOffset += normalSpeed;
