@@ -17,7 +17,6 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 
-
 import cn.six.open.R;
 
 /**
@@ -26,6 +25,7 @@ import cn.six.open.R;
  */
 public class InfinityLoading extends View {
     private static final int STEPS = 200;
+    private static final float PRECISION = 0.001f;
 
     private int backColor = 0xAA000000;
     private int progressColor = 0xAAAA0000;
@@ -36,7 +36,7 @@ public class InfinityLoading extends View {
 
     private Paint backPaint = new Paint();
     private Paint progressPaint = new Paint();
-//    private Paint progressEndPaint = new Paint();
+    private Paint progressEndPaint = new Paint();
 
     private Path backPath = new Path();
     private Path progressPath = new Path();
@@ -48,12 +48,13 @@ public class InfinityLoading extends View {
     private float[] tempTan = new float[2];
     private float normalSpeed = 1f;
     private float growSpeed = 3f;
-    private float minProgressLength = 20f;
-    private float backPathLength;
+    private float minProgressLength = 24f;
+    private float backPathLength = 480f;
     private boolean isGrowing = true;
     private float progressStartOffset = 0f;
     private float progressEndOffset = minProgressLength;
     private boolean restored = false;
+    private float savedBackPathLength = -1;
 
     public InfinityLoading(Context context) {
         super(context);
@@ -93,9 +94,9 @@ public class InfinityLoading extends View {
         progressPaint.setStyle(Paint.Style.STROKE);
         progressPaint.setStrokeWidth(strokeWidth);
 
-//        progressEndPaint = new Paint(progressPaint);
-//        progressEndPaint.setStyle(Paint.Style.FILL);
-//        progressEndPaint.setStrokeWidth(strokeWidth / 2);
+        progressEndPaint = new Paint(progressPaint);
+        progressEndPaint.setStyle(Paint.Style.FILL);
+        progressEndPaint.setStrokeWidth(strokeWidth / 2);
     }
 
     private void initPath() {
@@ -129,21 +130,20 @@ public class InfinityLoading extends View {
                 c.x - r, c.y + r);
 
         backPathMeasure.setPath(backPath, true);
-        backPathLength = backPathMeasure.getLength();
-        updateSpeed();
-        minProgressLength = 10 * backPathLength / STEPS;
+        float oldBackPathLenght = backPathLength;
         if (restored) {
             restored = false;
-        } else {
-            progressEndOffset = minProgressLength;
+            oldBackPathLenght = savedBackPathLength;
         }
+        backPathLength = backPathMeasure.getLength();
+        if (compareFloats(oldBackPathLenght, backPathLength) != 0) {
+            progressEndOffset = progressEndOffset * backPathLength / oldBackPathLenght;
+            progressStartOffset = progressStartOffset * backPathLength / oldBackPathLenght;
+        }
+        updateSpeed();
+        minProgressLength = 10 * backPathLength / STEPS;
     }
 
-    private void updateSpeed() {
-        int direction = reverse ? -1 : 1;
-        normalSpeed = backPathLength / STEPS * direction;
-        growSpeed = normalSpeed;
-    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -187,8 +187,6 @@ public class InfinityLoading extends View {
     }
 
 
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -199,12 +197,10 @@ public class InfinityLoading extends View {
             canvas.drawPath(backPath, backPaint);
         }
         canvas.drawPath(progressPath, progressPaint);
-//        canvas.drawCircle(progressStartCoords[0], progressStartCoords[1], strokeWidth / 2, progressEndPaint);
-//        canvas.drawCircle(progressEndCoords[0], progressEndCoords[1], strokeWidth / 2, progressEndPaint);
+        canvas.drawCircle(progressStartCoords[0], progressStartCoords[1], strokeWidth / 2, progressEndPaint);
+        canvas.drawCircle(progressEndCoords[0], progressEndCoords[1], strokeWidth / 2, progressEndPaint);
 
-//        System.out.println("szw onDraw()s");
-//        invalidate();
-        handler.sendEmptyMessageDelayed(11, 25);
+        handler.sendEmptyMessageDelayed(11, 10);
     }
 
     private Handler handler = new Handler(){
@@ -212,7 +208,8 @@ public class InfinityLoading extends View {
         public void handleMessage(Message msg) {
             invalidate();
         }
-    };
+    };  
+      
 
     private void updateProgress() {
         progressPath.reset();
@@ -252,6 +249,12 @@ public class InfinityLoading extends View {
         }
     }
 
+    private void updateSpeed() {
+        int direction = reverse ? -1 : 1;
+        normalSpeed = backPathLength / STEPS * direction;
+        growSpeed = normalSpeed;
+    }
+
     @Override
     protected Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
@@ -259,6 +262,7 @@ public class InfinityLoading extends View {
         bundle.putFloat("progressEndOffset", progressEndOffset);
         bundle.putBoolean("isGrowing", isGrowing);
         bundle.putBoolean("reverse", reverse);
+        bundle.putFloat("backPathLength", backPathLength);
         bundle.putParcelable("super", super.onSaveInstanceState());
         return bundle;
     }
@@ -271,6 +275,7 @@ public class InfinityLoading extends View {
             progressEndOffset = bundle.getFloat("progressEndOffset");
             isGrowing = bundle.getBoolean("isGrowing");
             reverse = bundle.getBoolean("reverse");
+            savedBackPathLength = bundle.getFloat("backPathLength");
             state = bundle.getParcelable("super");
         }
         restored = true;
@@ -334,4 +339,17 @@ public class InfinityLoading extends View {
         this.reverse = reverse;
         updateSpeed();
     }
+
+    private int compareFloats(float f1, float f2) {
+        if (Math.abs(f1 - f2) < PRECISION) {
+            return 0;
+        } else {
+            if (f1 < f2) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    }
+
 }
