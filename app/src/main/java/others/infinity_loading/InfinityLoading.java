@@ -58,18 +58,11 @@ public class InfinityLoading extends View {
 
     public InfinityLoading(Context context) {
         super(context);
-        initPaints();
-        initPath();
     }
 
-    public InfinityLoading(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        processAttrs(context.obtainStyledAttributes(attrs, R.styleable.InfinityLoading));
-        initPaints();
-        initPath();
-    }
-
-    private void processAttrs(TypedArray attrs) {
+    public InfinityLoading(Context context, AttributeSet attrset) {
+        super(context, attrset);
+        TypedArray attrs = context.obtainStyledAttributes(attrset, R.styleable.InfinityLoading);
         DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
         defaultRadius = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, defaultRadius, dm);
         strokeWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, strokeWidth, dm);
@@ -145,37 +138,6 @@ public class InfinityLoading extends View {
     }
 
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        int viewWidth = defaultRadius * 2 + this.getPaddingLeft() + this.getPaddingRight();
-        int viewHeight = defaultRadius + this.getPaddingTop() + this.getPaddingBottom();
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        int width;
-        int height;
-
-        if (widthMode == MeasureSpec.EXACTLY) {
-            width = widthSize;
-        } else if (widthMode == MeasureSpec.AT_MOST) {
-            width = Math.min(viewWidth, widthSize);
-        } else {
-            width = viewWidth;
-        }
-        if (heightMode == MeasureSpec.EXACTLY || widthMode == MeasureSpec.EXACTLY) {
-            height = heightSize;
-        } else if (heightMode == MeasureSpec.AT_MOST) {
-            height = Math.min(viewHeight, heightSize);
-        } else {
-            height = viewHeight;
-        }
-
-        setMeasuredDimension(width, height);
-    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -183,7 +145,6 @@ public class InfinityLoading extends View {
         setBounds(w, h);
         initPaints();
         initPath();
-        invalidate();
     }
 
 
@@ -200,7 +161,7 @@ public class InfinityLoading extends View {
         canvas.drawCircle(progressStartCoords[0], progressStartCoords[1], strokeWidth / 2, progressEndPaint);
         canvas.drawCircle(progressEndCoords[0], progressEndCoords[1], strokeWidth / 2, progressEndPaint);
 
-        handler.sendEmptyMessageDelayed(11, 10);
+        handler.sendEmptyMessageDelayed(11, 20);
     }
 
     private Handler handler = new Handler(){
