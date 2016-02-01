@@ -58,6 +58,10 @@ Today, 2016.01.03, I finally fix this bug.
 Now the ScratchCardView is good to go!
 
 
+## 7. Swipe-Delete EditText
+Swiping in the EditText will delete all the text in this EditText.
+
+
 
 
 ## Reference
