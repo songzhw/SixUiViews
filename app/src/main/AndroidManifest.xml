@@ -8,7 +8,7 @@
         android:theme="@style/AppTheme">
 
         <!--<activity android:name="others.swipedeck.split.MySwipeDeckActivity">-->
-        <activity android:name="others.gesture_fun.SwipeDeleteEtTest">
+        <activity android:name=".view.swipe_delete.SwipeDeleteActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

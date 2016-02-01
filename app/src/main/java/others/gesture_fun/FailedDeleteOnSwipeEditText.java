@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -22,7 +21,7 @@ import cn.six.open.R;
  */
 
 @Deprecated
-public class DeleteOnSwipeEditText extends LinearLayoutCompat implements View.OnTouchListener {
+public class FailedDeleteOnSwipeEditText extends LinearLayoutCompat implements View.OnTouchListener {
     private static final int INVALID = -1;
     private static final String SUPER_STATE = "super.state";
     private static final String EDIT_TEXT_VALUE = "edit.text";
@@ -45,11 +44,11 @@ public class DeleteOnSwipeEditText extends LinearLayoutCompat implements View.On
 
     private EditText editText;
 
-    public DeleteOnSwipeEditText(Context context) {
+    public FailedDeleteOnSwipeEditText(Context context) {
         this(context, null);
     }
 
-    public DeleteOnSwipeEditText(Context context, AttributeSet attrs) {
+    public FailedDeleteOnSwipeEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
@@ -60,13 +59,13 @@ public class DeleteOnSwipeEditText extends LinearLayoutCompat implements View.On
         editText = (EditText) getChildAt(0);
         //Threshold cannot be bigger than EditText itself
         if (attrs != null) {
-            TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DeleteOnSwipeEditText);
-            setHint(ta.getString(R.styleable.DeleteOnSwipeEditText_android_hint));
-            int threshold = ta.getInt(R.styleable.DeleteOnSwipeEditText_hrskrs_threshold, INVALID);
+            TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.FailedDeleteOnSwipeEditText);
+            setHint(ta.getString(R.styleable.FailedDeleteOnSwipeEditText_android_hint));
+            int threshold = ta.getInt(R.styleable.FailedDeleteOnSwipeEditText_hrskrs_threshold, INVALID);
             if (threshold > MIN_THRESHOLD) {
                 DEFAULT_THRESHOLD = threshold;
             }
-            int swipeMode = ta.getInt(R.styleable.DeleteOnSwipeEditText_hrskrs_swipe_mode, INVALID);
+            int swipeMode = ta.getInt(R.styleable.FailedDeleteOnSwipeEditText_hrskrs_swipe_mode, INVALID);
             if (swipeMode == 1) {
                 DEFAULT_SWIPE = SINGLE_FINGER_SWIPE;
             }

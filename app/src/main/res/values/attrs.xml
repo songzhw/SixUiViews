@@ -71,7 +71,7 @@
         <attr name="infl_reverse" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="DeleteOnSwipeEditText">
+    <declare-styleable name="FailedDeleteOnSwipeEditText">
         <attr name="hrskrs_threshold" format="integer" />
         <attr name="hrskrs_swipe_mode" format="integer" />
         <attr name="android:text" />

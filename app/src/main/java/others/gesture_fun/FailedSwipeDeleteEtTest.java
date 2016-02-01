@@ -15,7 +15,7 @@ import cn.six.open.R;
  */
 
 @Deprecated
-public class SwipeDeleteEtTest extends Activity {
+public class FailedSwipeDeleteEtTest extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

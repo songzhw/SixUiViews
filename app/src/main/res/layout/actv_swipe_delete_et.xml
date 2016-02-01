@@ -12,7 +12,7 @@
         android:text="swipe_two"
         android:textColor="#1f8a9e" />
 
-    <others.gesture_fun.DeleteOnSwipeEditText
+    <others.gesture_fun.FailedDeleteOnSwipeEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -20,7 +20,7 @@
         custom:hrskrs_swipe_mode="2"
         custom:hrskrs_threshold="200" />
 
-    <others.gesture_fun.DeleteOnSwipeEditText
+    <others.gesture_fun.FailedDeleteOnSwipeEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -40,7 +40,7 @@
         android:text="swipe_single"
         android:textColor="#1f8a9e" />
 
-    <others.gesture_fun.DeleteOnSwipeEditText
+    <others.gesture_fun.FailedDeleteOnSwipeEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -48,7 +48,7 @@
         custom:hrskrs_swipe_mode="1"
         custom:hrskrs_threshold="200" />
 
-    <others.gesture_fun.DeleteOnSwipeEditText
+    <others.gesture_fun.FailedDeleteOnSwipeEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
