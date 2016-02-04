@@ -54,3 +54,29 @@ public class MyClear01View extends View {
         canvas.drawBitmap(tempBitmap, 0, 0, null);
     }
 }
+
+
+/*
+Error 01 : black circle
+
+@Override
+protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+    canvas.drawColor(0x70000000);
+    canvas.drawCircle(200, 200, 150, eraser);
+}
+ */
+
+
+/*
+Error 02 : Nothing. No circle.
+
+@Override
+protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+    canvas.drawColor(0x70000000);
+    tempCanvas.drawCircle(200, 200, 150, eraser);
+    canvas.drawBitmap(tempBitmap, 0, 0, null);
+}
+
+ */
