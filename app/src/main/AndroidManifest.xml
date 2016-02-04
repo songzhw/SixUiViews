@@ -8,9 +8,7 @@
         android:theme="@style/AppTheme">
 
         <!--<activity android:name="others.swipedeck.split.MySwipeDeckActivity">-->
-        <activity android:name="others.m_intro_view.a_sample.MIntroViewTest"
-                  android:theme="@style/AppTheme.NoActionBar"
-            >
+        <activity android:name=".view.porterduff_clear.PorterDuffClearTest" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
