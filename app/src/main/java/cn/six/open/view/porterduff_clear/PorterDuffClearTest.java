@@ -20,8 +20,11 @@ public class PorterDuffClearTest extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_porterduff_clear);
+        // 1.
+//        setContentView(R.layout.activity_porterduff_clear);
 
+        // 2.
+        setContentView(R.layout.activity_porterduff_clear_two);
     }
 
 
