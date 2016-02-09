@@ -8,7 +8,7 @@
         android:theme="@style/AppTheme">
 
         <!--<activity android:name="others.swipedeck.split.MySwipeDeckActivity">-->
-        <activity android:name="others.svg_sharp.demo.SvgDemoActivity" >
+        <activity android:name="others.drag_scale_circle_view.demo.DragScaleCircleViewTest" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
