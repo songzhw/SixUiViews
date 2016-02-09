@@ -3,6 +3,7 @@ package cn.six.open.view.porterduff_clear;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -21,22 +22,15 @@ public class MyClear02View extends View {
     private Paint eraser, paint;
 
     int x = 250, y = 250, radius = 200;
-    int touchSlop = 0;
 
     public MyClear02View(Context context) {
         super(context);
-        init(context);
     }
 
     public MyClear02View(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
-    private void init(Context context) {
-        touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        System.out.println("szw touchSlop = "+touchSlop);
-    }
 
 
     @Override
@@ -64,28 +58,19 @@ public class MyClear02View extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        tempBitmap.eraseColor(Color.TRANSPARENT);//without this line, moving the circle will have a black background
         tempCanvas.drawColor(0x70000000);
         tempCanvas.drawCircle(x, y, radius, eraser);
-        canvas.drawBitmap(tempBitmap, 0, 0, paint);
+        canvas.drawBitmap(tempBitmap, 0, 0, null);
     }
 
-    int oldx = 0, oldy = 0;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch(event.getAction()){
             case MotionEvent.ACTION_MOVE:
-                System.out.println("szw move()  -- normal");
                 x = (int) event.getX();
                 y = (int) event.getY();
                 invalidate();
-
-//                if( Math.abs(x - oldx) > touchSlop && Math.abs(y - oldy) > touchSlop) {
-//                    System.out.println("szw move()  -- new");
-//                    oldx = x;
-//                    oldy = y;
-//                    invalidate();
-//                }
-
                 break;
         }
         return true;
