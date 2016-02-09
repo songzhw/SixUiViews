@@ -148,9 +148,331 @@ public class DragScaleCircleView extends ImageView {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
+
+    /**
+     * Initialization obtain the screen width and height.
+     */
+    protected void init(@NonNull Context context, @Nullable AttributeSet attrs) {
+        // custom attr
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DragScaleCircleView);
+        try {
+            mHasGuideLine = typedArray.getBoolean(R.styleable.DragScaleCircleView_hasGuideLine, true);
+            mGuideLineSize = typedArray.getFloat(R.styleable.DragScaleCircleView_guideLineSize, getResources().getDimension(R.dimen.guideline_width));
+            mGuideLineColor = typedArray.getInt(R.styleable.DragScaleCircleView_guideLineColor, getResources().getColor(R.color.guideline));
+            mBorderSize = typedArray.getFloat(R.styleable.DragScaleCircleView_borderSize, getResources().getDimension(R.dimen.border_width));
+            mBorderColor = typedArray.getInt(R.styleable.DragScaleCircleView_borderColor, getResources().getColor(R.color.border));
+        } finally {
+            typedArray.recycle();
+        }
+
+        final Resources resources = context.getResources();
+        mScreenWidth = resources.getDisplayMetrics().widthPixels;
+        boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
+        boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
+        if (hasBackKey && hasHomeKey) {
+            mScreenHeight = getResources().getDisplayMetrics().heightPixels - 40 - 128;
+        } else {
+            mScreenHeight = getResources().getDisplayMetrics().heightPixels - 40;
+        }
+        mBoarderPaint = PaintUtil.newBoarderPaint(resources, mBorderSize, mBorderColor);
+        mSurroundingAreaOverlayPaint = PaintUtil.newSurroundingAreaOverlayPaint(resources);
+        mHandlePaint = PaintUtil.newHandlerPaint(resources);
+        mHandleRadius = resources.getDimension(R.dimen.corner_width);
+        mGuideLinePaint = PaintUtil.newGuideLinePaint(resources, mGuideLineSize, mGuideLineColor);
+    }
+
     // -------------------------------------------------------------
     //                       constructor
     // -------------------------------------------------------------
+
+
+    private Bitmap maskBitmap;
+    private Canvas maskCanvas;
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        maskBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        maskCanvas = new Canvas(maskBitmap);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        // fix call CircleCropWindow() after crop button click
+        if (changed) {
+            mBitmapRect = getBitmapRect();
+            initCircleCropWindow(mBitmapRect);
+        }
+    }
+
+    /**
+     * Gets the bounding rectangle of the bitmap within the imageView.
+     *
+     * @return rect of the bitmap within the imageView
+     */
+    private RectF getBitmapRect() {
+
+        final Drawable drawable = getDrawable();
+
+        if (drawable == null) {
+            return new RectF();
+        }
+
+        final Rect drawableBounds = drawable.getBounds();
+        final Bitmap src = ((BitmapDrawable) drawable).getBitmap();
+
+        if (drawableBounds.right > mScreenWidth) {
+            final float scale = mScreenWidth / drawableBounds.right;
+            final Matrix matrix = new Matrix();
+            matrix.postScale(scale, scale);
+            setImageBitmap(Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true));
+        } else if (drawable.getBounds().bottom > mScreenHeight) {
+            final float scale = mScreenHeight / drawableBounds.bottom;
+            final Matrix matrix = new Matrix();
+            matrix.postScale(scale, scale);
+            setImageBitmap(Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true));
+        }
+
+        // Calculate the dimensions as seen on screen.
+        final int drawableDisplayWidth = src.getWidth();
+        final int drawableDisplayHeight = src.getHeight();
+
+        // Get the Rect of the displayed image within the ImageView.
+        final float left = 0, top = 0;
+        final float right = left + drawableDisplayWidth;
+        final float bottom = top + drawableDisplayHeight;
+
+        return new RectF(left, top, right, bottom);
+    }
+
+    /**
+     * Initialize the crop window by setting the proper values.
+     * <p/>
+     * If fixed aspect ratio is turned off, the initial crop window will be set to the displayed
+     * image with 10% margin.
+     */
+    private void initCircleCropWindow(@NonNull RectF bitmapRect) {
+
+        // Initialize circle crop window to have 10% padding of min width/height to Drawable's bounds.
+        mOffset = 0.1f * Math.min(bitmapRect.width(), bitmapRect.height());
+        mDrawableWidth = bitmapRect.width();
+        mDrawableHeight = bitmapRect.height();
+        mCenterPointX = mDrawableWidth / 2.0f;
+        mCenterPointY = mDrawableHeight / 2.0f;
+        mRadius = (Math.min(mDrawableWidth, mDrawableHeight) - mOffset) / 2.0f;
+    }
+
+
+
+    /**
+     * drawing the view.
+     *
+     * @param canvas canvas
+     */
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        drawDarkenSurroundingArea(canvas);
+        drawCircleBorder(canvas);
+        if (mHandleMode == HANDLE_DOWN || mHandleMode == HANDLE_MOVE) {
+            if (mDragDirection == SIDE) {
+                drawHandles(canvas);
+            }
+            if (mHasGuideLine && (mDragDirection == SIDE || mDragDirection == CENTER)) {
+                drawGuideLine(canvas);
+            }
+        }
+    }
+
+
+
+
+    private void drawDarkenSurroundingArea(@NonNull Canvas canvas) {
+        maskBitmap.eraseColor(Color.TRANSPARENT);
+        maskCanvas.drawColor(getResources().getColor(R.color.surrounding_area)); // #B0000000
+        maskCanvas.drawCircle(mCenterPointX, mCenterPointY, mRadius, mSurroundingAreaOverlayPaint); // mSurroundingAreaOverlayPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        canvas.drawBitmap(maskBitmap, 0, 0, null);
+    }
+
+    private void drawCircleBorder(@NonNull Canvas canvas) {
+        canvas.drawCircle(mCenterPointX, mCenterPointY, mRadius, mBoarderPaint);
+    }
+
+
+    private void setHandleMode(int mode) {
+        this.mHandleMode = mode;
+    }
+
+
+    // Draw a corner on the crop circle window.
+    private void drawHandles(@NonNull Canvas canvas) {
+        canvas.drawCircle(mCenterPointX - mRadius, mCenterPointY, mHandleRadius, mHandlePaint);
+        canvas.drawCircle(mCenterPointX, mCenterPointY + mRadius, mHandleRadius, mHandlePaint);
+        canvas.drawCircle(mCenterPointX, mCenterPointY - mRadius, mHandleRadius, mHandlePaint);
+        canvas.drawCircle(mCenterPointX + mRadius, mCenterPointY, mHandleRadius, mHandlePaint);
+    }
+
+    private void drawGuideLine(@NonNull Canvas canvas) {
+        float offset = (float) Math.sqrt(Math.pow(mRadius, 2) / 2.0f);
+
+        float topLeftPointX = mCenterPointX - offset;
+        float topLeftPointY = mCenterPointY - offset;
+        float topRightPointX = mCenterPointX + offset;
+        float bottomLeftPointY = mCenterPointY + offset;
+
+        canvas.drawLine(topLeftPointX, topLeftPointY, topRightPointX, topLeftPointY, mGuideLinePaint);
+        canvas.drawLine(mCenterPointX - mRadius, mCenterPointY, mCenterPointX + mRadius, mCenterPointY, mGuideLinePaint);
+        canvas.drawLine(topLeftPointX, bottomLeftPointY, topRightPointX, bottomLeftPointY, mGuideLinePaint);
+
+        canvas.drawLine(topLeftPointX, topLeftPointY, topLeftPointX, bottomLeftPointY, mGuideLinePaint);
+        canvas.drawLine(mCenterPointX, mCenterPointY - mRadius, mCenterPointX, mCenterPointY + mRadius, mGuideLinePaint);
+        canvas.drawLine(topRightPointX, topLeftPointY, topRightPointX, bottomLeftPointY, mGuideLinePaint);
+    }
+
+
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // If this view is not enabled, touch event must return false.
+        if (!isEnabled()) {
+            return false;
+        }
+
+        int action = event.getAction();
+        if (action == MotionEvent.ACTION_DOWN) {
+            setHandleMode(HANDLE_DOWN);
+            mLastY = (int) event.getRawY();
+            mLastX = (int) event.getRawX();
+            mDragDirection = getDragDirection((int) event.getX(), (int) event.getY());
+            invalidate();
+        } else if (action == MotionEvent.ACTION_MOVE) {
+            setHandleMode(HANDLE_MOVE);
+            drag(event, action);
+            invalidate();
+        } else if (action == MotionEvent.ACTION_UP) {
+            setHandleMode(HANDLE_UP);
+            drag(event, action);
+            invalidate();
+        } else if (action == MotionEvent.ACTION_CANCEL) {
+            getParent().requestDisallowInterceptTouchEvent(false);
+        }
+
+        return true;
+    }
+
+
+
+
+
+    /**
+     * Get the drag direction side or center
+     *
+     * @param x the touch point X
+     * @param y the touch point Y
+     * @return side or center
+     */
+    protected int getDragDirection(int x, int y) {
+        double d = Math.sqrt(Math.pow(x - mCenterPointX, 2) + Math.pow(y - mCenterPointY, 2));
+        // touch point at the circle side
+        if (d >= mRadius - mOffset / 2.0f && d <= mRadius + mOffset / 2.0f) {
+            return SIDE;
+        }
+        // touch point at the circle center
+        if (d < mRadius - mOffset / 2.0f) {
+            return CENTER;
+        }
+        return 0;
+    }
+
+    /**
+     * Drag the circle view.
+     *
+     * @param event  event
+     * @param action action
+     */
+    protected void drag(MotionEvent event, int action) {
+        switch (action) {
+            case MotionEvent.ACTION_MOVE:
+                float dx = event.getRawX() - mLastX;
+                float dy = event.getRawY() - mLastY;
+                float touchX = event.getX();
+                float touchY = event.getY();
+                switch (mDragDirection) {
+                    case CENTER:
+                        center(dx, dy);
+                        break;
+                    case SIDE:
+                        side(touchX, touchY, touchX + dx, touchY + dy);
+                        break;
+
+                }
+                mLastX = (int) event.getRawX();
+                mLastY = (int) event.getRawY();
+                break;
+            case MotionEvent.ACTION_UP:
+                mDragDirection = 0;
+                break;
+        }
+    }
+
+
+
+
+
+    /**
+     * Move the circle view.
+     *
+     * @param dx move X
+     * @param dy move Y
+     */
+    private void center(float dx, float dy) {
+        if ((mCenterPointX + dx - mRadius < 0)
+                || (mCenterPointY + dy - mRadius < 0)
+                || (Math.min(mDrawableWidth, mScreenWidth) - (mCenterPointX + dx + mRadius) < 0)
+                || (Math.min(mDrawableHeight, mScreenHeight) - (mCenterPointY + dy + mRadius) < 0)) {
+            return;
+        }
+        mCenterPointX += dx;
+        mCenterPointY += dy;
+    }
+
+    /**
+     * Touch on side scale in or out process.
+     *
+     * @param lastX touch point X
+     * @param lastY touch point Y
+     * @param rawX  touch move point X
+     * @param rawY  touch move point Y
+     */
+    private void side(float lastX, float lastY, float rawX, float rawY) {
+        // action_up: the touch point to the distance of the center on action up
+        float rawDistance = (float) Math.sqrt(Math.pow(rawX - mCenterPointX, 2) + Math.pow(rawY - mCenterPointY, 2));
+        // get max radius of this context
+        float maxRadius = Math.min(Math.min(mCenterPointX, mDrawableWidth - mCenterPointX), Math.min(mCenterPointY, mDrawableHeight - mCenterPointY));
+        if (rawDistance <= maxRadius && rawDistance >= MIN_CIRCLE_WINDOW_RADIUS) {
+            if (mRadius < maxRadius && mRadius > MIN_CIRCLE_WINDOW_RADIUS) {
+                mRadius = rawDistance;
+            } else if (mRadius == maxRadius) {
+                // only scale in can be done.(touch point at top/bottom right || top/bottom left)
+                if ((lastX > mCenterPointX && lastY != mCenterPointY && (rawX < lastX || rawY != lastY))
+                        || lastX < mCenterPointX && lastY != mCenterPointY && (rawX > lastX || rawY != lastY)) {
+                    mRadius = rawDistance;
+                }
+            } else if (mRadius == MIN_CIRCLE_WINDOW_RADIUS) {
+                // only scale out can be done.(touch point at top/bottom right || top/bottom right)
+                if ((lastX > mCenterPointX && lastY != mCenterPointY && (rawX > lastX || rawY != lastY))
+                        || lastX < mCenterPointX && lastY != mCenterPointY && (rawX < lastX || rawY != lastY)) {
+                    mRadius = rawDistance;
+                }
+            }
+        }
+    }
+
+
 
     /**
      * Get the value of global mHasGuideLine.
@@ -342,313 +664,4 @@ public class DragScaleCircleView extends ImageView {
         super.setImageDrawable(drawable);
     }
 
-    /**
-     * Initialization obtain the screen width and height.
-     */
-    protected void init(@NonNull Context context, @Nullable AttributeSet attrs) {
-        // custom attr
-        final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DragScaleCircleView);
-        try {
-            mHasGuideLine = typedArray.getBoolean(R.styleable.DragScaleCircleView_hasGuideLine, true);
-            mGuideLineSize = typedArray.getFloat(R.styleable.DragScaleCircleView_guideLineSize, getResources().getDimension(R.dimen.guideline_width));
-            mGuideLineColor = typedArray.getInt(R.styleable.DragScaleCircleView_guideLineColor, getResources().getColor(R.color.guideline));
-            mBorderSize = typedArray.getFloat(R.styleable.DragScaleCircleView_borderSize, getResources().getDimension(R.dimen.border_width));
-            mBorderColor = typedArray.getInt(R.styleable.DragScaleCircleView_borderColor, getResources().getColor(R.color.border));
-        } finally {
-            typedArray.recycle();
-        }
-
-        final Resources resources = context.getResources();
-        mScreenWidth = resources.getDisplayMetrics().widthPixels;
-        boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-        boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
-        if (hasBackKey && hasHomeKey) {
-            mScreenHeight = getResources().getDisplayMetrics().heightPixels - 40 - 128;
-        } else {
-            mScreenHeight = getResources().getDisplayMetrics().heightPixels - 40;
-        }
-        mBoarderPaint = PaintUtil.newBoarderPaint(resources, mBorderSize, mBorderColor);
-        mSurroundingAreaOverlayPaint = PaintUtil.newSurroundingAreaOverlayPaint(resources);
-        mHandlePaint = PaintUtil.newHandlerPaint(resources);
-        mHandleRadius = resources.getDimension(R.dimen.corner_width);
-        mGuideLinePaint = PaintUtil.newGuideLinePaint(resources, mGuideLineSize, mGuideLineColor);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-
-        // fix call CircleCropWindow() after crop button click
-        if (changed) {
-            mBitmapRect = getBitmapRect();
-            initCircleCropWindow(mBitmapRect);
-        }
-    }
-
-    /**
-     * drawing the view.
-     *
-     * @param canvas canvas
-     */
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        drawDarkenSurroundingArea(canvas);
-        drawCircleBorder(canvas);
-        if (mHandleMode == HANDLE_DOWN || mHandleMode == HANDLE_MOVE) {
-            if (mDragDirection == SIDE) {
-                drawHandles(canvas);
-            }
-            if (mHasGuideLine && (mDragDirection == SIDE || mDragDirection == CENTER)) {
-                drawGuideLine(canvas);
-            }
-        }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // If this view is not enabled, touch event must return false.
-        if (!isEnabled()) {
-            return false;
-        }
-
-        int action = event.getAction();
-        if (action == MotionEvent.ACTION_DOWN) {
-            setHandleMode(HANDLE_DOWN);
-            mLastY = (int) event.getRawY();
-            mLastX = (int) event.getRawX();
-            mDragDirection = getDragDirection((int) event.getX(), (int) event.getY());
-            invalidate();
-        } else if (action == MotionEvent.ACTION_MOVE) {
-            setHandleMode(HANDLE_MOVE);
-            drag(event, action);
-            invalidate();
-        } else if (action == MotionEvent.ACTION_UP) {
-            setHandleMode(HANDLE_UP);
-            drag(event, action);
-            invalidate();
-        } else if (action == MotionEvent.ACTION_CANCEL) {
-            getParent().requestDisallowInterceptTouchEvent(false);
-        }
-
-        return true;
-    }
-
-    private void setHandleMode(int mode) {
-        this.mHandleMode = mode;
-    }
-
-    /**
-     * Draw a corner on the crop circle window.
-     *
-     * @param canvas canvas
-     */
-    private void drawHandles(@NonNull Canvas canvas) {
-        canvas.drawCircle(mCenterPointX - mRadius, mCenterPointY, mHandleRadius, mHandlePaint);
-        canvas.drawCircle(mCenterPointX, mCenterPointY + mRadius, mHandleRadius, mHandlePaint);
-        canvas.drawCircle(mCenterPointX, mCenterPointY - mRadius, mHandleRadius, mHandlePaint);
-        canvas.drawCircle(mCenterPointX + mRadius, mCenterPointY, mHandleRadius, mHandlePaint);
-    }
-
-    /**
-     * Draw crop circle window.
-     *
-     * @param canvas canvas
-     */
-    private void drawCircleBorder(@NonNull Canvas canvas) {
-        canvas.drawCircle(mCenterPointX, mCenterPointY, mRadius, mBoarderPaint);
-    }
-
-    /**
-     * Draw the darken surrounding area on canvas.
-     *
-     * @param canvas canvas
-     */
-    private void drawDarkenSurroundingArea(@NonNull Canvas canvas) {
-        Bitmap bitmap = Bitmap.createBitmap(canvas.getWidth(), (canvas.getHeight()), Bitmap.Config.ARGB_8888);
-        bitmap.eraseColor(Color.TRANSPARENT);
-        Canvas canvas1 = new Canvas(bitmap);
-        canvas1.drawColor(getResources().getColor(R.color.surrounding_area));
-        canvas1.drawCircle(mCenterPointX, mCenterPointY, mRadius, mSurroundingAreaOverlayPaint);
-        canvas.drawBitmap(bitmap, 0, 0, null);
-    }
-
-    /**
-     * Draw a guideline on canvas
-     *
-     * @param canvas canvas
-     */
-    private void drawGuideLine(@NonNull Canvas canvas) {
-        float offset = (float) Math.sqrt(Math.pow(mRadius, 2) / 2.0f);
-
-        float topLeftPointX = mCenterPointX - offset;
-        float topLeftPointY = mCenterPointY - offset;
-        float topRightPointX = mCenterPointX + offset;
-        float bottomLeftPointY = mCenterPointY + offset;
-
-        canvas.drawLine(topLeftPointX, topLeftPointY, topRightPointX, topLeftPointY, mGuideLinePaint);
-        canvas.drawLine(mCenterPointX - mRadius, mCenterPointY, mCenterPointX + mRadius, mCenterPointY, mGuideLinePaint);
-        canvas.drawLine(topLeftPointX, bottomLeftPointY, topRightPointX, bottomLeftPointY, mGuideLinePaint);
-
-        canvas.drawLine(topLeftPointX, topLeftPointY, topLeftPointX, bottomLeftPointY, mGuideLinePaint);
-        canvas.drawLine(mCenterPointX, mCenterPointY - mRadius, mCenterPointX, mCenterPointY + mRadius, mGuideLinePaint);
-        canvas.drawLine(topRightPointX, topLeftPointY, topRightPointX, bottomLeftPointY, mGuideLinePaint);
-    }
-
-    /**
-     * Get the drag direction side or center
-     *
-     * @param x the touch point X
-     * @param y the touch point Y
-     * @return side or center
-     */
-    protected int getDragDirection(int x, int y) {
-        double d = Math.sqrt(Math.pow(x - mCenterPointX, 2) + Math.pow(y - mCenterPointY, 2));
-        // touch point at the circle side
-        if (d >= mRadius - mOffset / 2.0f && d <= mRadius + mOffset / 2.0f) {
-            return SIDE;
-        }
-        // touch point at the circle center
-        if (d < mRadius - mOffset / 2.0f) {
-            return CENTER;
-        }
-        return 0;
-    }
-
-    /**
-     * Drag the circle view.
-     *
-     * @param event  event
-     * @param action action
-     */
-    protected void drag(MotionEvent event, int action) {
-        switch (action) {
-            case MotionEvent.ACTION_MOVE:
-                float dx = event.getRawX() - mLastX;
-                float dy = event.getRawY() - mLastY;
-                float touchX = event.getX();
-                float touchY = event.getY();
-                switch (mDragDirection) {
-                    case CENTER:
-                        center(dx, dy);
-                        break;
-                    case SIDE:
-                        side(touchX, touchY, touchX + dx, touchY + dy);
-                        break;
-
-                }
-                mLastX = (int) event.getRawX();
-                mLastY = (int) event.getRawY();
-                break;
-            case MotionEvent.ACTION_UP:
-                mDragDirection = 0;
-                break;
-        }
-    }
-
-    /**
-     * Initialize the crop window by setting the proper values.
-     * <p/>
-     * If fixed aspect ratio is turned off, the initial crop window will be set to the displayed
-     * image with 10% margin.
-     */
-    private void initCircleCropWindow(@NonNull RectF bitmapRect) {
-
-        // Initialize circle crop window to have 10% padding of min width/height to Drawable's bounds.
-        mOffset = 0.1f * Math.min(bitmapRect.width(), bitmapRect.height());
-        mDrawableWidth = bitmapRect.width();
-        mDrawableHeight = bitmapRect.height();
-        mCenterPointX = mDrawableWidth / 2.0f;
-        mCenterPointY = mDrawableHeight / 2.0f;
-        mRadius = (Math.min(mDrawableWidth, mDrawableHeight) - mOffset) / 2.0f;
-    }
-
-    /**
-     * Gets the bounding rectangle of the bitmap within the imageView.
-     *
-     * @return rect of the bitmap within the imageView
-     */
-    private RectF getBitmapRect() {
-
-        final Drawable drawable = getDrawable();
-
-        if (drawable == null) {
-            return new RectF();
-        }
-
-        final Rect drawableBounds = drawable.getBounds();
-        final Bitmap src = ((BitmapDrawable) drawable).getBitmap();
-
-        if (drawableBounds.right > mScreenWidth) {
-            final float scale = mScreenWidth / drawableBounds.right;
-            final Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale);
-            setImageBitmap(Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true));
-        } else if (drawable.getBounds().bottom > mScreenHeight) {
-            final float scale = mScreenHeight / drawableBounds.bottom;
-            final Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale);
-            setImageBitmap(Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), matrix, true));
-        }
-
-        // Calculate the dimensions as seen on screen.
-        final int drawableDisplayWidth = src.getWidth();
-        final int drawableDisplayHeight = src.getHeight();
-
-        // Get the Rect of the displayed image within the ImageView.
-        final float left = 0, top = 0;
-        final float right = left + drawableDisplayWidth;
-        final float bottom = top + drawableDisplayHeight;
-
-        return new RectF(left, top, right, bottom);
-    }
-
-    /**
-     * Move the circle view.
-     *
-     * @param dx move X
-     * @param dy move Y
-     */
-    private void center(float dx, float dy) {
-        if ((mCenterPointX + dx - mRadius < 0)
-                || (mCenterPointY + dy - mRadius < 0)
-                || (Math.min(mDrawableWidth, mScreenWidth) - (mCenterPointX + dx + mRadius) < 0)
-                || (Math.min(mDrawableHeight, mScreenHeight) - (mCenterPointY + dy + mRadius) < 0)) {
-            return;
-        }
-        mCenterPointX += dx;
-        mCenterPointY += dy;
-    }
-
-    /**
-     * Touch on side scale in or out process.
-     *
-     * @param lastX touch point X
-     * @param lastY touch point Y
-     * @param rawX  touch move point X
-     * @param rawY  touch move point Y
-     */
-    private void side(float lastX, float lastY, float rawX, float rawY) {
-        // action_up: the touch point to the distance of the center on action up
-        float rawDistance = (float) Math.sqrt(Math.pow(rawX - mCenterPointX, 2) + Math.pow(rawY - mCenterPointY, 2));
-        // get max radius of this context
-        float maxRadius = Math.min(Math.min(mCenterPointX, mDrawableWidth - mCenterPointX), Math.min(mCenterPointY, mDrawableHeight - mCenterPointY));
-        if (rawDistance <= maxRadius && rawDistance >= MIN_CIRCLE_WINDOW_RADIUS) {
-            if (mRadius < maxRadius && mRadius > MIN_CIRCLE_WINDOW_RADIUS) {
-                mRadius = rawDistance;
-            } else if (mRadius == maxRadius) {
-                // only scale in can be done.(touch point at top/bottom right || top/bottom left)
-                if ((lastX > mCenterPointX && lastY != mCenterPointY && (rawX < lastX || rawY != lastY))
-                        || lastX < mCenterPointX && lastY != mCenterPointY && (rawX > lastX || rawY != lastY)) {
-                    mRadius = rawDistance;
-                }
-            } else if (mRadius == MIN_CIRCLE_WINDOW_RADIUS) {
-                // only scale out can be done.(touch point at top/bottom right || top/bottom right)
-                if ((lastX > mCenterPointX && lastY != mCenterPointY && (rawX > lastX || rawY != lastY))
-                        || lastX < mCenterPointX && lastY != mCenterPointY && (rawX < lastX || rawY != lastY)) {
-                    mRadius = rawDistance;
-                }
-            }
-        }
-    }
 }
