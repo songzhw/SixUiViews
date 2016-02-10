@@ -113,6 +113,11 @@ public class DragScaleCircleView extends ImageView {
     // The Handle mode.
     private int mHandleMode;
 
+    // the bitmap and canvas for the semitransparent mask
+    private Bitmap maskBitmap;
+    private Canvas maskCanvas;
+
+
     // -------------------------------------------------------------
     //                       custom style
     // -------------------------------------------------------------
@@ -130,6 +135,7 @@ public class DragScaleCircleView extends ImageView {
 
     // The custom attr tha circle window border color..
     private int mBorderColor;
+
 
     // -------------------------------------------------------------
     //                       constructor
@@ -182,12 +188,9 @@ public class DragScaleCircleView extends ImageView {
     }
 
     // -------------------------------------------------------------
-    //                       constructor
+    //                       life cycler
     // -------------------------------------------------------------
 
-
-    private Bitmap maskBitmap;
-    private Canvas maskCanvas;
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
