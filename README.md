@@ -65,6 +65,7 @@ Today, 2016.01.03, I finally fix this bug.
 
 Now the ScratchCardView is good to go!
 
+(More details of PorterDuff.Mode.CLEAR is MyClear01View and MyClear02View)
 
 ## 8. Swipe-Delete EditText
 Swiping in the EditText will delete all the text in this EditText.
