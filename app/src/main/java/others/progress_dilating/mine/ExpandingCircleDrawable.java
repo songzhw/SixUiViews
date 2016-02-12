@@ -16,7 +16,7 @@ public class ExpandingCircleDrawable extends Drawable {
     private Paint paint;
     private float radius;
 
-    public ExpandingCircleDrawable(float radius) {
+    public ExpandingCircleDrawable(float radius, float maxRadius) {
         this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.paint.setColor(Color.BLUE);
         this.radius = radius;

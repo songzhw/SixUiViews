@@ -2,6 +2,7 @@ package others.progress_dilating.mine;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import cn.six.open.R;
@@ -16,8 +17,13 @@ public class ExpandingCircleTest extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expanding_circle);
 
-        ExpandingCircleView view = (ExpandingCircleView) findViewById(R.id.expanding_circlr_view);
-        view.show();
+        final ExpandingCircleView view = (ExpandingCircleView) findViewById(R.id.expanding_circlr_view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.show();
+            }
+        });
 
     }
 }

@@ -32,15 +32,6 @@ public class DilatingDotsProgressBar extends View {
     private ArrayList<DilatingDotDrawable> drawables = new ArrayList<>();
     private final List<Animator> animators = new ArrayList<>();
 
-    /** delayed runnable to stop the progress */
-    private final Runnable delayedHide = new Runnable() {
-        @Override
-        public void run() {
-            startTime = -1;
-            setVisibility(View.GONE);
-            stopAnimations();
-        }
-    };
 
 
     public DilatingDotsProgressBar(Context context) {
@@ -280,6 +271,13 @@ public class DilatingDotsProgressBar extends View {
         hide(MIN_SHOW_TIME);
     }
 
+
+    @SuppressWarnings ("unused")
+    public void hideNow() {
+        hide(0);
+    }
+
+
     public void hide(int delay) {
         isDismissed = true;
         removeCallbacks(delayedShow);
@@ -296,10 +294,16 @@ public class DilatingDotsProgressBar extends View {
     }
 
 
-    @SuppressWarnings ("unused")
-    public void hideNow() {
-        hide(0);
-    }
+    /** delayed runnable to stop the progress */
+    private final Runnable delayedHide = new Runnable() {
+        @Override
+        public void run() {
+            startTime = -1;
+            setVisibility(View.GONE);
+            stopAnimations();
+        }
+    };
+
 
     // -------------------------------
     // ------ Getters & Setters ------
