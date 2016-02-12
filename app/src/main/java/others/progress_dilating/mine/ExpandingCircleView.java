@@ -1,11 +1,15 @@
 package others.progress_dilating.mine;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +18,11 @@ import java.util.List;
  * Created by songzhw on 2016/2/13.
  */
 public class ExpandingCircleView extends View {
-    private int numbers = 3, radius = 50, spacing = 50;
+    private int numbers = 3, spacing = 50;
+    private float radius = 50f;
     private List<ExpandingCircleDrawable> drawables;
+    private List<Animator> animators;
+    private boolean isAnimating;
 
     public ExpandingCircleView(Context context) {
         super(context);
@@ -37,17 +44,24 @@ public class ExpandingCircleView extends View {
         this.setBackgroundColor(Color.GRAY);
 
         drawables = new ArrayList<>(numbers);
-        for(int i = 1 ; i <= numbers ; i++){
+        animators = new ArrayList<>(numbers);
+        for(int i = 0 ; i < numbers ; i++){
             ExpandingCircleDrawable drawable = new ExpandingCircleDrawable(radius);
+            drawable.setCallback(this);
             drawables.add(drawable);
-        }
 
+            Animator anim = ObjectAnimator.ofFloat(drawable, "radius", radius, radius * 1.4f, radius);
+            anim.setDuration(700);
+            anim.setInterpolator(new AccelerateDecelerateInterpolator());
+            anim.setStartDelay((long) (i * 0.5 * 700));
+            animators.add(anim);
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int width = (numbers * 2) * radius + (numbers - 1) * spacing;
+        int width = (int) ((numbers * 2) * radius + (numbers - 1) * spacing);
         width += (spacing + spacing); // two spacing in the head and tail.
         setMeasuredDimension( width,
                 getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
@@ -56,7 +70,7 @@ public class ExpandingCircleView extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        int singleLeft = left+spacing, singleRight = singleLeft + radius + radius;
+        int singleLeft = left+spacing, singleRight = (int) (singleLeft + radius + radius);
         for(Drawable d : drawables){
             d.setBounds(singleLeft, top, singleRight, bottom);
             singleLeft += (2 * radius + spacing);
@@ -69,6 +83,43 @@ public class ExpandingCircleView extends View {
         super.onDraw(canvas);
         for(Drawable d : drawables){
             d.draw(canvas);
+        }
+    }
+    // ====================== Detail Method ================================
+
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        this.isAnimating = true;
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        this.isAnimating = false;
+    }
+
+    /*
+        View # verifyDrawable(drawable)
+
+           If your view subclass is displaying its own Drawable objects, it should override this function and return true for any Drawable it is displaying.
+           This allows animations for those drawables to be scheduled.
+
+           Be sure to call through to the super class when overriding this function.
+         */
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        if(isAnimating){
+            return drawables.contains(who);
+        }
+        return super.verifyDrawable(who);
+    }
+
+    // ====================== Public Method ================================
+    public void show(){
+        for(Animator anim : animators){
+            anim.start();
         }
     }
 }

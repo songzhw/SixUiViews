@@ -15,5 +15,9 @@ public class ExpandingCircleTest extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expanding_circle);
+
+        ExpandingCircleView view = (ExpandingCircleView) findViewById(R.id.expanding_circlr_view);
+        view.show();
+
     }
 }
