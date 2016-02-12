@@ -8,7 +8,7 @@
         android:theme="@style/AppTheme">
 
         <!--<activity android:name="others.swipedeck.split.MySwipeDeckActivity">-->
-        <activity android:name="others.progress_dilating.demo.DialaitingDotProgressTest" >
+        <activity android:name="others.progress_dilating.mine.ExpandingCircleTest" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
