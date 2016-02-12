@@ -5,43 +5,55 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+/*
+Drawable基本只能作为ImageView的src， 或是View的background来显示的。
+Drawable的核心方法是 draw()。   View的工作原理就是调用Drawable的draw()方法来绘制View的背景。
+所以我们要自定义Drawable，一定要重写Drawable的draw()方法，
+
+重写Drawable， 要重写draw(), setAlpha(), setColorFilter(), getOpacity()这几个方法，
+后三者的编码可以参考ShapeDrawable，BitmapDrawable的源码。
+
+*/
 public class DilatingDotDrawable extends Drawable {
-    private static final String TAG = DilatingDotDrawable.class.getSimpleName();
-    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private float radius;
-    private float maxRadius;
-    final Rect mDirtyBounds = new Rect(0, 0, 0, 0);
+    private float radius, maxRadius;BitmapDrawable bd;
+    private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    final Rect dirtyBounds = new Rect(0, 0, 0, 0);
 
     public DilatingDotDrawable(final int color, final float radius, final float maxRadius) {
-        mPaint.setColor(color);
-        mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setColor(color);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeJoin(Paint.Join.ROUND);
 
         this.radius = radius;
-        setMaxRadius(maxRadius);
+        // set Max Radius
+        this.maxRadius = maxRadius;
+        dirtyBounds.bottom = (int) (maxRadius * 2) + 2; // dialect
+        dirtyBounds.right = (int) (maxRadius * 2) + 2;
     }
 
+    // ======================================================
     @Override
     public void draw(Canvas canvas) {
-        final Rect bounds = getBounds();
-        canvas.drawCircle(bounds.centerX(), bounds.centerY(), radius - 1, mPaint);
+        final Rect bounds = this.getBounds();
+        canvas.drawCircle(bounds.centerX(), bounds.centerY(), radius - 1, paint);
     }
 
     @Override
     public void setAlpha(int alpha) {
-        if (alpha != mPaint.getAlpha()) {
-            mPaint.setAlpha(alpha);
-            invalidateSelf();
+        if (alpha != paint.getAlpha()) {
+            paint.setAlpha(alpha);
+            this.invalidateSelf();
         }
     }
 
     @Override
     public void setColorFilter(ColorFilter colorFilter) {
-        mPaint.setColorFilter(colorFilter);
-        invalidateSelf();
+        paint.setColorFilter(colorFilter);
+        this.invalidateSelf();
     }
 
     @Override
@@ -49,19 +61,6 @@ public class DilatingDotDrawable extends Drawable {
         return PixelFormat.TRANSLUCENT;
     }
 
-    public void setColor(int color) {
-        mPaint.setColor(color);
-        invalidateSelf();
-    }
-
-    public void setRadius(float radius) {
-        this.radius = radius;
-        invalidateSelf();
-    }
-
-    public float getRadius() {
-        return radius;
-    }
 
     @Override
     public int getIntrinsicWidth() {
@@ -73,20 +72,32 @@ public class DilatingDotDrawable extends Drawable {
         return (int) (maxRadius * 2) + 2;
     }
 
-    public void setMaxRadius(final float maxRadius) {
-        this.maxRadius = maxRadius;
-        mDirtyBounds.bottom = (int) (maxRadius * 2) + 2;
-        mDirtyBounds.right = (int) (maxRadius * 2) + 2;
-    }
 
     @Override
     public Rect getDirtyBounds() {
-        return mDirtyBounds;
+        return dirtyBounds;
     }
 
     @Override
     protected void onBoundsChange(final Rect bounds) {
         super.onBoundsChange(bounds);
-        mDirtyBounds.offsetTo(bounds.left, bounds.top);
+        dirtyBounds.offsetTo(bounds.left, bounds.top); //Offset the rectangle to a specific (left, top) position, keeping its width and height the same.
     }
+
+     // ======================================================
+
+    public void setColor(int color) {
+        paint.setColor(color);
+        this.invalidateSelf();
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+        this.invalidateSelf();
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
 }

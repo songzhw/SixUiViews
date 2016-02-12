@@ -18,44 +18,30 @@ import java.util.List;
 import cn.six.open.R;
 
 public class DilatingDotsProgressBar extends View {
-    public static final String TAG = DilatingDotsProgressBar.class.getSimpleName();
     public static final double START_DELAY_FACTOR = 0.35;
     private static final float DEFAULT_GROWTH_MULTIPLIER = 1.75f;
     private static final int MIN_SHOW_TIME = 500; // ms
     private static final int MIN_DELAY = 500; // ms
-    private int mDotColor;
-    private int mAnimationDuration;
-    private int mWidthBetweenDotCenters;
-    private int mNumberDots;
-    private float mDotRadius;
-    private float mDotScaleMultiplier;
-    private float mDotMaxRadius;
-    private float mHorizontalSpacing;
-    private long mStartTime = -1;
-    private boolean mShouldAnimate;
-    private boolean mDismissed = false;
-    private ArrayList<DilatingDotDrawable> mDrawables = new ArrayList<>();
-    private final List<Animator> mAnimations = new ArrayList<>();
+
+    // widthBetweenDotCenters =  (dotRadius * 2) +  horizontalSpacing;
+    private int dotColor, animDuration, widthBetweenDotCenters, numberDots;
+    private float dotRadius, dotScaleMultiplier, dotMaxRadius, horizontalSpacing;
+    private long startTime = -1;
+    private boolean shouldAnimate, isDismissed = false;
+
+    private ArrayList<DilatingDotDrawable> drawables = new ArrayList<>();
+    private final List<Animator> animators = new ArrayList<>();
+
     /** delayed runnable to stop the progress */
-    private final Runnable mDelayedHide = new Runnable() {
+    private final Runnable delayedHide = new Runnable() {
         @Override
         public void run() {
-            mStartTime = -1;
+            startTime = -1;
             setVisibility(View.GONE);
             stopAnimations();
         }
     };
-    /** delayed runnable to start the progress */
-    private final Runnable mDelayedShow = new Runnable() {
-        @Override
-        public void run() {
-            if (!mDismissed) {
-                mStartTime = System.currentTimeMillis();
-                setVisibility(View.VISIBLE);
-                startAnimations();
-            }
-        }
-    };
+
 
     public DilatingDotsProgressBar(Context context) {
         this(context, null);
@@ -72,21 +58,103 @@ public class DilatingDotsProgressBar extends View {
 
     private void init(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.DilatingDotsProgressBar);
-        mNumberDots = a.getInt(R.styleable.DilatingDotsProgressBar_dd_numDots, 3);
-        mDotRadius = a.getDimension(R.styleable.DilatingDotsProgressBar_android_radius, 8);
-        mDotColor = a.getColor(R.styleable.DilatingDotsProgressBar_android_color, 0xff9c27b0);
-        mDotScaleMultiplier = a.getFloat(R.styleable.DilatingDotsProgressBar_dd_scaleMultiplier, DEFAULT_GROWTH_MULTIPLIER);
-        mAnimationDuration = a.getInt(R.styleable.DilatingDotsProgressBar_dd_animationDuration, 300);
-        mHorizontalSpacing = a.getDimension(R.styleable.DilatingDotsProgressBar_dd_horizontalSpacing, 12);
+        numberDots = a.getInt(R.styleable.DilatingDotsProgressBar_dd_numDots, 3);
+        dotRadius = a.getDimension(R.styleable.DilatingDotsProgressBar_android_radius, 8);
+        dotColor = a.getColor(R.styleable.DilatingDotsProgressBar_android_color, 0xff9c27b0);
+        dotScaleMultiplier = a.getFloat(R.styleable.DilatingDotsProgressBar_dd_scaleMultiplier, DEFAULT_GROWTH_MULTIPLIER);// 1.75f
+        animDuration = a.getInt(R.styleable.DilatingDotsProgressBar_dd_animationDuration, 300);
+        horizontalSpacing = a.getDimension(R.styleable.DilatingDotsProgressBar_dd_horizontalSpacing, 12);
         a.recycle();
 
-        mShouldAnimate = false;
+        shouldAnimate = false;
         calculateMaxRadius();
         calculateWidthBetweenDotCenters();
 
         initDots();
         updateDots();
     }
+
+    private void calculateMaxRadius() {
+        dotMaxRadius = dotRadius * dotScaleMultiplier;
+    }
+
+    private void calculateWidthBetweenDotCenters() {
+        widthBetweenDotCenters = (int) (dotRadius * 2) + (int) horizontalSpacing;
+    }
+
+
+    private void initDots() {
+        drawables.clear();
+        animators.clear();
+        for (int i = 1; i <= numberDots; i++) {
+            final DilatingDotDrawable dot = new DilatingDotDrawable(dotColor, dotRadius, dotMaxRadius);
+            dot.setCallback(this);
+            drawables.add(dot);
+
+            ValueAnimator growAnimator = ObjectAnimator.ofFloat(dot, "radius", dotRadius, dotMaxRadius, dotRadius);
+            growAnimator.setDuration(animDuration);
+            growAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+
+            if (i == numberDots) {
+                growAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (shouldAnimate()) {
+                            startAnimations();
+                        }
+                    }
+                });
+            }
+
+            growAnimator.setStartDelay((i - 1) * (int) (START_DELAY_FACTOR * animDuration)); // 0.35 * animDuration
+            animators.add(growAnimator);
+        }
+    }
+
+    private void updateDots() {
+        if (dotRadius <= 0) {
+            dotRadius = getHeight() / 2 / dotScaleMultiplier;
+        }
+
+        int left = (int) (dotMaxRadius - dotRadius); // 即小圆形态时的left
+        int right = (int) (left + dotRadius * 2) + 2; // 也是小圆形态下的right (= left + 2*radius)
+        int top = 0;
+        int bottom = (int) (dotMaxRadius * 2) + 2;
+
+        for (int i = 0; i < drawables.size(); i++) {
+            final DilatingDotDrawable dot = drawables.get(i);
+            dot.setRadius(dotRadius);
+            dot.setBounds(left, top, right, bottom);
+            ValueAnimator growAnimator = (ValueAnimator) animators.get(i);
+            growAnimator.setFloatValues(dotRadius, dotRadius * dotScaleMultiplier, dotRadius); // small -> big -> small again
+
+            left += widthBetweenDotCenters;
+            right += widthBetweenDotCenters;
+        }
+    }
+
+
+
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension((int) computeMaxWidth(), (int) computeMaxHeight());
+    }
+
+    private float computeMaxHeight() {
+        return dotMaxRadius * 2;
+    }
+
+    private float computeMaxWidth() {
+        return computeWidth() + ((dotMaxRadius - dotRadius) * 2);
+    }
+
+    private float computeWidth() {
+        return (((dotRadius * 2) + horizontalSpacing) * drawables.size()) - horizontalSpacing;
+    }
+
+
 
     @Override
     protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh) {
@@ -96,6 +164,32 @@ public class DilatingDotsProgressBar extends View {
         }
     }
 
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (shouldAnimate()) {
+            for (DilatingDotDrawable dot : drawables) {
+                dot.draw(canvas);
+            }
+        }
+    }
+
+    @Override
+    protected boolean verifyDrawable(final Drawable who) {
+        if (shouldAnimate()) {
+            return drawables.contains(who);
+        }
+        return super.verifyDrawable(who); // View # verifyDrawable(drawable)
+        /*
+        View # verifyDrawable(drawable)
+
+           If your view subclass is displaying its own Drawable objects, it should override this function and return true for any Drawable it is displaying.
+           This allows animations for those drawables to be scheduled.
+
+           Be sure to call through to the super class when overriding this function.
+        */
+    }
+
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
@@ -103,9 +197,74 @@ public class DilatingDotsProgressBar extends View {
     }
 
     private void removeCallbacks() {
-        removeCallbacks(mDelayedHide);
-        removeCallbacks(mDelayedShow);
+        removeCallbacks(delayedHide);
+        removeCallbacks(delayedShow);
     }
+
+
+
+
+    /**
+     * Show the progress view after waiting for a minimum delay. If
+     * during that time, hide() is called, the view is never made visible.
+     */
+    @SuppressWarnings ("unused")
+    public void show() {
+        show(MIN_DELAY);
+    }
+
+    @SuppressWarnings ("unused")
+    public void showNow() {
+        show(0);
+    }
+
+
+    public void show(int delay) {
+        startTime = -1;
+        isDismissed = false;
+        removeCallbacks(delayedHide);
+
+        if (delay == 0) {
+            delayedShow.run();
+        } else {
+            postDelayed(delayedShow, delay);
+        }
+    }
+
+    /** delayed runnable to start the progress */
+    private final Runnable delayedShow = new Runnable() {
+        @Override
+        public void run() {
+            if (!isDismissed) {
+                startTime = System.currentTimeMillis();
+                setVisibility(View.VISIBLE);
+                startAnimations();
+            }
+        }
+    };
+
+    protected void startAnimations() {
+        shouldAnimate = true;
+        for (Animator anim : animators) {
+            anim.start();
+        }
+    }
+
+
+
+
+    protected void stopAnimations() {
+        shouldAnimate = false;
+        removeCallbacks();
+        for (Animator anim : animators) {
+            anim.cancel();
+        }
+    }
+
+    protected boolean shouldAnimate() {
+        return shouldAnimate;
+    }
+
 
     public void reset() {
         hideNow();
@@ -122,160 +281,24 @@ public class DilatingDotsProgressBar extends View {
     }
 
     public void hide(int delay) {
-        mDismissed = true;
-        removeCallbacks(mDelayedShow);
-        long diff = System.currentTimeMillis() - mStartTime;
-        if ((diff >= delay) || (mStartTime == -1)) {
-            mDelayedHide.run();
+        isDismissed = true;
+        removeCallbacks(delayedShow);
+        long diff = System.currentTimeMillis() - startTime;
+        if ((diff >= delay) || (startTime == -1)) {
+            delayedHide.run();
         } else {
             if ((delay - diff) <= 0) {
-                mDelayedHide.run();
+                delayedHide.run();
             } else {
-                postDelayed(mDelayedHide, delay - diff);
+                postDelayed(delayedHide, delay - diff);
             }
         }
     }
 
-    /**
-     * Show the progress view after waiting for a minimum delay. If
-     * during that time, hide() is called, the view is never made visible.
-     */
-    @SuppressWarnings ("unused")
-    public void show() {
-        show(MIN_DELAY);
-    }
-
-    @SuppressWarnings ("unused")
-    public void showNow() {
-        show(0);
-    }
 
     @SuppressWarnings ("unused")
     public void hideNow() {
         hide(0);
-    }
-
-    public void show(int delay) {
-        mStartTime = -1;
-        mDismissed = false;
-        removeCallbacks(mDelayedHide);
-
-        if (delay == 0) {
-            mDelayedShow.run();
-        } else {
-            postDelayed(mDelayedShow, delay);
-        }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if (shouldAnimate()) {
-            for (DilatingDotDrawable dot : mDrawables) {
-                dot.draw(canvas);
-            }
-        }
-    }
-
-    @Override
-    protected boolean verifyDrawable(final Drawable who) {
-        if (shouldAnimate()) {
-            return mDrawables.contains(who);
-        }
-        return super.verifyDrawable(who);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension((int) computeMaxWidth(), (int) computeMaxHeight());
-    }
-
-    private float computeMaxHeight() {
-        return mDotMaxRadius * 2;
-    }
-
-    private float computeMaxWidth() {
-        return computeWidth() + ((mDotMaxRadius - mDotRadius) * 2);
-    }
-
-    private float computeWidth() {
-        return (((mDotRadius * 2) + mHorizontalSpacing) * mDrawables.size()) - mHorizontalSpacing;
-    }
-
-    private void calculateMaxRadius() {
-        mDotMaxRadius = mDotRadius * mDotScaleMultiplier;
-    }
-
-    private void calculateWidthBetweenDotCenters() {
-        mWidthBetweenDotCenters = (int) (mDotRadius * 2) + (int) mHorizontalSpacing;
-    }
-
-    private void initDots() {
-        mDrawables.clear();
-        mAnimations.clear();
-        for (int i = 1; i <= mNumberDots; i++) {
-            final DilatingDotDrawable dot = new DilatingDotDrawable(mDotColor, mDotRadius, mDotMaxRadius);
-            dot.setCallback(this);
-            mDrawables.add(dot);
-
-            ValueAnimator growAnimator = ObjectAnimator.ofFloat(dot, "radius", mDotRadius, mDotMaxRadius, mDotRadius);
-            growAnimator.setDuration(mAnimationDuration);
-            growAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-
-            if (i == mNumberDots) {
-                growAnimator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        if (shouldAnimate()) {
-                            startAnimations();
-                        }
-                    }
-                });
-            }
-
-            growAnimator.setStartDelay((i - 1) * (int) (START_DELAY_FACTOR * mAnimationDuration));
-            mAnimations.add(growAnimator);
-        }
-    }
-
-    private void updateDots() {
-        if (mDotRadius <= 0) {
-            mDotRadius = getHeight() / 2 / mDotScaleMultiplier;
-        }
-
-        int left = (int) (mDotMaxRadius - mDotRadius);
-        int right = (int) (left + mDotRadius * 2) + 2;
-        int top = 0;
-        int bottom = (int) (mDotMaxRadius * 2) + 2;
-
-        for (int i = 0; i < mDrawables.size(); i++) {
-            final DilatingDotDrawable dot = mDrawables.get(i);
-            dot.setRadius(mDotRadius);
-            dot.setBounds(left, top, right, bottom);
-            ValueAnimator growAnimator = (ValueAnimator) mAnimations.get(i);
-            growAnimator.setFloatValues(mDotRadius, mDotRadius * mDotScaleMultiplier, mDotRadius);
-
-            left += mWidthBetweenDotCenters;
-            right += mWidthBetweenDotCenters;
-        }
-    }
-
-    protected void startAnimations() {
-        mShouldAnimate = true;
-        for (Animator anim : mAnimations) {
-            anim.start();
-        }
-    }
-
-    protected void stopAnimations() {
-        mShouldAnimate = false;
-        removeCallbacks();
-        for (Animator anim : mAnimations) {
-            anim.cancel();
-        }
-    }
-
-    protected boolean shouldAnimate() {
-        return mShouldAnimate;
     }
 
     // -------------------------------
@@ -284,7 +307,7 @@ public class DilatingDotsProgressBar extends View {
 
     public void setDotRadius(float radius) {
         reset();
-        mDotRadius = radius;
+        dotRadius = radius;
         calculateMaxRadius();
         calculateWidthBetweenDotCenters();
         setupDots();
@@ -292,34 +315,34 @@ public class DilatingDotsProgressBar extends View {
 
     public void setDotSpacing(float horizontalSpacing) {
         reset();
-        mHorizontalSpacing = horizontalSpacing;
+        this.horizontalSpacing = horizontalSpacing;
         calculateWidthBetweenDotCenters();
         setupDots();
     }
 
     public void setGrowthSpeed(int growthSpeed) {
         reset();
-        mAnimationDuration = growthSpeed;
+        animDuration = growthSpeed;
         setupDots();
     }
 
     public void setNumberOfDots(int numDots) {
         reset();
-        mNumberDots = numDots;
+        numberDots = numDots;
         setupDots();
     }
 
     public void setDotScaleMultpiplier(float multplier) {
         reset();
-        mDotScaleMultiplier = multplier;
+        dotScaleMultiplier = multplier;
         calculateMaxRadius();
         setupDots();
     }
 
     public void setDotColor(int color) {
-        mDotColor = color;
-        for (DilatingDotDrawable dot : mDrawables) {
-            dot.setColor(mDotColor);
+        dotColor = color;
+        for (DilatingDotDrawable dot : drawables) {
+            dot.setColor(dotColor);
         }
     }
 
@@ -330,22 +353,22 @@ public class DilatingDotsProgressBar extends View {
     }
 
     public int getDotGrowthSpeed() {
-        return mAnimationDuration;
+        return animDuration;
     }
 
     public float getDotRadius() {
-        return mDotRadius;
+        return dotRadius;
     }
 
     public float getHorizontalSpacing() {
-        return mHorizontalSpacing;
+        return horizontalSpacing;
     }
 
     public int getNumberOfDots() {
-        return mNumberDots;
+        return numberDots;
     }
 
     public float getDotScaleMultiplier() {
-        return mDotScaleMultiplier;
+        return dotScaleMultiplier;
     }
 }
