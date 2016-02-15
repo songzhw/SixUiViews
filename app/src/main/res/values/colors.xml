@@ -30,4 +30,9 @@
     <color name="corner">@android:color/white</color>
     <color name="surrounding_area">@color/black_translucent</color>
 
+    <!-- SwipeNumberPicker -->
+    <color name="snp_background">#E5E5E5</color>
+    <color name="snp_arrows">#757575</color>
+    <color name="snap_text">#212121</color>
+
 </resources>

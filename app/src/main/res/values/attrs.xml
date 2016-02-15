@@ -102,4 +102,14 @@
         <attr name="dd_horizontalSpacing" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="SwipeNumberPicker">
+        <attr name="snp_min" format="integer"/>
+        <attr name="snp_max" format="integer"/>
+        <attr name="snp_value" format="integer"/>
+        <attr name="snp_arrowColor" format="color"/>
+        <attr name="snp_backgroundColor" format="color"/>
+        <attr name="snp_numberColor" format="color"/>
+        <attr name="snp_intermediate" format="boolean"/>
+    </declare-styleable>
+
 </resources>

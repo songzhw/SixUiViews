@@ -8,7 +8,7 @@
         android:theme="@style/AppTheme">
 
         <!--<activity android:name="others.swipedeck.split.MySwipeDeckActivity">-->
-        <activity android:name="others.progress_dilating.mine.ExpandingCircleTest" >
+        <activity android:name="others.swipe_num_picker.sample.SwipNumPickerTest" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
