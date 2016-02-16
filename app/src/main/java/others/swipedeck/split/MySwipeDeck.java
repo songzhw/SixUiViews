@@ -3,6 +3,7 @@ package others.swipedeck.split;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,6 +13,9 @@ import android.widget.FrameLayout;
  * Created by songzhw on 2016/1/11
  */
 public class MySwipeDeck extends FrameLayout {
+
+    private float startX, startY;
+    private View topChild;
 
     public MySwipeDeck(Context context) {
         this(context, null);
@@ -24,6 +28,7 @@ public class MySwipeDeck extends FrameLayout {
     // onMeasure() --> onMeasure() --> onSizeChanged() --> onLayout()
     //  --> onMeasure() --> onLayout()
     //  : It's the "onSizeChanged()" only be called once!
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -31,7 +36,6 @@ public class MySwipeDeck extends FrameLayout {
 
         // in this places, the adapter is already not null !
         if(adapter == null || adapter.getCount() == 0 ){
-            System.out.println("szw onMeasure() 000");
             removeAllViewsInLayout();
             return;
         }
@@ -47,6 +51,10 @@ public class MySwipeDeck extends FrameLayout {
             addViewInLayout(child, -1, params, true); // the default value of the forth argument is "false"
         }
 
+        if(this.getChildCount() > 0) {
+            this.topChild = getChildAt(0);
+        }
+
     }
 
     @Override
@@ -54,14 +62,14 @@ public class MySwipeDeck extends FrameLayout {
         super.onLayout(changed, left, top, right, bottom);
 
         if(adapter == null || adapter.getCount() == 0 ){
-            System.out.println("szw onLayout() 000");
             removeAllViewsInLayout();
             return;
         }
 
-        System.out.println("szw onLayout() 111");
+        System.out.println("szw onLayout()");
         int childCount = this.getChildCount();
         View aChild = this.getChildAt(0);
+
         int childWidth = aChild.getMeasuredWidth();
         int childheight = aChild.getMeasuredHeight();
         int left2 = (getWidth() - childWidth)/2 - 50;
@@ -74,6 +82,43 @@ public class MySwipeDeck extends FrameLayout {
             child.layout(left2 + step, top2 + step, left2 + childWidth + step, top2 + childheight + step );
         }
 
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                System.out.println("szw onTouch() down");
+                this.startX = ev.getX();
+                this.startY = ev.getY();
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                System.out.println("szw onTouch() move");
+                float moveX = ev.getX();
+                float moveY = ev.getY();
+                float dx = moveX - startX;
+                float dy = moveY - startY;
+
+                float newX = topChild.getX() + dx;
+                float newY = topChild.getY() + dy;
+                topChild.setX(newX);
+                topChild.setY(newY);
+
+                float rotation = 30 * newX / this.getMeasuredWidth();
+                topChild.setRotation(rotation);
+                break;
+
+            case MotionEvent.ACTION_UP:
+                System.out.println("szw onTouch() up");
+                this.removeView(topChild);
+                if(this.getChildCount() > 0) {
+                    this.topChild = getChildAt(0);
+                }
+                break;
+        }
+
+        return true;
     }
 
     public void setAdapter(BaseAdapter adapter){
