@@ -69,7 +69,9 @@ public class MySwipeDeck extends FrameLayout {
         System.out.println("szw onLayout()");
         int childCount = this.getChildCount();
         View aChild = this.getChildAt(0);
-
+        if(aChild == null){
+            return;
+        }
         int childWidth = aChild.getMeasuredWidth();
         int childheight = aChild.getMeasuredHeight();
         int left2 = (getWidth() - childWidth)/2 - 50;
@@ -79,22 +81,23 @@ public class MySwipeDeck extends FrameLayout {
             ViewCompat.setTranslationZ(child, 10 - i);
 
             int step = i * 25;
-            child.layout(left2 + step, top2 + step, left2 + childWidth + step, top2 + childheight + step );
+            child.layout(left2 + step, top2 + step, left2 + childWidth + step, top2 + childheight + step);
         }
 
     }
+
+    // onTouchEvent() : not triggered. Because every child has their own click event.
+    // dispatchTouchEvent() : it is okay.
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:
-                System.out.println("szw onTouch() down");
                 this.startX = ev.getX();
                 this.startY = ev.getY();
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                System.out.println("szw onTouch() move");
                 float moveX = ev.getX();
                 float moveY = ev.getY();
                 float dx = moveX - startX;
@@ -110,8 +113,7 @@ public class MySwipeDeck extends FrameLayout {
                 break;
 
             case MotionEvent.ACTION_UP:
-                System.out.println("szw onTouch() up");
-                this.removeView(topChild);
+                this.removeView(topChild); // system will call "onLayout()" again
                 if(this.getChildCount() > 0) {
                     this.topChild = getChildAt(0);
                 }
