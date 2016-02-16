@@ -15,6 +15,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -118,13 +119,23 @@ public class SwipeNumberPicker extends TextView {
 		changeValue(mPrimaryValue);
 	}
 
+	private void changeValue(int value) {
+		if (value < mMinValue || value > mMaxValue) {
+			// Value is greater or less the specified bounds, set the boundary value
+			value = value < mMinValue ? mMinValue : mMaxValue;
+			mIntermediateValue = value;
+		}
+		setText(String.valueOf(value));
+	}
+
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		Drawable arrow = getCompoundDrawables()[0];
-		setMinWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mTextWidth + arrow.getBounds().width() * 2, getContext().getResources().getDisplayMetrics()));
-		setMinHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, arrow.getBounds().height() * 1.5f, getContext().getResources().getDisplayMetrics()));
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+		setMinWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mTextWidth + arrow.getBounds().width() * 2, displayMetrics ));
+		setMinHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, arrow.getBounds().height() * 1.5f, displayMetrics));
 	}
 
 	@Override
@@ -188,6 +199,21 @@ public class SwipeNumberPicker extends TextView {
 		return true;
 	}
 
+    private void highlightArrows(float distance) {
+        setPressed(true);
+        if (distance < 0) {
+            // Highlight right arrow
+            setColorFilter(getCompoundDrawables()[0], darkenColor(mArrowColor));
+            setColorFilter(getCompoundDrawables()[2], mArrowColor);
+        } else {
+            // Highlight left arrow
+            setColorFilter(getCompoundDrawables()[0], mArrowColor);
+            setColorFilter(getCompoundDrawables()[2], darkenColor(mArrowColor));
+        }
+    }
+
+
+
 	private void notifyListener(int newValue) {
 		if (mOnValueChangeListener != null
 				&& mOnValueChangeListener.onValueChange(this, mPrimaryValue, newValue)) {
@@ -200,17 +226,9 @@ public class SwipeNumberPicker extends TextView {
 		mIntermediateValue = mPrimaryValue;
 	}
 
-	private void changeValue(int value) {
-		if (value < mMinValue || value > mMaxValue) {
-			// Value is greater or less the specified bounds, set the boundary value
-			value = value < mMinValue ? mMinValue : mMaxValue;
-			mIntermediateValue = value;
-		}
-		setText(String.valueOf(value));
-	}
 
 	private void processClick() {
-		if (mIsShowNumberPickerDialog)
+		if (mIsShowNumberPickerDialog) // 用户选择是否要弹出NumberPickerDialog
 			showNumberPickerDialog();
 		else
 			performClick();
@@ -239,14 +257,14 @@ public class SwipeNumberPicker extends TextView {
 		if (!mDialogTitle.equals(""))
 			builder.setTitle(mDialogTitle);
 		builder.setView(numberPicker).setPositiveButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						int newValue = numberPicker.getValue();
-						changeValue(newValue);
-						notifyListener(newValue);
-					}
-				});
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        int newValue = numberPicker.getValue();
+                        changeValue(newValue);
+                        notifyListener(newValue);
+                    }
+                });
 
 		return builder.create();
 	}
@@ -287,18 +305,7 @@ public class SwipeNumberPicker extends TextView {
 		setPressed(true);
 	}
 
-	private void highlightArrows(float distance) {
-		setPressed(true);
-		if (distance < 0) {
-			// Highlight right arrow
-			setColorFilter(getCompoundDrawables()[0], darkenColor(mArrowColor));
-			setColorFilter(getCompoundDrawables()[2], mArrowColor);
-		} else {
-			// Highlight left arrow
-			setColorFilter(getCompoundDrawables()[0], mArrowColor);
-			setColorFilter(getCompoundDrawables()[2], darkenColor(mArrowColor));
-		}
-	}
+
 
 	private void setColorFilter(Drawable drawable, int color) {
 		if (drawable == null) return;
