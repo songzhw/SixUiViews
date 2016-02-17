@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <others.swipedeck.split.MySwipeDeck
-        android:id="@+id/swipe_deck"
+        android:id="@+id/my_swipe_deck"
         android:layout_width="match_parent"
         android:layout_height="550dp"
         swipedeck:card_spacing="10dp"
@@ -17,7 +17,7 @@
         swipedeck:opacity_end="0.2"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/my_swipe_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

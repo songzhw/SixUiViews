@@ -17,6 +17,7 @@ public class MySwipeDeck extends FrameLayout {
     private float startX, startY;
     private float childX, childY;
     private View topChild;
+    private BaseAdapter adapter;
 
     public MySwipeDeck(Context context) {
         this(context, null);
@@ -34,7 +35,10 @@ public class MySwipeDeck extends FrameLayout {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         System.out.println("szw onSizeChanged()");
+        initChild();
+    }
 
+    private void initChild() {
         // in this places, the adapter is already not null !
         if(adapter == null || adapter.getCount() == 0 ){
             removeAllViewsInLayout();
@@ -55,8 +59,8 @@ public class MySwipeDeck extends FrameLayout {
         if(this.getChildCount() > 0) {
             this.topChild = getChildAt(0);
         }
-
     }
+
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -127,10 +131,17 @@ public class MySwipeDeck extends FrameLayout {
         return true;
     }
 
+    // ============== Public Methods ==============
+
+    public void refresh(){
+        this.initChild();
+        this.requestLayout();
+    }
+
     public void setAdapter(BaseAdapter adapter){
         this.adapter = adapter;
     }
 
-    private BaseAdapter adapter;
+
 
 }
