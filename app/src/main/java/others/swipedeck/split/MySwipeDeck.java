@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 public class MySwipeDeck extends FrameLayout {
 
     private float startX, startY;
+    private float childX, childY;
     private View topChild;
 
     public MySwipeDeck(Context context) {
@@ -89,12 +90,15 @@ public class MySwipeDeck extends FrameLayout {
     // onTouchEvent() : not triggered. Because every child has their own click event.
     // dispatchTouchEvent() : it is okay.
 
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:
                 this.startX = ev.getX();
                 this.startY = ev.getY();
+                childX = topChild.getX();
+                childY = topChild.getY();
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -103,8 +107,8 @@ public class MySwipeDeck extends FrameLayout {
                 float dx = moveX - startX;
                 float dy = moveY - startY;
 
-                float newX = topChild.getX() + dx;
-                float newY = topChild.getY() + dy;
+                float newX = childX + dx;
+                float newY = childY + dy;
                 topChild.setX(newX);
                 topChild.setY(newY);
 
