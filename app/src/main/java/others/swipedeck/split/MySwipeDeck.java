@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 public class MySwipeDeck extends FrameLayout {
 
     private float startX, startY;
-    private float childX, childY;
+    private float childInitX, childInitY;
     private View topChild;
     private BaseAdapter adapter;
 
@@ -27,7 +27,7 @@ public class MySwipeDeck extends FrameLayout {
         super(context, attrs);
     }
 
-    // onMeasure() --> onMeasure() --> onSizeChanged() --> onLayout()
+    // onMeasure() --> onMeasure() --> onSizeChanged() --> onLayout()o
     //  --> onMeasure() --> onLayout()
     //  : It's the "onSizeChanged()" only be called once!
 
@@ -101,8 +101,8 @@ public class MySwipeDeck extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 this.startX = ev.getX();
                 this.startY = ev.getY();
-                childX = topChild.getX();
-                childY = topChild.getY();
+                childInitX = topChild.getX();
+                childInitY = topChild.getY();
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -111,8 +111,8 @@ public class MySwipeDeck extends FrameLayout {
                 float dx = moveX - startX;
                 float dy = moveY - startY;
 
-                float newX = childX + dx;
-                float newY = childY + dy;
+                float newX = childInitX + dx;
+                float newY = childInitY + dy;
                 topChild.setX(newX);
                 topChild.setY(newY);
 
