@@ -35,4 +35,8 @@
     <color name="snp_arrows">#757575</color>
     <color name="snap_text">#212121</color>
 
+    <!-- Morphy Toolbar -->
+    <color name="mt_title_color">#FFFFFF</color>
+    <color name="mt_subtitle_color">#f2f2f2</color>
+
 </resources>

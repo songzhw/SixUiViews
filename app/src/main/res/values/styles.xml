@@ -20,4 +20,9 @@
         <item name="android:windowExitAnimation">@anim/zoom_out</item>
     </style>
 
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
 </resources>
