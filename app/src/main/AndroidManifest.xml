@@ -8,12 +8,16 @@
         android:theme="@style/AppTheme">
 
         <!--<activity android:name="others.swipedeck.split.MySwipeDeckActivity">-->
-        <activity android:name="others.morphy_toolbar.sample.MorphyToolbarActivity">
+        <activity android:name="others.credit_card_cool.sample.CreditCardDemoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <activity android:name="others.credit_card_cool.core.CardEditActivity" android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
