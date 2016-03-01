@@ -50,7 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/green_continue"
+                android:background="@color/green_previous"
                 android:gravity="center"
                 android:padding="@dimen/padding_normal"
                 android:text="previous"

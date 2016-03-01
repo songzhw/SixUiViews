@@ -26,7 +26,6 @@ public class CardCVVFragment extends CreditCardFragment  {
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle state) {
-
         View v = inflater.inflate(R.layout.lyt_card_cvv, group,false);
         mCardCVVView = (EditText) v.findViewById(R.id.card_cvv);
         mCardCVVView.addTextChangedListener(this);
@@ -48,17 +47,14 @@ public class CardCVVFragment extends CreditCardFragment  {
 
     @Override
     public void afterTextChanged(Editable s) {
-
         onEdit(s.toString());
         if(s.length() == 3) {
             onComplete();
         }
-
     }
 
     @Override
     public void focus() {
-
         if(isAdded()) {
             mCardCVVView.selectAll();
         }

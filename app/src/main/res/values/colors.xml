@@ -40,6 +40,7 @@
     <color name="mt_subtitle_color">#f2f2f2</color>
 
     <!-- credit card view -->
+    <color name="green_previous">#cc2f7055</color>
     <color name="green_continue">#1fc055</color>
     <color name="chip_color">#d4edfa</color>
     <color name="chip_inner_color">#e0e4e4</color>

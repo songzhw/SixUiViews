@@ -1,9 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/front_card_container"
-    android:layout_width="300dp"
-    android:layout_height="180dp"
-    android:orientation="vertical"
+<RelativeLayout android:id="@+id/front_card_container"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="300dp"
+                android:layout_height="180dp"
+                android:orientation="vertical"
+                tools:background="#000"
     >
 
     <TextView
@@ -20,7 +21,7 @@
         android:textColor="@android:color/white"
         android:textColorHint="@color/semi_white"
         android:textSize="@dimen/text_size_normal"
-
+        tools:text="2335 56556 5565 4455"
 
         />
 
@@ -44,7 +45,6 @@
                 android:textColor="@android:color/darker_gray"
                 android:textColorHint="@color/semi_white"
                 android:textSize="9sp"
-
                 />
 
             <TextView
@@ -62,7 +62,9 @@
                 android:shadowDy="1"
                 android:shadowRadius="2"
                 android:textColor="@android:color/white"
-                android:textColorHint="@color/semi_white" />
+                android:textColorHint="@color/semi_white"
+                tools:text="Jim Green"
+                />
 
 
         </LinearLayout>
@@ -100,7 +102,9 @@
                 android:shadowDy="1"
                 android:shadowRadius="2"
                 android:textColor="@android:color/white"
-                android:textColorHint="@color/semi_white" />
+                android:textColorHint="@color/semi_white"
+                tools:text="08/23"
+                />
 
         </LinearLayout>
     </LinearLayout>

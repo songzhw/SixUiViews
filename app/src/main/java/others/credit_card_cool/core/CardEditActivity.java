@@ -19,11 +19,11 @@ import others.credit_card_cool.core.pager.CardFragmentAdapter;
 
 
 public class CardEditActivity extends AppCompatActivity {
-    int mLastPageSelected = 0;
-    private CreditCardView mCreditCardView;
+    int lastPageSelected = 0;
+    private CreditCardView creditCardView;
 
-    private String mCardNumber, mCVV, mCardHolderName, mExpiry;
-    private CardFragmentAdapter mCardAdapter;
+    private String cardNumber, cvv, cardHolderName, expiry;
+    private CardFragmentAdapter cardAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +33,8 @@ public class CardEditActivity extends AppCompatActivity {
         findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 ViewPager pager = (ViewPager) findViewById(R.id.card_field_container_pager);
-
                 int max = pager.getAdapter().getCount();
-
                 if(pager.getCurrentItem() == max -1) {
                     // if last card.
                     onDoneTapped();
@@ -55,7 +52,7 @@ public class CardEditActivity extends AppCompatActivity {
         });
 
         setKeyboardVisibility(true);
-        mCreditCardView = (CreditCardView) findViewById(R.id.credit_card_view);
+        creditCardView = (CreditCardView) findViewById(R.id.credit_card_view);
 
 
         if(savedInstanceState != null) {
@@ -70,46 +67,35 @@ public class CardEditActivity extends AppCompatActivity {
     }
 
     private void checkParams(Bundle bundle) {
-
-
         if(bundle == null) {
             return;
         }
-        mCardHolderName = bundle.getString(CreditCardUtils.EXTRA_CARD_HOLDER_NAME);
-        mCVV = bundle.getString(CreditCardUtils.EXTRA_CARD_CVV);
-        mExpiry = bundle.getString(CreditCardUtils.EXTRA_CARD_EXPIRY);
-        mCardNumber = bundle.getString(CreditCardUtils.EXTRA_CARD_NUMBER);
+        cardHolderName = bundle.getString(CreditCardUtils.EXTRA_CARD_HOLDER_NAME);
+        cvv = bundle.getString(CreditCardUtils.EXTRA_CARD_CVV);
+        expiry = bundle.getString(CreditCardUtils.EXTRA_CARD_EXPIRY);
+        cardNumber = bundle.getString(CreditCardUtils.EXTRA_CARD_NUMBER);
 
+        creditCardView.setCVV(cvv);
+        creditCardView.setCardHolderName(cardHolderName);
+        creditCardView.setCardExpiry(expiry);
+        creditCardView.setCardNumber(cardNumber);
 
-        mCreditCardView.setCVV(mCVV);
-        mCreditCardView.setCardHolderName(mCardHolderName);
-        mCreditCardView.setCardExpiry(mExpiry);
-        mCreditCardView.setCardNumber(mCardNumber);
-
-
-
-        if(mCardAdapter != null) {
-            mCardAdapter.notifyDataSetChanged();
+        if(cardAdapter != null) {
+            cardAdapter.notifyDataSetChanged();
         }
     }
 
     public void refreshNextButton() {
-
         ViewPager pager = (ViewPager) findViewById(R.id.card_field_container_pager);
-
         int max = pager.getAdapter().getCount();
-
         String text = "next";
-
         if(pager.getCurrentItem() == max -1) {
             text = "done";
         }
-
         ((TextView)findViewById(R.id.next)).setText(text);
     }
 
     public void loadPager() {
-
         ViewPager pager = (ViewPager) findViewById(R.id.card_field_container_pager);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -117,19 +103,15 @@ public class CardEditActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-
-                mCardAdapter.focus(position);
-
+                cardAdapter.focus(position);
                 if (position == 2) {
-                    mCreditCardView.showBack();
-                } else if ((position == 1 && mLastPageSelected == 2) || position == 3) {
-                    mCreditCardView.showFront();
+                    creditCardView.showBack();
+                } else if ((position == 1 && lastPageSelected == 2) || position == 3) {
+                    creditCardView.showFront();
                 }
 
-                mLastPageSelected = position;
-
+                lastPageSelected = position;
                 refreshNextButton();
-
             }
 
             @Override
@@ -137,47 +119,45 @@ public class CardEditActivity extends AppCompatActivity {
         });
         pager.setOffscreenPageLimit(4);
 
-        mCardAdapter = new CardFragmentAdapter(getSupportFragmentManager(),getIntent().getExtras());
-        mCardAdapter.setOnCardEntryCompleteListener(new CardFragmentAdapter.ICardEntryCompleteListener() {
+        cardAdapter = new CardFragmentAdapter(getSupportFragmentManager(),getIntent().getExtras());
+        cardAdapter.setOnCardEntryCompleteListener(new CardFragmentAdapter.ICardEntryCompleteListener() {
             @Override
             public void onCardEntryComplete(int currentIndex) {
-
-                showNext();
+                showNext(); // show the next item in the ViewPager
             }
 
             @Override
             public void onCardEntryEdit(int currentIndex, String entryValue) {
                 switch (currentIndex) {
                     case 0:
-
-                        mCardNumber = entryValue.replace(CreditCardUtils.SPACE_SEPERATOR,"");
-                        mCreditCardView.setCardNumber(mCardNumber);
+                        cardNumber = entryValue.replace(CreditCardUtils.SPACE_SEPERATOR, "");
+                        creditCardView.setCardNumber(cardNumber);
                         break;
                     case 1:
-                        mExpiry = entryValue;
-                        mCreditCardView.setCardExpiry(entryValue);
+                        expiry = entryValue;
+                        creditCardView.setCardExpiry(entryValue);
                         break;
                     case 2:
-                        mCVV = entryValue;
-                        mCreditCardView.setCVV(entryValue);
+                        cvv = entryValue;
+                        creditCardView.setCVV(entryValue);
                         break;
                     case 3:
-                        mCardHolderName  = entryValue;
-                        mCreditCardView.setCardHolderName(entryValue);
+                        cardHolderName = entryValue;
+                        creditCardView.setCardHolderName(entryValue);
                         break;
                 }
             }
         });
 
-        pager.setAdapter(mCardAdapter);
+        pager.setAdapter(cardAdapter);
     }
 
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putString(CreditCardUtils.EXTRA_CARD_CVV,mCVV);
-        outState.putString(CreditCardUtils.EXTRA_CARD_HOLDER_NAME,mCardHolderName);
-        outState.putString(CreditCardUtils.EXTRA_CARD_EXPIRY,mExpiry);
-        outState.putString(CreditCardUtils.EXTRA_CARD_NUMBER,mCardNumber);
+        outState.putString(CreditCardUtils.EXTRA_CARD_CVV, cvv);
+        outState.putString(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, cardHolderName);
+        outState.putString(CreditCardUtils.EXTRA_CARD_EXPIRY, expiry);
+        outState.putString(CreditCardUtils.EXTRA_CARD_NUMBER, cardNumber);
 
 
         super.onSaveInstanceState(outState);
@@ -210,7 +190,6 @@ public class CardEditActivity extends AppCompatActivity {
         int currentIndex = pager.getCurrentItem();
 
         if (currentIndex + 1 < max) {
-
             pager.setCurrentItem(currentIndex + 1);
         } else {
 //            onDoneTapped();
@@ -232,10 +211,10 @@ public class CardEditActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
 
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_CVV, mCVV);
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, mCardHolderName);
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_EXPIRY, mExpiry);
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_NUMBER, mCardNumber);
+        intent.putExtra(CreditCardUtils.EXTRA_CARD_CVV, cvv);
+        intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, cardHolderName);
+        intent.putExtra(CreditCardUtils.EXTRA_CARD_EXPIRY, expiry);
+        intent.putExtra(CreditCardUtils.EXTRA_CARD_NUMBER, cardNumber);
 
 
         setResult(RESULT_OK,intent);
@@ -262,12 +241,8 @@ public class CardEditActivity extends AppCompatActivity {
     }
 
     private void setKeyboardVisibility(boolean visible) {
-
         final EditText editText = (EditText) findViewById(R.id.card_number_field);
-
-
         if (!visible) {
-
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         } else {

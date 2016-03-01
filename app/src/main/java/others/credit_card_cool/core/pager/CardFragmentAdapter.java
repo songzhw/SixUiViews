@@ -67,7 +67,6 @@ public class CardFragmentAdapter extends FragmentStatePagerAdapter implements IA
 
     @Override
     public void onActionComplete(CreditCardFragment fragment) {
-
         int index = getIndex(fragment);
         if (index >= 0) {
 

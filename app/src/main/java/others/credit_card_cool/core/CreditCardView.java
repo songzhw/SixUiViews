@@ -76,8 +76,7 @@ public class CreditCardView extends FrameLayout {
         mCurrentDrawable = R.drawable.card_color_round_rect_default;
         mRawCardNumber = "";
 
-        LayoutInflater inflater = (LayoutInflater) getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.view_creditcard, this, true);
 
     }
@@ -112,8 +111,7 @@ public class CreditCardView extends FrameLayout {
     }
 
 
-    private void flip(final boolean ltr, boolean isImmediate) {
-
+    private void flip(final boolean isLeftToRight, boolean isImmediate) {
         View layoutContainer = findViewById(R.id.card_outline_container);
         View frontView = findViewById(FRONT_CARD_OUTLINE_ID);
         View backView = findViewById(BACK_CARD_OUTLINE_ID);
@@ -124,8 +122,8 @@ public class CreditCardView extends FrameLayout {
 
 
         if(isImmediate) {
-            frontContentView.setVisibility(ltr?VISIBLE:GONE);
-            backContentView.setVisibility(ltr?GONE:VISIBLE);
+            frontContentView.setVisibility(isLeftToRight?VISIBLE:GONE);
+            backContentView.setVisibility(isLeftToRight?GONE:VISIBLE);
 
         }
         else {
@@ -136,7 +134,7 @@ public class CreditCardView extends FrameLayout {
             flipAnimator.setInterpolator(new OvershootInterpolator(0.5f));
             flipAnimator.setDuration(duration);
 
-            if (ltr) {
+            if (isLeftToRight) {
                 flipAnimator.reverse();
             }
 
@@ -148,7 +146,7 @@ public class CreditCardView extends FrameLayout {
             flipAnimator1.setInterpolator(new OvershootInterpolator(0.5f));
             flipAnimator1.setDuration(duration);
 
-            if (ltr) {
+            if (isLeftToRight) {
                 flipAnimator1.reverse();
             }
 
@@ -161,8 +159,6 @@ public class CreditCardView extends FrameLayout {
     }
 
     public void setCardNumber(String rawCardNumber) {
-
-
         this.mRawCardNumber = rawCardNumber == null ? "" : rawCardNumber;
 
         String newCardNumber = mRawCardNumber;
