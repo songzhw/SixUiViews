@@ -29,8 +29,8 @@ public class DilatingDotDrawable extends Drawable {
         paint.setStrokeJoin(Paint.Join.ROUND);
 
         this.radius = radius;
-        // set Max Radius
         this.maxRadius = maxRadius;
+
         dirtyBounds.bottom = (int) (maxRadius * 2) + 2; // dialect
         dirtyBounds.right = (int) (maxRadius * 2) + 2;
     }

@@ -25,4 +25,17 @@
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
+    <style name="ImageViewStyle">
+        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+    <style name="TextStyle">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
 </resources>
