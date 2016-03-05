@@ -270,14 +270,10 @@ public class CreditCardView extends FrameLayout {
 
 
     public void revealCardAnimation() {
-
         CardSelector card = selectCard();
-
         View cardFront = findViewById(FRONT_CARD_OUTLINE_ID);
         View cardContainer = findViewById(R.id.card_outline_container);
-
         paintCard();
-
         animateChange(cardContainer, cardFront, card.getResCardId());
     }
 

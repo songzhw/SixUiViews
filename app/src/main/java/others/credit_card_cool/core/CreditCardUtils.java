@@ -32,7 +32,6 @@ public class CreditCardUtils {
     public static final char CHAR_X = 'X';
 
     public static String handleCardNumber(String inputCardNumber) {
-
         return handleCardNumber(inputCardNumber,SPACE_SEPERATOR);
     }
 
