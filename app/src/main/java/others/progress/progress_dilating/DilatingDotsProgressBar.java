@@ -1,4 +1,4 @@
-package others.progress_dilating;
+package others.progress.progress_dilating;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

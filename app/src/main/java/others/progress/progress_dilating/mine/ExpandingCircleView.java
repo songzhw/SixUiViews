@@ -1,9 +1,7 @@
-package others.progress_dilating.mine;
+package others.progress.progress_dilating.mine;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;

@@ -1,4 +1,4 @@
-package others.progresssmog.split;
+package others.progress.progresssmog.split;
 
 import android.app.Activity;
 import android.content.Context;

@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <others.progress_dilating.mine.ExpandingCircleView
+    <others.progress.progress_dilating.mine.ExpandingCircleView
         android:id="@+id/expanding_circlr_view"
         android:layout_width="wrap_content"
         android:layout_height="140dp"

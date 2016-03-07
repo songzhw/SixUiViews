@@ -5,7 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <others.progress_dilating.DilatingDotsProgressBar
+    <others.progress.progress_dilating.DilatingDotsProgressBar
         android:id="@+id/progress_dilating_dots"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

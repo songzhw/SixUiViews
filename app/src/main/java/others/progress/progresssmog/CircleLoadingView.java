@@ -1,4 +1,4 @@
-package others.progresssmog;
+package others.progress.progresssmog;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -1,9 +1,8 @@
-package others.progress_dilating.mine;
+package others.progress.progress_dilating.mine;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import cn.six.open.R;
 

@@ -1,16 +1,10 @@
-package others.progress_dilating.demo;
+package others.progress.progress_dilating.demo;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatSeekBar;
-import android.support.v7.widget.Toolbar;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import cn.six.open.R;
-import others.progress_dilating.DilatingDotsProgressBar;
+import others.progress.progress_dilating.DilatingDotsProgressBar;
 
 
 public class DialaitingDotProgressTest extends Activity {

@@ -1,4 +1,4 @@
-package others.progress_dilating.mine;
+package others.progress.progress_dilating.mine;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
