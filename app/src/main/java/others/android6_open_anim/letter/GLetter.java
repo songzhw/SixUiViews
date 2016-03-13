@@ -38,12 +38,12 @@ public class GLetter extends Letter {
     public GLetter(int x, int y) {
         super(x, y);
         mPath = new Path();
-        mMoveX =  mCurX + SHIFT;
-        mMoveY = mCurY - SHIFT;
+        mMoveX =  curX + SHIFT;
+        mMoveY = curY - SHIFT;
         mPath.moveTo(mMoveX, mMoveY);
-        mFv = mDuration * 2 / 3;
+        mFv = duration * 2 / 3;
         mRectFHalf = new RectF();
-        mRectFHalf.set(mCurX - SHIFT, mCurY - SHIFT + LEG_LENGTH - SHIFT, mCurX + SHIFT, mCurY + SHIFT + LEG_LENGTH - SHIFT);
+        mRectFHalf.set(curX - SHIFT, curY - SHIFT + LEG_LENGTH - SHIFT, curX + SHIFT, curY + SHIFT + LEG_LENGTH - SHIFT);
         mSweepAngleHalf = 0;
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -51,15 +51,15 @@ public class GLetter extends Letter {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(STROKE_WIDTH);
         mRectF = new RectF();
-        mRectF.set(mCurX - SHIFT, mCurY - SHIFT, mCurX + SHIFT, mCurY + SHIFT);
+        mRectF.set(curX - SHIFT, curY - SHIFT, curX + SHIFT, curY + SHIFT);
         mStartAngle = 0;
         mSweepAngle = 0;
     }
 
     @Override
     public void startAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(0, mDuration);
-        animator.setDuration(mDuration);
+        ValueAnimator animator = ValueAnimator.ofInt(0, duration);
+        animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -68,19 +68,19 @@ public class GLetter extends Letter {
                 }
                 // 完整圆的路径
                 mCurValue = (int) animation.getAnimatedValue();
-                mSweepAngle = mCurValue * 360 / mDuration;
+                mSweepAngle = mCurValue * 360 / duration;
                 // 计算g除了圆的J勾路线
                 if (mCurValue < mFv) {
-                    mMoveY = mCurY - SHIFT + LEG_LENGTH * mCurValue / mFv;
+                    mMoveY = curY - SHIFT + LEG_LENGTH * mCurValue / mFv;
                     mPath.lineTo(mMoveX, mMoveY);
                 } else {
                     if (!isInRoundDraw) {
                         isInRoundDraw = true;
-                        mMoveY = mCurY - SHIFT + LEG_LENGTH;
+                        mMoveY = curY - SHIFT + LEG_LENGTH;
                         mPath.lineTo(mMoveX, mMoveY);
                     }
                     mCurValue -= mFv;
-                    mSweepAngleHalf = mCurValue * 180 / (mDuration - mFv);
+                    mSweepAngleHalf = mCurValue * 180 / (duration - mFv);
                     mPath.addArc(mRectFHalf, mStartAngle, mSweepAngleHalf);
                 }
             }

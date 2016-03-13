@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
 import others.android6_open_anim.A6Colors;
@@ -38,27 +37,27 @@ public class NLetter extends Letter {
     public NLetter(int x, int y) {
         super(x, y);
         // 将坐标点调整为中心点
-        mCurY += LENGTH / 2;
+        curY += LENGTH / 2;
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(A6Colors.WHITE);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeWidth(STROKE_WIDTH);
         mPath = new Path();
-        mFv = mDuration / 3;
-        mSv = mDuration * 2 / 3;
+        mFv = duration / 3;
+        mSv = duration * 2 / 3;
         // 移动到起始位置
-        mMoveX = mCurX - SHIFT;
-        mMoveY = mCurY;
+        mMoveX = curX - SHIFT;
+        mMoveY = curY;
         mPath.moveTo(mMoveX, mMoveY);
         mRectF = new RectF();
-        mRectF.set(mCurX - SHIFT, mCurY - SHIFT - LEG_LENGTH, mCurX + SHIFT, mCurY + SHIFT - LEG_LENGTH);
+        mRectF.set(curX - SHIFT, curY - SHIFT - LEG_LENGTH, curX + SHIFT, curY + SHIFT - LEG_LENGTH);
     }
 
     @Override
     public void startAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(1, mDuration);
+        ValueAnimator animator = ValueAnimator.ofInt(1, duration);
         animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(mDuration);
+        animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -67,19 +66,19 @@ public class NLetter extends Letter {
                 }
                 mCurValue = (int) animation.getAnimatedValue();
                 if (mCurValue <= mFv) {
-                    mMoveY = mCurY - LEG_LENGTH * mCurValue / mFv;
+                    mMoveY = curY - LEG_LENGTH * mCurValue / mFv;
                     mPath.lineTo(mMoveX, mMoveY);
                 } else if (mCurValue <= mSv) {
                     if (!isInRoundDraw) {
                         isInRoundDraw = true;
-                        mPath.lineTo(mMoveX, mCurY - LEG_LENGTH);
+                        mPath.lineTo(mMoveX, curY - LEG_LENGTH);
                     }
                     mCurValue -= mFv;
                     mPath.addArc(mRectF, 180, mCurValue * 180 / (mSv - mFv));
                 } else {
                     mCurValue -= mSv;
-                    mMoveX = mCurX + SHIFT;
-                    mMoveY = mCurY - LEG_LENGTH + LEG_LENGTH * mCurValue / (mDuration - mSv);
+                    mMoveX = curX + SHIFT;
+                    mMoveY = curY - LEG_LENGTH + LEG_LENGTH * mCurValue / (duration - mSv);
                     mPath.lineTo(mMoveX, mMoveY);
                 }
             }

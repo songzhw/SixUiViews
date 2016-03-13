@@ -8,8 +8,6 @@ import android.graphics.RectF;
 
 import others.android6_open_anim.A6Colors;
 
-import others.android6_open_anim.A6Colors;
-
 /**
  * Created by Weiwu on 16/2/19.
  */
@@ -41,16 +39,16 @@ public class ALetter extends Letter {
         //除去线粗带来的偏差
         int offsetSub = mLength / 2 - mStrokeWidth / 2;
         //对其圆右边内边位置
-        mFirPoint = new Point(mCurX + offsetSub, mCurY + mLength / 2);
+        mFirPoint = new Point(curX + offsetSub, curY + mLength / 2);
         mSecPoint = new Point(mFirPoint);
         //圆向内偏移
-        mRectF = new RectF(mCurX - offsetSub, mCurY - offsetSub, mCurX + offsetSub, mCurY + offsetSub);
+        mRectF = new RectF(curX - offsetSub, curY - offsetSub, curX + offsetSub, curY + offsetSub);
 
     }
 
     @Override
     public void startAnim() {
-        mAnimator = ValueAnimator.ofFloat(0, 1).setDuration(mDuration);
+        mAnimator = ValueAnimator.ofFloat(0, 1).setDuration(duration);
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {

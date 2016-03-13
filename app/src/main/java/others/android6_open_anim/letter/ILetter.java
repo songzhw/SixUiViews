@@ -17,46 +17,46 @@ public class ILetter extends Letter {
     public final static int STROKE_WIDTH = 20;
     public final static int WIDTH = STROKE_WIDTH;
     public final static int LENGTH = 120;
-    private int mCurValue;
+    private int currValue;
     private boolean isStart = false;
-    private Paint mPaint;
+    private Paint paint;
     // 竖线弹出的时间
-    private int mDuration1 = mDuration/3*2;
+    private int duration1 = duration /3*2;
     // 圆球弹出的时间
-    private int mDuration2 = mDuration/3;
+    private int duration2 = duration /3;
     // 竖线变化的长度
-    private float mLength1;
+    private float lenLine;
     // 圆球弹出的变化高度
-    private float mLength2;
+    private float lenCircle;
     // 圆球的半径
-    private int mRadius;
+    private int radius;
 
     public ILetter(int x, int y) {
         super(x, y);
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(A6Colors.WHITE);
-        mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setStrokeWidth(20);
-        mCurY += LENGTH / 2;
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(A6Colors.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setStrokeWidth(20);
+        curY += LENGTH / 2;
     }
 
     @Override
     public void startAnim() {
-        ValueAnimator animator = ValueAnimator.ofInt(0, mDuration1 + mDuration2);
-        animator.setDuration(mDuration1 + mDuration2);
+        ValueAnimator animator = ValueAnimator.ofInt(0, duration1 + duration2);
+        animator.setDuration(duration1 + duration2);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 if (!isStart) {
                     return;
                 }
-                mCurValue = (int) animation.getAnimatedValue();
-                if (mCurValue <= mDuration1) {
-                    mLength1 = LENGTH * mCurValue / mDuration1;
+                currValue = (int) animation.getAnimatedValue();
+                if (currValue <= duration1) {
+                    lenLine = LENGTH * currValue / duration1;
                 } else {
-                    mCurValue -= mDuration1;
-                    mRadius = 12 * mCurValue / 500;
-                    mLength2 = 30 * mCurValue / 500;
+                    currValue -= duration1;
+                    radius = 12 * currValue / 500;
+                    lenCircle = 30 * currValue / 500;
                 }
 
             }
@@ -65,7 +65,7 @@ public class ILetter extends Letter {
             @Override
             public void onAnimationStart(Animator animation) {
                 isStart = true;
-                mRadius = 0;
+                radius = 0;
             }
         });
         animator.start();
@@ -75,9 +75,9 @@ public class ILetter extends Letter {
     public void drawSelf(Canvas canvas) {
         if (isStart) {
             // 绘制竖线
-            canvas.drawLine(mCurX, mCurY, mCurX, mCurY - mLength1, mPaint);
+            canvas.drawLine(curX, curY, curX, curY - lenLine, paint);
             // 绘制圆点
-            canvas.drawCircle(mCurX, mCurY - mLength1 + 30 - mLength2 - 20, mRadius, mPaint);
+            canvas.drawCircle(curX, curY - lenLine + 30 - lenCircle - 20, radius, paint);
         }
     }
 }

@@ -25,12 +25,12 @@ public class OLetter extends Letter {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(Color.WHITE);
         mPaint.setStyle(Paint.Style.FILL);
-        mRectF = new RectF(mCurX - 60, mCurY - 60, mCurX + 60, mCurY + 60);
+        mRectF = new RectF(curX - 60, curY - 60, curX + 60, curY + 60);
     }
 
     @Override
     public void startAnim() {
-        mCirAnimator = ValueAnimator.ofFloat(0, 1).setDuration(mDuration);
+        mCirAnimator = ValueAnimator.ofFloat(0, 1).setDuration(duration);
         mCirAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
