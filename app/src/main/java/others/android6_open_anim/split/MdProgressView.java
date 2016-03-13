@@ -69,7 +69,7 @@ public class MdProgressView extends View {
         timer.setRepeatCount(ValueAnimator.INFINITE);
         timer.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void onAnimationRepeat(Animator animation) {
                 invalidate();
             }
         });// onAnimationEnd() will never be called since "INFINIT"
