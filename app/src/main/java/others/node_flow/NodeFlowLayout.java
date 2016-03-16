@@ -1,0 +1,477 @@
+/**
+ * © 2016 Telenav, Inc.  All Rights Reserved
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * <p/>
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable law or
+ * agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for
+ * the specific language governing permissions and limitations under the License.
+ */
+
+package others.node_flow;
+
+import android.animation.Animator;
+import android.animation.ValueAnimator;
+import android.content.Context;
+import android.os.Build;
+import android.os.Parcelable;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.RelativeLayout;
+
+/**
+ * Abstract class that handles all the node animations.
+ */
+public abstract class NodeFlowLayout extends RelativeLayout {
+
+    private static Node<?> activeNode;
+    private float headerHeight;
+    private int duration = 500;
+    private OnActiveNodeChangeListener nodeChangeListener;
+
+    public NodeFlowLayout(Context context) {
+        super(context);
+        initialize();
+    }
+
+    public NodeFlowLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initialize();
+    }
+
+    public NodeFlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initialize();
+    }
+
+    /**
+     * Initializes the node flow with the root data and displays it.
+     */
+    protected void initialize() {
+        Node<?> root = getRootNode();
+        if (activeNode == null && root != null)
+            showViewsForNode(root);
+    }
+
+    /**
+     * Sets the node change listener.
+     *
+     * @param listener provided listener
+     */
+    public void setNodeChangeListener(OnActiveNodeChangeListener listener) {
+        nodeChangeListener = listener;
+    }
+
+    /**
+     * Sets the duration in milliseconds for all the node animations.
+     *
+     * @param millis duration in milliseconds
+     */
+    public void setAnimationDuration(int millis) {
+        duration = millis;
+    }
+
+    /**
+     * Closes the active node. If current node is root node - nothing happens.
+     */
+    public void closeActiveNode() {
+        if (activeNode.getParent() != null)
+            showViewsForNode(activeNode, true, true);
+    }
+
+    /**
+     * Opens a child node at the specified index in the child list of the current node.
+     *
+     * @param index index of child
+     */
+    public void openChildNode(int index) {
+        if (activeNode.hasChildren() && index > 0 && index < activeNode.getChildCount())
+            showViewsForNode(activeNode.getChildAt(index), true, false);
+    }
+
+    /**
+     * Returns the current opened node
+     */
+    public Node<?> getActiveNode() {
+        return activeNode;
+    }
+
+    /**
+     * Convenience method for {@link #showViewsForNode(Node, boolean, boolean)}
+     *
+     * @param node desired node
+     */
+    private void showViewsForNode(Node<?> node) {
+        showViewsForNode(node, false, false);
+    }
+
+    /**
+     * Displays all the nodes associated with the specified node (node + child nodes)
+     *
+     * @param node    desired node
+     * @param animate true if should animate node transition
+     * @param isBack  true if should show closing animation
+     */
+    private void showViewsForNode(Node<?> node, boolean animate, boolean isBack) {
+        if (node != null) {
+            activeNode = node;
+            if (animate) {
+                if (isBack) {
+                    if (nodeChangeListener != null)
+                        nodeChangeListener.onNodeClosing(getChildAt(0), node);
+                    fadeOut(node);
+                } else {
+                    animateDrillIn(node);
+
+                }
+            } else {
+                updateViews(node, false);
+            }
+        }
+    }
+
+    /**
+     * perform opening animation for the specified node
+     *
+     * @param node node to be animated
+     */
+    private void animateDrillIn(final Node<?> node) {
+        final int index = activeNode.getIndex() + (activeNode.getDepth() > 1 ? 1 : 0);
+        ValueAnimator animator = ValueAnimator.ofFloat(1);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                for (int i = 0; i < getChildCount(); ++i) {
+                    if (i < index) {
+                        getChildAt(i).setTranslationY(headerHeight * i - ((Float) animation.getAnimatedValue())
+                                * headerHeight * index);
+                    } else if (i > index) {
+                        getChildAt(i).setTranslationY(headerHeight * i + ((Float) animation.getAnimatedValue())
+                                * (getHeight() - headerHeight * index));
+                    } else {
+                        getChildAt(i).setTranslationY(headerHeight * i - ((Float) animation.getAnimatedValue())
+                                * headerHeight * index); // move active item
+                    }
+                }
+            }
+        });
+        animator.addListener(new CustomAnimationListener() {
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                updateViews(node, true);
+            }
+        });
+        animator.setDuration(duration);
+        animator.setInterpolator(new FastOutSlowInInterpolator());
+        animator.start();
+        animateDrillAlpha(index + 1, getChildCount(), 0);
+    }
+
+    /**
+     * perform closing animation for the specified node
+     *
+     * @param node node to be animated
+     */
+    private void animateDrillOut(final Node<?> node) {
+        final Node<?> parent = node.getParent();
+        if (parent.getDepth() > 0)
+            addView(_getHeaderView(node.getParent()), 0);//add parent
+        if (nodeChangeListener != null && node.getParent().getDepth() > 0)
+            nodeChangeListener.onParentNodeOpening(getChildAt(0), node.getParent());
+        for (int i = 0; i < node.getParent().getChildCount(); ++i) {
+            if (i != node.getIndex())
+                addView(_getHeaderView(node.getParent().getChildAt(i)), i + (parent.getDepth() > 0 ? 1 : 0));
+        }
+
+
+        final int newIndex = node.getIndex() + (parent.getDepth() > 0 ? 1 : 0);
+        final int aux = parent.getChildCount() + (parent.getDepth() > 0 ? 1 : 0);
+        ValueAnimator animator = ValueAnimator.ofFloat(1);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                for (int i = 0; i < aux; ++i) {
+                    if (i < newIndex) {
+                        getChildAt(i).setTranslationY(headerHeight * (-newIndex + i) + headerHeight * newIndex * ((Float) animation.getAnimatedValue()));
+                    } else if (i > newIndex) {
+                        getChildAt(i).setTranslationY(
+                                (getHeight() + headerHeight * (i - (newIndex + 1))) -
+                                        ((getHeight() - (node.getIndex() + 1 + (parent.getDepth() > 0 ? 1 : 0)) * headerHeight) * ((Float) animation.getAnimatedValue())));
+                    } else {
+                        getChildAt(newIndex).setTranslationY(headerHeight * newIndex * ((Float) animation.getAnimatedValue()));
+                    }
+                }
+            }
+        });
+        animator.addListener(new CustomAnimationListener() {
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                activeNode = parent;
+                updateViews(node, false);
+            }
+        });
+        animator.setDuration(duration);
+        animator.setInterpolator(new FastOutSlowInInterpolator());
+        animator.start();
+        animateDrillAlpha(newIndex + 1, aux, 1);
+    }
+
+    /**
+     * perform alpha animation associated with closing or opening a node
+     *
+     * @param startIndex start index of child views to be animated
+     * @param endIndex   end index of child views to be animated
+     * @param destAlpha  final alpha of child views to be animated
+     */
+    private void animateDrillAlpha(final int startIndex, final int endIndex, final int destAlpha) {
+        ValueAnimator animator = ValueAnimator.ofFloat(1 - destAlpha, destAlpha);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                for (int i = startIndex; i < endIndex; ++i) {
+                    getChildAt(i).setAlpha(((Float) animation.getAnimatedValue()));
+                }
+            }
+        });
+        animator.addListener(new CustomAnimationListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                for (int i = startIndex; i < getChildCount(); ++i) {
+                    getChildAt(i).setAlpha(1 - destAlpha);
+                }
+            }
+        });
+        animator.setDuration(duration);
+        if (destAlpha == 1)
+            animator.setInterpolator(new AccelerateInterpolator());
+        else
+            animator.setInterpolator(new DecelerateInterpolator(2));
+        animator.start();
+    }
+
+    /**
+     * perform a fade in animation for showing node content
+     *
+     * @param node active node
+     */
+    private void fadeIn(final Node<?> node) {
+        ValueAnimator animator = ValueAnimator.ofFloat(1);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                for (int i = getChildCount() - (node.hasChildren() ? node.getChildCount() : 1); i < getChildCount(); ++i) {
+                    getChildAt(i).setAlpha(((Float) animation.getAnimatedValue()));
+                }
+            }
+        });
+        animator.setDuration(duration);
+        animator.setInterpolator(new FastOutSlowInInterpolator());
+        animator.start();
+    }
+
+    /**
+     * perform a fade out animation for hiding node content
+     *
+     * @param node active node
+     */
+    private void fadeOut(final Node<?> node) {
+        ValueAnimator animator = ValueAnimator.ofFloat(1, 0);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                for (int i = 1; i < getChildCount(); ++i) {
+                    getChildAt(i).setAlpha(((Float) animation.getAnimatedValue()));
+                }
+            }
+        });
+        animator.addListener(new CustomAnimationListener() {
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                animateDrillOut(node);
+            }
+        });
+        animator.setDuration(duration / 2);
+        animator.setInterpolator(new FastOutSlowInInterpolator());
+        animator.start();
+    }
+
+    /**
+     * add or remove views according to the given node
+     *
+     * @param node   node for which the update will be performed
+     * @param fadeIn if true - runs a fade in animation
+     */
+    private void updateViews(Node<?> node, boolean fadeIn) {
+        Node<?> aNode = !fadeIn && node.getDepth() > 0 && getChildCount() > 0 ? node.getParent() : node;
+        int depthAdjustment = (node.getDepth() > 1 ? 1 : 0);
+        if (fadeIn) {
+            if (getChildCount() > 0) {
+                int activeNodeIndex = aNode.getIndex() + depthAdjustment;
+                if (activeNodeIndex < getChildCount())
+                    removeViews(activeNodeIndex + 1, getChildCount() - 1 - activeNodeIndex);
+                removeViews(0, activeNodeIndex);
+            } else if (aNode.getDepth() > 0)
+                addView(_getHeaderView(aNode));
+            if (aNode.hasChildren())
+                addChildren(aNode, false);
+            else {
+                addView(_getContentView(aNode));
+            }
+        } else if (node.getDepth() > 0) {
+            removeViews(aNode.getChildCount() + depthAdjustment, getChildCount() - aNode.getChildCount() - depthAdjustment);
+        } else {
+            if (aNode.hasChildren())
+                addChildren(node, true);
+        }
+        if (nodeChangeListener != null && aNode.getParent() != null) {
+            if (fadeIn)
+                nodeChangeListener.onNodeOpened(getChildAt(0), aNode);
+            else
+                nodeChangeListener.onParentNodeOpened(getChildAt(0), aNode);
+        }
+        if (fadeIn)
+            fadeIn(aNode);
+    }
+
+    /**
+     * adds child views for the current node
+     *
+     * @param node parent node
+     * @param show if true - children are visible
+     */
+    private void addChildren(Node<?> node, boolean show) {
+        int omitIndex = (!show || node.getDepth() == 0) ? -1 : 0;
+        int i = getChildCount();
+        for (int j = 0; j < node.getChildCount(); ++j) {
+            if (omitIndex != j) {
+                View v = _getHeaderView(node.getChildAt(j));
+                v.setTranslationY(i++ * headerHeight);
+                v.setAlpha(show ? 1 : 0);
+                addView(v);
+            }
+        }
+    }
+
+    /**
+     * returns the header view for a given node with it's layout params adjusted and a click listener attached
+     *
+     * @param node given node
+     * @return header view
+     */
+    private View _getHeaderView(final Node<?> node) {
+        View view = getHeaderView(node);
+        if (view.getLayoutParams() != null && view.getLayoutParams().height >= 0)
+            headerHeight = view.getLayoutParams().height
+                    + ((MarginLayoutParams) view.getLayoutParams()).topMargin
+                    + ((MarginLayoutParams) view.getLayoutParams()).bottomMargin;
+        else {
+            view.measure(0, 0);
+            headerHeight = view.getMeasuredHeight();
+        }
+        view.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (node.equals(activeNode)) {
+                    showViewsForNode(node, true, true);
+                } else
+                    showViewsForNode(node, true, false);
+            }
+        });
+        return view;
+    }
+
+    /**
+     * returns the content view for a given node with it's layout params adjusted
+     *
+     * @param node given node
+     * @return content view
+     */
+    private View _getContentView(Node<?> node) {
+        View v = getContentView(node);
+        setContentLayoutParams(v);
+        return v;
+    }
+
+    private void setContentLayoutParams(View v) {
+        int margin = getChildCount() > 0 ? ((MarginLayoutParams) getChildAt(0).getLayoutParams()).bottomMargin : 0; //hide header margin
+        v.setTranslationY(headerHeight - margin);
+        if (v.getLayoutParams() == null) {
+            v.setLayoutParams(new MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (getHeight() - headerHeight + margin)));
+        } else {
+            v.getLayoutParams().width = MarginLayoutParams.MATCH_PARENT;
+            v.getLayoutParams().height = (int) (getHeight() - headerHeight + margin);
+        }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (oldh != 0 && oldh < h && !activeNode.hasChildren()) {
+            setContentLayoutParams(getChildAt(getChildCount() - 1));
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+                updateViews(activeNode, true);
+            }
+        });
+        super.onRestoreInstanceState(state);
+    }
+
+    /**
+     * Returns the root node with all the data
+     */
+    protected abstract Node<?> getRootNode();
+
+    /**
+     * Returns the header view for a given node
+     *
+     * @param node node for which a view is required
+     */
+    protected abstract View getHeaderView(Node<?> node);
+
+    /**
+     * Returns the content view for a given node
+     *
+     * @param node node for which a view is required
+     */
+    protected abstract View getContentView(Node<?> node);
+
+    private static class CustomAnimationListener implements Animator.AnimatorListener {
+        @Override
+        public void onAnimationStart(Animator animator) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animator) {
+
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animator) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animator) {
+
+        }
+    }
+}
