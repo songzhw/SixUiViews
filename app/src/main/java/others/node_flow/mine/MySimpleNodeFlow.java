@@ -1,6 +1,8 @@
 package others.node_flow.mine;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,13 +40,32 @@ public class MySimpleNodeFlow extends FrameLayout {
     }
 
     public void showFirstFloor(){
-        int i = 0;
+        int j = 0;
         for(String atop : tops) {
             View view = getHeaderView(atop);
-            view.setTranslationY(i * headHeight);
+            view.setTranslationY(j * headHeight);
             addView(view);
-            i++;
+            j++;
         }
+
+        // start to do the animation
+        ValueAnimator anim = ValueAnimator.ofInt(1, 100);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Integer curr = (Integer) animation.getAnimatedValue();
+                int height = getHeight();
+                for(int i = 0; i < getChildCount(); i++ ){
+                    System.out.println("szw i = "+i);
+                    View child = getChildAt(i);
+                    float step = (height - i*headHeight) / 100; // (end - start) / 10
+                    child.setTranslationY(height - curr * step);
+                }
+            }
+        });
+        anim.setDuration(1000);
+        anim.setInterpolator(new FastOutSlowInInterpolator());
+        anim.start();
     }
 
     private View getHeaderView(String text){
