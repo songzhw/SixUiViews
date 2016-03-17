@@ -42,25 +42,25 @@ public class LocationFlowLayout extends NodeFlowLayout {
             @Override
             public void onNodeOpened(View view, Node<?> node) {//happens after node opening translation animation is finished and views are reset
                 if (!node.hasChildren())
-                    view.findViewById(R.id.list_item_favicon).animate().alpha(1).setDuration(duration).setInterpolator(new FastOutSlowInInterpolator());
-                ((ImageView) view.findViewById(R.id.list_item_image)).setImageResource(R.drawable.ic_close_white_36dp);
+//                    view.findViewById(R.id.iv_nf_header_favorite).animate().alpha(1).setDuration(duration).setInterpolator(new FastOutSlowInInterpolator());
+                ((ImageView) view.findViewById(R.id.iv_nf_header_back)).setImageResource(R.drawable.ic_close_white_36dp);
             }
 
             @Override
             public void onNodeClosing(View view, Node<?> node) {//happens before node closing translation animation
                 if (!node.hasChildren())
-                    view.findViewById(R.id.list_item_favicon).animate().alpha(0).setDuration(duration / 2).setInterpolator(new FastOutSlowInInterpolator());
-                ((ImageView) view.findViewById(R.id.list_item_image)).setImageResource(((Location) node.getData()).getIconResourceId());
+//                    view.findViewById(R.id.iv_nf_header_favorite).animate().alpha(0).setDuration(duration / 2).setInterpolator(new FastOutSlowInInterpolator());
+                ((ImageView) view.findViewById(R.id.iv_nf_header_back)).setImageResource(((Location) node.getData()).getIconResourceId());
             }
 
             @Override
             public void onParentNodeOpening(View view, Node<?> node) {//happens before node closing translation animation
-                ((ImageView) view.findViewById(R.id.list_item_image)).setImageResource(R.drawable.ic_close_white_36dp);
+                ((ImageView) view.findViewById(R.id.iv_nf_header_back)).setImageResource(R.drawable.ic_close_white_36dp);
             }
 
             @Override
             public void onParentNodeOpened(View view, Node<?> node) {//happens after node closing translation animation is finished and views are reset
-                ((ImageView) view.findViewById(R.id.list_item_image)).setImageResource(R.drawable.ic_close_white_36dp);
+                ((ImageView) view.findViewById(R.id.iv_nf_header_back)).setImageResource(R.drawable.ic_close_white_36dp);
             }
         });
         setAnimationDuration(duration);
@@ -104,6 +104,27 @@ public class LocationFlowLayout extends NodeFlowLayout {
     }
 
     @Override
+    protected View getHeaderView(final Node<?> node) {
+        Location data = (Location) node.getData();
+        ViewGroup view = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.node_header, this, false);
+        ((TextView) view.findViewById(R.id.tv_nf_header_name)).setText(data.getName());
+        ((ImageView) view.findViewById(R.id.iv_nf_header_back)).setImageResource(data.getIconResourceId());
+        switch (node.getDepth()) {
+            case 1:
+                view.getBackground().setColorFilter(Color.parseColor("#443266"), PorterDuff.Mode.SRC_IN);
+                break;
+            case 2:
+                view.getBackground().setColorFilter(Color.parseColor("#665488"), PorterDuff.Mode.SRC_IN);
+                break;
+            case 3:
+            default:
+                view.getBackground().setColorFilter(Color.parseColor("#8876AA"), PorterDuff.Mode.SRC_IN);
+                break;
+        }
+        return view;
+    }
+
+    @Override
     protected View getContentView(Node<?> node) {
         Location data = (Location) node.getData();
         ViewGroup v = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.node_content, this, false);
@@ -120,24 +141,5 @@ public class LocationFlowLayout extends NodeFlowLayout {
         return v;
     }
 
-    @Override
-    protected View getHeaderView(final Node<?> node) {
-        Location data = (Location) node.getData();
-        ViewGroup view = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.node_header, this, false);
-        ((TextView) view.findViewById(R.id.list_item_text)).setText(data.getName());
-        ((ImageView) view.findViewById(R.id.list_item_image)).setImageResource(data.getIconResourceId());
-        switch (node.getDepth()) {
-            case 1:
-                view.getBackground().setColorFilter(Color.parseColor("#443266"), PorterDuff.Mode.SRC_IN);
-                break;
-            case 2:
-                view.getBackground().setColorFilter(Color.parseColor("#665488"), PorterDuff.Mode.SRC_IN);
-                break;
-            case 3:
-            default:
-                view.getBackground().setColorFilter(Color.parseColor("#8876AA"), PorterDuff.Mode.SRC_IN);
-                break;
-        }
-        return view;
-    }
+
 }

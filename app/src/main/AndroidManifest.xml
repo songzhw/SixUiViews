@@ -7,7 +7,7 @@
         android:label="A_SixUiViews"
         android:theme="@style/AppTheme">
 
-        <activity android:name="others.node_flow.demo.NodeFlowDemo">
+        <activity android:name="others.node_flow.mine.MyNodeFlowDemo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

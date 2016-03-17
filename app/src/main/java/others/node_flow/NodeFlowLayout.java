@@ -237,7 +237,9 @@ public abstract class NodeFlowLayout extends RelativeLayout {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 for (int i = startIndex; i < endIndex; ++i) {
-                    getChildAt(i).setAlpha(((Float) animation.getAnimatedValue()));
+                    if(getChildAt(i) != null) {
+                        getChildAt(i).setAlpha(((Float) animation.getAnimatedValue()));
+                    }
                 }
             }
         });
@@ -245,7 +247,9 @@ public abstract class NodeFlowLayout extends RelativeLayout {
             @Override
             public void onAnimationStart(Animator animator) {
                 for (int i = startIndex; i < getChildCount(); ++i) {
-                    getChildAt(i).setAlpha(1 - destAlpha);
+                    if(getChildAt(i) != null) {
+                        getChildAt(i).setAlpha(1 - destAlpha);
+                    }
                 }
             }
         });
@@ -310,7 +314,7 @@ public abstract class NodeFlowLayout extends RelativeLayout {
      * @param fadeIn if true - runs a fade in animation
      */
     private void updateViews(Node<?> node, boolean fadeIn) {
-        Node<?> aNode = !fadeIn && node.getDepth() > 0 && getChildCount() > 0 ? node.getParent() : node;
+        Node<?> aNode = (!fadeIn && node.getDepth() > 0 && getChildCount() > 0) ? node.getParent() : node;
         int depthAdjustment = (node.getDepth() > 1 ? 1 : 0);
         if (fadeIn) {
             if (getChildCount() > 0) {
@@ -349,11 +353,11 @@ public abstract class NodeFlowLayout extends RelativeLayout {
      */
     private void addChildren(Node<?> node, boolean show) {
         int omitIndex = (!show || node.getDepth() == 0) ? -1 : 0;
-        int i = getChildCount();
+        int currChildViewCount = getChildCount();
         for (int j = 0; j < node.getChildCount(); ++j) {
             if (omitIndex != j) {
                 View v = _getHeaderView(node.getChildAt(j));
-                v.setTranslationY(i++ * headerHeight);
+                v.setTranslationY(currChildViewCount++ * headerHeight);
                 v.setAlpha(show ? 1 : 0);
                 addView(v);
             }
