@@ -14,6 +14,7 @@ import others.circle_reveal.animation.ViewAnimationUtils;
  * Created by songzhw on 3/19/16.
  */
 public class MyCircleRevealDemo extends AppCompatActivity {
+    private View frontView, backView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,22 +25,33 @@ public class MyCircleRevealDemo extends AppCompatActivity {
         final View loginView = findViewById(R.id.view_login);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_mycr);
 
+        frontView = registeView;
+        backView = loginView;
+        final int rawRadius = 1200;
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // view, centerX, centerY, startRadius, endRadius)
-                System.out.println("login width = "+loginView.getWidth()+" ; "+loginView.getHeight());
+                System.out.println("szw rawRadisu = "+rawRadius);
                 SupportAnimator anim = ViewAnimationUtils.createCircularReveal(
-                        loginView, loginView.getWidth(), 0,
-                        0, 2 * loginView.getWidth()
+                        backView, rawRadius, 0,
+                        0, 2 * rawRadius
                 );
                 anim.setDuration(700);
                 anim.addListener(new SupportAnimator.SimpleAnimatorListener() {
                     @Override
                     public void onAnimationStart() {
-                        registeView.setVisibility(View.GONE);
+                        backView.setVisibility(View.VISIBLE);
+                        frontView.setVisibility(View.GONE);
                     }
 
+                    @Override
+                    public void onAnimationEnd() {
+                        View temp = frontView;
+                        frontView = backView;
+                        backView = temp;
+                    }
                 });
                 anim.start();
             }
