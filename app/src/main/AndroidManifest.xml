@@ -7,7 +7,7 @@
         android:label="A_SixUiViews"
         android:theme="@style/AppTheme">
 
-        <activity android:name="others.circle_reveal.demo.CircleRevealDemo">
+        <activity android:name="others.circle_reveal.demo2.MyCircleRevealDemo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
