@@ -28,18 +28,18 @@ public class MyCircleRevealDemo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // view, centerX, centerY, startRadius, endRadius)
+                System.out.println("login width = "+loginView.getWidth()+" ; "+loginView.getHeight());
                 SupportAnimator anim = ViewAnimationUtils.createCircularReveal(
-                        registeView, registeView.getWidth() - 200, 400,
-                        0, 2 * registeView.getHeight()
+                        loginView, loginView.getWidth(), 0,
+                        0, 2 * loginView.getWidth()
                 );
                 anim.setDuration(700);
-                anim.setStartDelay(200);
                 anim.addListener(new SupportAnimator.SimpleAnimatorListener() {
                     @Override
-                    public void onAnimationEnd() {
+                    public void onAnimationStart() {
                         registeView.setVisibility(View.GONE);
-                        loginView.setVisibility(View.VISIBLE);
                     }
+
                 });
                 anim.start();
             }
