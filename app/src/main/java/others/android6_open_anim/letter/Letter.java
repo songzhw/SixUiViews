@@ -7,13 +7,13 @@ import android.graphics.Canvas;
  */
 public abstract class Letter {
 
-    protected int mCurX;
-    protected int mCurY;
-    protected int mDuration = 2000;
+    protected int curX;
+    protected int curY;
+    protected int duration = 2000;
 
     public Letter(int x, int y) {
-        mCurX = x;
-        mCurY = y;
+        curX = x;
+        curY = y;
     }
 
     public void startAnim() {

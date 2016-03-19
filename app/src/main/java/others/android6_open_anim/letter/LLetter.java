@@ -5,9 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
-import android.util.Log;
 
 import others.android6_open_anim.A6Colors;
 
@@ -53,7 +51,7 @@ public class LLetter extends Letter {
 
     @Override
     public void startAnim() {
-        mFirstLineAnimator = ValueAnimator.ofFloat(0, 1).setDuration(mDuration / 2);
+        mFirstLineAnimator = ValueAnimator.ofFloat(0, 1).setDuration(duration / 2);
         mFirstLineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -69,7 +67,7 @@ public class LLetter extends Letter {
             }
         });
 
-        mSecondLineAnimator = ValueAnimator.ofFloat(0, 1).setDuration(mDuration / 2);
+        mSecondLineAnimator = ValueAnimator.ofFloat(0, 1).setDuration(duration / 2);
         mSecondLineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {

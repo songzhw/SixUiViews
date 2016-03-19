@@ -40,16 +40,16 @@ public class DLetter extends Letter {
         //除去线粗带来的偏差
         int offsetSub = mRadius / 2 - mStrokeWidth / 2;
         //对其圆右边内边位置
-        mFirPoint = new Point(mCurX + offsetSub, mCurY + mRadius / 2);
+        mFirPoint = new Point(curX + offsetSub, curY + mRadius / 2);
         mSecPoint = new Point(mFirPoint);
         //圆向内偏移
-        mRectF = new RectF(mCurX - offsetSub, mCurY - offsetSub, mCurX + offsetSub, mCurY + offsetSub);
+        mRectF = new RectF(curX - offsetSub, curY - offsetSub, curX + offsetSub, curY + offsetSub);
 
     }
 
     @Override
     public void startAnim() {
-        mAnimator = ValueAnimator.ofFloat(0, 1).setDuration(mDuration);
+        mAnimator = ValueAnimator.ofFloat(0, 1).setDuration(duration);
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
