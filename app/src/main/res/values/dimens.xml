@@ -57,5 +57,10 @@
     <dimen name="center_image_width">75dp</dimen>
     <dimen name="center_image_height">75dp</dimen>
 
+    <!-- Gooey Menu -->
+    <dimen name="gooeymenu_min_height">160dp</dimen>
+    <dimen name="gooeymenu_big_circle_radius">40dp</dimen>
+    <dimen name="gooeymenu_small_circle_radius">20dp</dimen>
+    <dimen name="gooeymenu_min_gap">80dp</dimen>
 
 </resources>

@@ -7,7 +7,7 @@
         android:label="A_SixUiViews"
         android:theme="@style/AppTheme">
 
-        <activity android:name="others.android6_open_anim.split.MdProgressDemo">
+        <activity android:name="others.gooey_menu.demo.GooeyMenuDemo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
