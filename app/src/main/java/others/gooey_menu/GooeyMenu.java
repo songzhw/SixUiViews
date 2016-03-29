@@ -155,27 +155,19 @@ public class GooeyMenu extends View {
 
         int width;
         int height;
-        //Measure Width
         if (widthMode == MeasureSpec.EXACTLY) {
-            //Must be this size
-            width = widthSize;
+            width = widthSize; //Must be this size
         } else if (widthMode == MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
-            width = Math.min(desiredWidth, widthSize);
+            width = Math.min(desiredWidth, widthSize);//Can't be bigger than...
         } else {
-            //Be whatever you want
-            width = desiredWidth;
+            width = desiredWidth;//Be whatever you want
         }
 
-        //Measure Height
         if (heightMode == MeasureSpec.EXACTLY) {
-            //Must be this size
             height = heightSize;
         } else if (heightMode == MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
             height = Math.min(desiredHeight, heightSize);
         } else {
-            //Be whatever you want
             height = desiredHeight;
         }
         setMeasuredDimension(width, height);
@@ -191,12 +183,14 @@ public class GooeyMenu extends View {
             circlePoint.setRadius(mGab);
             circlePoint.setAngle((Math.PI / (mNumberOfMenu + 1)) * (i + 1));
             mMenuPoints.add(circlePoint);
+
             ObjectAnimator animShow = ObjectAnimator.ofFloat(mMenuPoints.get(i), "Radius", 0f, mGab);
             animShow.setDuration(ANIMATION_DURATION);
             animShow.setInterpolator(new AnticipateOvershootInterpolator());
             animShow.setStartDelay((ANIMATION_DURATION * (mNumberOfMenu - i)) / 10);
             animShow.addUpdateListener(mUpdateListener);
             mShowAnimation.add(animShow);
+
             ObjectAnimator animHide = animShow.clone();
             animHide.setFloatValues(mGab, 0f);
             animHide.setStartDelay((ANIMATION_DURATION * i) / 10);
@@ -204,7 +198,7 @@ public class GooeyMenu extends View {
 
             if (mDrawableArray != null) {
                 for (Drawable drawable : mDrawableArray)
-                    drawable.setBounds(0, 0, /*2 * */mMenuButtonRadius,/* 2 * */mMenuButtonRadius);
+                    drawable.setBounds(0, 0, mMenuButtonRadius, mMenuButtonRadius);
             }
         }
 
@@ -236,6 +230,7 @@ public class GooeyMenu extends View {
             float x = (float) (circlePoint.radius * Math.cos(circlePoint.angle));
             float y = (float) (circlePoint.radius * Math.sin(circlePoint.angle));
             canvas.drawCircle(x + mCenterX, mCenterY - y, mMenuButtonRadius, mCirclePaint);
+
             if (i < mDrawableArray.size()) {
                 canvas.save();
                 canvas.translate(x + mCenterX - mMenuButtonRadius / 2, mCenterY - y - mMenuButtonRadius / 2);
@@ -243,6 +238,7 @@ public class GooeyMenu extends View {
                 canvas.restore();
             }
         }
+
         canvas.save();
         canvas.translate(mCenterX, mCenterY);
         Path path = createPath();
