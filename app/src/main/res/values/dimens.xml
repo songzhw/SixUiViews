@@ -63,4 +63,10 @@
     <dimen name="gooeymenu_small_circle_radius">20dp</dimen>
     <dimen name="gooeymenu_min_gap">80dp</dimen>
 
+    <!-- NodeFlow -->
+    <dimen name="header_height">60dp</dimen>
+    <dimen name="image_height">250dp</dimen>
+    <dimen name="details_text_size">15sp</dimen>
+    <dimen name="header_text_size">20sp</dimen>
+
 </resources>
