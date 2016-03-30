@@ -54,7 +54,7 @@ class MyGooeyMenu extends View {
         centerRotationAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                rotatedAngle = (float)animation.getAnimatedValue();
+                rotatedAngle = (float) animation.getAnimatedValue();
                 invalidate();
             }
         });
@@ -79,7 +79,7 @@ class MyGooeyMenu extends View {
         super.onDraw(canvas);
 
         // draw the surrounding sub menus
-        for(int i = 0 ; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             canvas.save();
             canvas.translate(centerX, centerY);
             canvas.rotate(i * 45 - 45);
@@ -87,7 +87,7 @@ class MyGooeyMenu extends View {
 
             canvas.save();
             canvas.translate(0, -rotatedAngle * 3);
-            canvas.drawBitmap(bitmapPlus, -bitmapPlus.getWidth()/2, -bitmapPlus.getHeight()/2, null);
+            canvas.drawBitmap(bitmapPlus, -bitmapPlus.getWidth() / 2, -bitmapPlus.getHeight() / 2, null);
             canvas.restore();
 
             canvas.restore();
@@ -99,20 +99,31 @@ class MyGooeyMenu extends View {
         canvas.translate(centerX, centerY);
         canvas.rotate(rotatedAngle);
         canvas.drawCircle(0, 0, radiusCenter, paint);
-        canvas.drawBitmap(bitmapPlus, -bitmapPlus.getWidth()/2, -bitmapPlus.getHeight()/2, null);
+        canvas.drawBitmap(bitmapPlus, -bitmapPlus.getWidth() / 2, -bitmapPlus.getHeight() / 2, null);
         canvas.restore();
 
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_UP) {
-            if(!isMenuOpen) {
-                centerRotationAnim.start();
+        float x = event.getX();
+        float y = event.getY();
+        boolean isHitCenter = x > (centerX - radiusCenter) && x < (centerX + radiusCenter)
+                && y > (centerY - radiusCenter) && y < (centerY + radiusCenter);
+        // clicking the sub menus is the same!
+
+
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (isHitCenter) {
+                if (!isMenuOpen) {
+                    centerRotationAnim.start();
+                } else {
+                    centerRotationAnim.reverse();
+                }
+                isMenuOpen = !isMenuOpen;
             } else {
-                centerRotationAnim.reverse();
+                System.out.println("szw not hit the center circle !!!");
             }
-            isMenuOpen = !isMenuOpen;
         }
         return true;
     }
