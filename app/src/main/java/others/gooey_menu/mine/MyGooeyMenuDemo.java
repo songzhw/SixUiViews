@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 
 import cn.six.open.R;
 import cn.six.open.util.UiUtil;
@@ -32,7 +33,7 @@ public class MyGooeyMenuDemo extends Activity {
 
 class MyGooeyMenu extends View {
 
-    private int width, height, centerX, centerY, radiusCenter;
+    private int width, height, centerX, centerY, radiusCenter, radiusSmall;
     private Paint paint;
     private Bitmap bitmapPlus;
     private boolean isMenuOpen;
@@ -43,14 +44,15 @@ class MyGooeyMenu extends View {
         super(context);
 
         radiusCenter = UiUtil.dp2px(getContext(), 40);
+        radiusSmall = UiUtil.dp2px(getContext(), 26);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0xff363434);
 
         bitmapPlus = BitmapFactory.decodeResource(getResources(), R.drawable.ic_plus);
 
         centerRotationAnim = ValueAnimator.ofFloat(0, 135);
-        centerRotationAnim.setDuration(400);
-        centerRotationAnim.setInterpolator(new AccelerateInterpolator());
+        centerRotationAnim.setDuration(1000);
+        centerRotationAnim.setInterpolator(new AnticipateOvershootInterpolator());
         centerRotationAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -78,6 +80,17 @@ class MyGooeyMenu extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        // draw the surrounding sub menus
+        for(int i = 0 ; i < 3; i++) {
+            canvas.save();
+            canvas.translate(centerX, centerY);
+            canvas.rotate(i * 45 - 45);
+            canvas.drawCircle(0, -rotatedAngle * 3, radiusSmall, paint);
+            canvas.restore();
+        }
+
+
+        // draw the main menu that is in the center
         canvas.save();
         canvas.translate(centerX, centerY);
         canvas.rotate(rotatedAngle);
@@ -99,4 +112,5 @@ class MyGooeyMenu extends View {
         }
         return true;
     }
+
 }
