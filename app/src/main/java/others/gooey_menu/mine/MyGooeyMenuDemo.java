@@ -1,6 +1,5 @@
 package others.gooey_menu.mine;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +10,6 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
 
 import cn.six.open.R;
@@ -86,6 +84,12 @@ class MyGooeyMenu extends View {
             canvas.translate(centerX, centerY);
             canvas.rotate(i * 45 - 45);
             canvas.drawCircle(0, -rotatedAngle * 3, radiusSmall, paint);
+
+            canvas.save();
+            canvas.translate(0, -rotatedAngle * 3);
+            canvas.drawBitmap(bitmapPlus, -bitmapPlus.getWidth()/2, -bitmapPlus.getHeight()/2, null);
+            canvas.restore();
+
             canvas.restore();
         }
 
