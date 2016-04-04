@@ -7,7 +7,7 @@
         android:label="A_SixUiViews"
         android:theme="@style/AppTheme">
 
-        <activity android:name="others.gooey_menu.mine.MyGooeyMenuDemo">
+        <activity android:name="others.loading.LoadingDemo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
