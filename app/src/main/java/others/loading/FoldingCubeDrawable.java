@@ -17,6 +17,7 @@ public class FoldingCubeDrawable extends Drawable {
 
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Cube[] children = new Cube[4];
+    private Rect rect;
 
     public FoldingCubeDrawable() {
         paint.setColor(Color.DKGRAY);
@@ -25,26 +26,17 @@ public class FoldingCubeDrawable extends Drawable {
     // override from Drawable
     @Override
     protected void onBoundsChange(Rect bounds) {
+        System.out.println("szw onBoundsChange : bounds = " + getBounds());
         super.onBoundsChange(bounds);
-        System.out.println("szw onBoundsChange()");
 
-        System.out.println("szw CF : bounds = "+ getBounds());
+        rect = getBounds();
         for (int i = 0; i < 4; i++) {
             children[i] = new Cube();
-            children[i].bounds = getBounds();
+            children[i].bounds = new Rect(rect.left + rect.width()/6, rect.top+rect.height()/6,
+                    rect.left + rect.width()/2, rect.top + rect.height()/2);
             // TODO animator delay
         }
 
-    }
-
-    // override from Drawable
-    @Override
-    public void draw(Canvas canvas) {
-        System.out.println("szw draw()");
-        for (int i = 0; i < 4; i++) {
-            Cube cube = children[i];
-            cube.draw(canvas, paint);
-        }
     }
 
     // override from Drawable
@@ -69,6 +61,20 @@ public class FoldingCubeDrawable extends Drawable {
     @Override
     public int getOpacity() {
         return PixelFormat.RGBA_8888;
+    }
+
+
+    // override from Drawable
+    @Override
+    public void draw(Canvas canvas) {
+        System.out.println("szw draw()");
+        for (int i = 0; i < 4; i++) {
+            Cube cube = children[i];
+            canvas.save();
+            canvas.rotate(45 + i * 90, rect.centerX(), rect.centerY());
+            cube.draw(canvas, paint);
+            canvas.restore();
+        }
     }
 
 
