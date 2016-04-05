@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
  */
 public class LoadingView extends View {
     private Drawable drawable;
+    private boolean isAnimating;
 
     public LoadingView(Context context) {
         this(context, null);
@@ -24,6 +25,7 @@ public class LoadingView extends View {
 
     public void init(Context ctx) {
         drawable = new FoldingCubeDrawable();
+        drawable.setCallback(this);
     }
 
     @Override
@@ -37,4 +39,33 @@ public class LoadingView extends View {
         super.onDraw(canvas);
         drawable.draw(canvas);
     }
+
+    // ====================== Detail Method ================================
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        this.isAnimating = true;
+    }
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        this.isAnimating = false;
+    }
+    /*
+    View # verifyDrawable(drawable)
+       If your view subclass is displaying its own Drawable objects, it should override this function and return true for any Drawable it is displaying.
+       This allows animations for those drawables to be scheduled.
+       Be sure to call through to the super class when overriding this function.
+     */
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        if(isAnimating){
+            return drawable == who;
+        }
+        return super.verifyDrawable(who);
+    }
+
+    // ====================== Public Method ================================
+
+
 }

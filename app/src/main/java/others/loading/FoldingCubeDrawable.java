@@ -1,5 +1,7 @@
 package others.loading;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,6 +11,11 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.view.animation.LinearInterpolator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by songzhw on 2016/4/5.
@@ -33,8 +40,17 @@ public class FoldingCubeDrawable extends Drawable {
         for (int i = 0; i < 4; i++) {
             children[i] = new Cube();
             children[i].bounds = new Rect(rect.left + rect.width()/6, rect.top+rect.height()/6,
-                    rect.left + rect.width()/2, rect.top + rect.height()/2);
+                    rect.left + rect.width()/2 - 3, rect.top + rect.height()/2 - 3);
+
             // TODO animator delay
+            PropertyValuesHolder alpha = PropertyValuesHolder.ofInt("alpha", 0, 0, 255, 255, 0, 0);
+            PropertyValuesHolder rotateX = PropertyValuesHolder.ofFloat("rotateX", -180, -180, 0, 0, 0, 0);
+            PropertyValuesHolder rotateY = PropertyValuesHolder.ofFloat("rotateY", 0, 0, 0, 0, 180, 180);
+            ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(this, alpha, rotateX, rotateY)
+                    .setDuration(2400);
+            anim.setInterpolator(new LinearInterpolator());
+            anim.setStartDelay(300 * i - 1200);
+            anim.start();
         }
 
     }
