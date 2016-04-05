@@ -2,6 +2,7 @@ package others.loading;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.FrameLayout;
 
 /**
  * Created by songzhw on 2016/4/4.
@@ -13,6 +14,6 @@ public class LoadingDemo extends Activity {
         super.onCreate(savedInstanceState);
 
         LoadingView view = new LoadingView(this);
-        setContentView(view);
+        setContentView(view, new FrameLayout.LayoutParams(400, 400));
     }
 }
