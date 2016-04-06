@@ -38,19 +38,20 @@ public class FoldingCubeDrawable extends Drawable {
 
         rect = getBounds();
         for (int i = 0; i < 4; i++) {
-            children[i] = new Cube();
-            children[i].bounds = new Rect(rect.left + rect.width()/6, rect.top+rect.height()/6,
+            Cube cube = new Cube(i);
+            cube.bounds = new Rect(rect.left + rect.width()/6, rect.top+rect.height()/6,
                     rect.left + rect.width()/2 - 3, rect.top + rect.height()/2 - 3);
 
-            // TODO animator delay
-            PropertyValuesHolder alpha = PropertyValuesHolder.ofInt("alpha", 0, 0, 255, 255, 0, 0);
+            PropertyValuesHolder alpha = PropertyValuesHolder.ofInt("alpha", 0, 255, 0);
             PropertyValuesHolder rotateX = PropertyValuesHolder.ofFloat("rotateX", -180, -180, 0, 0, 0, 0);
             PropertyValuesHolder rotateY = PropertyValuesHolder.ofFloat("rotateY", 0, 0, 0, 0, 180, 180);
-            ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(this, alpha, rotateX, rotateY)
-                    .setDuration(2400);
+            ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(cube, alpha, rotateX, rotateY)
+                    .setDuration(12000);
             anim.setInterpolator(new LinearInterpolator());
-            anim.setStartDelay(300 * i - 1200);
+            anim.setStartDelay( 3000 * i);
             anim.start();
+
+            children[i] = cube;
         }
 
     }
@@ -88,7 +89,7 @@ public class FoldingCubeDrawable extends Drawable {
             Cube cube = children[i];
             canvas.save();
             canvas.rotate(45 + i * 90, rect.centerX(), rect.centerY());
-            cube.draw(canvas, paint);
+            cube.draw(canvas);
             canvas.restore();
         }
     }
@@ -135,9 +136,26 @@ public class FoldingCubeDrawable extends Drawable {
     class Cube {
         public Rect bounds;
         public ValueAnimator anim;
+        public int index;
+        public Paint paintCube;
+        public Cube(int i){
+            index = i;
+            paintCube = new Paint(Paint.ANTI_ALIAS_FLAG);
+        }
 
-        public void draw(Canvas canvas, Paint paint) {
-            canvas.drawRect(bounds, paint);
+        public void draw(Canvas canvas) {
+            canvas.drawRect(bounds, paintCube);
+        }
+
+        private int alpha;
+        public int getAlpha() {
+            return alpha;
+        }
+        public void setAlpha(int alpha) {
+            System.out.println("szw cube["+index+"] : setAlpha("+alpha+")");
+            this.alpha = alpha;
+            paintCube.setAlpha(alpha);
+            invalidateSelf();   // Drawable's function
         }
     }
 }
