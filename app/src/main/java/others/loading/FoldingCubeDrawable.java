@@ -33,7 +33,6 @@ public class FoldingCubeDrawable extends Drawable {
     // override from Drawable
     @Override
     protected void onBoundsChange(Rect bounds) {
-        System.out.println("szw onBoundsChange : bounds = " + getBounds());
         super.onBoundsChange(bounds);
 
         rect = getBounds();
@@ -42,13 +41,14 @@ public class FoldingCubeDrawable extends Drawable {
             cube.bounds = new Rect(rect.left + rect.width()/6, rect.top+rect.height()/6,
                     rect.left + rect.width()/2 - 3, rect.top + rect.height()/2 - 3);
 
-            PropertyValuesHolder alpha = PropertyValuesHolder.ofInt("alpha", 0, 255, 0);
+            PropertyValuesHolder alpha = PropertyValuesHolder.ofInt("alpha", 0, 255);
             PropertyValuesHolder rotateX = PropertyValuesHolder.ofFloat("rotateX", -180, -180, 0, 0, 0, 0);
             PropertyValuesHolder rotateY = PropertyValuesHolder.ofFloat("rotateY", 0, 0, 0, 0, 180, 180);
             ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(cube, alpha, rotateX, rotateY)
-                    .setDuration(12000);
+                    .setDuration(2400);
             anim.setInterpolator(new LinearInterpolator());
-            anim.setStartDelay( 3000 * i);
+            anim.setRepeatCount(ValueAnimator.INFINITE);
+            anim.setStartDelay( 600 * i);
             anim.start();
 
             children[i] = cube;
@@ -59,7 +59,6 @@ public class FoldingCubeDrawable extends Drawable {
     // override from Drawable
     @Override
     public void setAlpha(int alpha) {
-        System.out.println("szw setAlpha()");
         if (alpha != paint.getAlpha()) {
             paint.setAlpha(alpha);
             this.invalidateSelf();
@@ -69,7 +68,6 @@ public class FoldingCubeDrawable extends Drawable {
     // override from Drawable
     @Override
     public void setColorFilter(ColorFilter colorFilter) {
-        System.out.println("szw setColorFilter()");
         paint.setColorFilter(colorFilter);
         this.invalidateSelf();
     }
@@ -84,7 +82,6 @@ public class FoldingCubeDrawable extends Drawable {
     // override from Drawable
     @Override
     public void draw(Canvas canvas) {
-        System.out.println("szw draw()");
         for (int i = 0; i < 4; i++) {
             Cube cube = children[i];
             canvas.save();
@@ -152,7 +149,6 @@ public class FoldingCubeDrawable extends Drawable {
             return alpha;
         }
         public void setAlpha(int alpha) {
-            System.out.println("szw cube["+index+"] : setAlpha("+alpha+")");
             this.alpha = alpha;
             paintCube.setAlpha(alpha);
             invalidateSelf();   // Drawable's function
