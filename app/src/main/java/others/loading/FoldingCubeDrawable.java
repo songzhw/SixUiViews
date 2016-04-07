@@ -3,9 +3,11 @@ package others.loading;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
@@ -40,10 +42,12 @@ public class FoldingCubeDrawable extends Drawable {
             Cube cube = new Cube(i);
             cube.bounds = new Rect(rect.left + rect.width()/6, rect.top+rect.height()/6,
                     rect.left + rect.width()/2 - 3, rect.top + rect.height()/2 - 3);
+            cube.pivotX = cube.bounds.centerX();
+            cube.pivotY = cube.bounds.centerY();
 
             PropertyValuesHolder alpha = PropertyValuesHolder.ofInt("alpha", 0, 255);
-            PropertyValuesHolder rotateX = PropertyValuesHolder.ofFloat("rotateX", -180, -180, 0, 0, 0, 0);
-            PropertyValuesHolder rotateY = PropertyValuesHolder.ofFloat("rotateY", 0, 0, 0, 0, 180, 180);
+            PropertyValuesHolder rotateX = PropertyValuesHolder.ofFloat("rotateX", -180, 0, 0);
+            PropertyValuesHolder rotateY = PropertyValuesHolder.ofFloat("rotateY", 0,  0, 180);
             ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(cube, alpha, rotateX, rotateY)
                     .setDuration(2400);
             anim.setInterpolator(new LinearInterpolator());
@@ -135,12 +139,30 @@ public class FoldingCubeDrawable extends Drawable {
         public ValueAnimator anim;
         public int index;
         public Paint paintCube;
+
+        public float rotateX = 0 , rotateY = 0, pivotX, pivotY;
+        public Camera camera;
+        public Matrix matrix;
+
         public Cube(int i){
             index = i;
             paintCube = new Paint(Paint.ANTI_ALIAS_FLAG);
+            camera = new Camera();
+            matrix = new Matrix();
         }
 
         public void draw(Canvas canvas) {
+            if(rotateX != 0 || rotateY != 0){
+                camera.save();
+                camera.rotateX(rotateX);
+                camera.rotateY(rotateY);
+                camera.getMatrix(matrix);
+                matrix.preTranslate(-pivotX, -pivotY);
+                matrix.postTranslate(pivotX, pivotY);
+                camera.restore();
+                canvas.concat(matrix);
+            }
+
             canvas.drawRect(bounds, paintCube);
         }
 
@@ -153,5 +175,24 @@ public class FoldingCubeDrawable extends Drawable {
             paintCube.setAlpha(alpha);
             invalidateSelf();   // Drawable's function
         }
+
+        public float getRotateX() {
+            return rotateX;
+        }
+        public void setRotateX(float rotateX) {
+            this.rotateX = rotateX;
+            invalidateSelf();
+        }
+
+        public float getRotateY() {
+            return rotateY;
+        }
+
+        public void setRotateY(float rotateY) {
+            this.rotateY = rotateY;
+            invalidateSelf();
+        }
     }
+
+
 }
