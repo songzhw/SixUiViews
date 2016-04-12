@@ -1,4 +1,4 @@
-package others.loading;
+package others.loading.mine1;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
@@ -94,45 +94,6 @@ public class FoldingCubeDrawable extends Drawable {
             canvas.restore();
         }
     }
-
-
-    /**
-     * // override from Animatable
-     *
-     * @Override public void start() {
-     * }
-     * <p/>
-     * // override from Animatable
-     * @Override public void stop() {
-     * <p/>
-     * }
-     * <p/>
-     * // override from Animatable
-     * @Override public boolean isRunning() {
-     * return false;
-     * }
-     * <p/>
-     * // AnimatorUpdateListener
-     * @Override public void onAnimationUpdate(ValueAnimator animation) {
-     * <p/>
-     * }
-     * <p/>
-     * // override from Drawable.Callback
-     * @Override public void invalidateDrawable(Drawable who) {
-     * <p/>
-     * }
-     * <p/>
-     * // override from Drawable.Callback
-     * @Override public void scheduleDrawable(Drawable who, Runnable what, long when) {
-     * <p/>
-     * }
-     * <p/>
-     * // override from Drawable.Callback
-     * @Override public void unscheduleDrawable(Drawable who, Runnable what) {
-     * <p/>
-     * }
-     */
-
 
     class Cube {
         public Rect bounds;

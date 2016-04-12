@@ -1,4 +1,4 @@
-package others.loading;
+package others.loading.mine1;
 
 import android.app.Activity;
 import android.os.Bundle;
