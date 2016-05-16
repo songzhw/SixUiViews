@@ -43,7 +43,15 @@ public class PulseView extends View {
         final float bitmapLeft = bounds.centerX() - (bitmap.getWidth() * 0.5F);
         final float bitmapTop = bounds.centerY() - (bitmap.getHeight() * 0.5F);
 
-        canvas.drawBitmap(bitmap, bitmapLeft, bitmapTop, paint);
+        for(int i = 0 ; i < 3; i++){
+            canvas.save();
+            float scale = 2 - 0.33f * i;
+            int alpha = 75 * i;
+            canvas.scale(scale, scale, bounds.centerX(), bounds.centerY() );
+            paint.setAlpha(alpha);
+            canvas.drawBitmap(bitmap, bitmapLeft, bitmapTop, paint);
+            canvas.restore();
+        }
     }
 
     // ============  public methods   ============
