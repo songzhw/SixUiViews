@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
@@ -22,6 +24,11 @@ public class PulseView extends View {
         this.bounds = new RectF();
         this.bitmap = bitmap;
         this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        paint.setColor(0xff7b1fa2);
+        paint.setColorFilter(
+                new PorterDuffColorFilter(0xff7b1fa2,
+                        PorterDuff.Mode.SRC_IN));
     }
 
     @Override
@@ -33,7 +40,6 @@ public class PulseView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         bounds.set(0, 0, w, h);
-        // L 339
     }
 
     @Override
@@ -52,6 +58,9 @@ public class PulseView extends View {
             canvas.drawBitmap(bitmap, bitmapLeft, bitmapTop, paint);
             canvas.restore();
         }
+
+        // draw a original bitmap that has no PorterDuffColorFilter effect
+//        canvas.drawBitmap(bitmap, bitmapLeft, bitmapTop, null);
     }
 
     // ============  public methods   ============
