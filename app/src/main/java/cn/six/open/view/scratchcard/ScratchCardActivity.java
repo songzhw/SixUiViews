@@ -1,9 +1,4 @@
-/**
- *  *    GuagualeView.java
- *  *    
- *  *    Create by zhengwang.szw on 2013-11-08
- *  
- */
+
 package cn.six.open.view.scratchcard;
 
 import android.graphics.Paint;
