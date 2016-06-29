@@ -9,8 +9,6 @@ import android.widget.ImageView.ScaleType;
 import cn.six.open.R;
 
 public class ScratchCardActivity extends Activity {
-    private Paint mPaint;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,5 +17,4 @@ public class ScratchCardActivity extends Activity {
         view.setScaleType(ScaleType.FIT_XY);
         setContentView(view, new FrameLayout.LayoutParams(800,800));
     }
-
 }
