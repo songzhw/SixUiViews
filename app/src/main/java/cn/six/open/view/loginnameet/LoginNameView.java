@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -122,12 +123,12 @@ public class LoginNameView extends RelativeLayout implements View.OnClickListene
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        // TODO here give out the opportunity to etPwd.requestFocus();
     }
 
     @Override
     public void onDeleteHistory(int index) {
-
+        Toast.makeText(getContext(), "delete this account name in history", Toast.LENGTH_SHORT).show();
     }
 
     @Override
