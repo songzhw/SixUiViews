@@ -4,6 +4,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.widget.ViewDragHelper;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -18,6 +20,8 @@ public class ResideMenu extends FrameLayout implements View.OnClickListener {
     private View menuView;
     private TouchWatchParent middleView; // to intercept the Button clicking in the contentView
     private Activity actv;
+
+    private ViewDragHelper dragHelper;
 
     public ResideMenu(Context ctx) {
         super(ctx);
@@ -37,6 +41,9 @@ public class ResideMenu extends FrameLayout implements View.OnClickListener {
         middleView.addView(subDecorView);
         this.addView(middleView);
         decorView.addView(this);
+
+        dragHelper = ViewDragHelper.create(this, callback);
+        dragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
     }
 
 
@@ -85,4 +92,39 @@ public class ResideMenu extends FrameLayout implements View.OnClickListener {
         anims.setDuration(400);
         anims.start();
     }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return dragHelper.shouldInterceptTouchEvent(ev);
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        dragHelper.processTouchEvent(ev);
+        return true;
+    }
+
+    private ViewDragHelper.Callback callback = new ViewDragHelper.Callback() {
+        @Override
+        public boolean tryCaptureView(View child, int pointerId) {
+            return false;
+        }
+
+        @Override
+        public void onEdgeDragStarted(int edgeFlags, int pointerId) {
+            menuView.setAlpha(1);
+            dragHelper.captureChildView(middleView, pointerId);
+        }
+
+        @Override
+        public int clampViewPositionHorizontal(View child, int left, int dx) {
+            return left;
+        }
+
+        @Override
+        public int clampViewPositionVertical(View child, int top, int dy) {
+            return top;
+        }
+    };
+
+
 }
