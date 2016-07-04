@@ -11,6 +11,6 @@
         android:layout_height= "50dp"
         android:layout_marginTop= "20dp"
         android:layout_gravity= "center_horizontal"
-        my:tab_text= "全部,收入,支出"
+        my:tab_text= "All,Deposite,Withdraw,Loan"
         />
 </LinearLayout>

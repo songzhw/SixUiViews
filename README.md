@@ -22,13 +22,27 @@ However, sometimes, we do need the ViewGroup whose height is "wrap_content", but
 <p> that's it!
 
 ## 2. TabsView
+Custom a Tabs View for multiple tabs. 
+
+Three tabs:
+
+![](/pic/2016070303.png)
+
+Four tabs:
+
+![](/pic/2016070304.png)
 
 
 ## 3. LoginNameEditText
+(1). show account names you inputed before
+
+![](/pic/2016070301.png)
+
+(2). show suffix along with your input
+
+![](/pic/2016070302.png)
 
 
-
-## 4. Circle Progress
 
 
 ## 5. Color Mask
@@ -45,6 +59,7 @@ Reference : https://github.com/baoyongzhang/android-ActionSheet
 
 Since baoyongzhang's ActionSheet is restrict to a specific view, and I have to custom the view in ActionSheet.
 So I did some work to meet my need.
+
 
 # 7. Scratch Card
 
