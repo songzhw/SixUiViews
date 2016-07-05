@@ -116,13 +116,8 @@ public class ResideMenu extends FrameLayout implements View.OnClickListener {
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
-            return left;
-        }
-
-        @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
-            return top;
+        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+            openMenu();
         }
     };
 
