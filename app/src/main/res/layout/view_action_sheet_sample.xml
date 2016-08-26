@@ -8,10 +8,12 @@
     <Button android:id="@+id/btnSheetSample2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:textSize="25dp" android:layout_marginTop="10dp"
               android:text="Test Two"/>
 
-    <TextView android:id="@+id/tvSheetSample3" android:layout_width="fill_parent" android:layout_height="wrap_content" android:textSize="25dp" android:layout_marginTop="10dp"
+    <TextView
+        android:layout_width="fill_parent" android:layout_height="wrap_content" android:textSize="25dp" android:layout_marginTop="10dp"
               android:text="Item Three"/>
 
-    <CheckBox android:id="@+id/tvSheetSample4" android:layout_width="40dp" android:layout_height="40dp"  android:layout_marginTop="10dp" android:checked="true"/>
+    <CheckBox
+        android:layout_width="40dp" android:layout_height="40dp"  android:layout_marginTop="10dp" android:checked="true"/>
 
 
 

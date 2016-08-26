@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import cn.six.open.R;
-import others.colormask.ColorMaskUtil;
+import cn.six.open.util.ColorMaskUtil;
 
 /**
  * Created by songzhw on 2015/12/21

@@ -1,4 +1,4 @@
-package others.colormask;
+package cn.six.open.util;
 
 import android.graphics.Color;
 
