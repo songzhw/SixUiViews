@@ -7,7 +7,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 public class UiUtil {
-	public static int dp2px(Context ctx, int dp) {
+	public static int dp2px(Context ctx, float dp) {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, ctx.getResources() .getDisplayMetrics());
 	}
 
