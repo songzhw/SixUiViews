@@ -2,6 +2,8 @@ package cn.six.open.view.animcheck;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 
 import cn.six.open.R;
@@ -28,6 +30,9 @@ public class AnimCheckBoxDemo extends Activity implements View.OnClickListener,
 
         this.cbTick = (TickCheckBox) findViewById(R.id.cbAnim2);
         this.cbTick.setOnClickListener(this);
+        cbTick.setText("Second line");
+
+        handler.sendEmptyMessageDelayed(11, 2000);
     }
 
     @Override
@@ -43,5 +48,16 @@ public class AnimCheckBoxDemo extends Activity implements View.OnClickListener,
     public void onCrossChanged(boolean isCrossed) {
         System.out.println("szw onCrossChanged("+isCrossed+")");
     }
+
+
+
+    // Test the text and width when changing text
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            cbCross.setText("A delayed task!");
+            cbTick.setText("Another delayed task");
+        }
+    };
 
 }

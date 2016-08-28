@@ -16,18 +16,13 @@ import cn.six.open.util.UiUtil;
 
 /**
  * Created by songzhw on 2016-08-17
- *
- * TODO
- * 1. Width的wrap_content
- * 2. 其它MeasureMode
- * 3. <STRIKE>加onCheckChangedListener</STRIKE>
- * 4. 变色
  */
 public class CrossCheckBox extends View implements Checkable{
     public int DEFAULT_HEIGHT, DEFAULT_SIZE, DEFAULT_HALF;
 
     public int startX, startY;
     private String text = "";
+    private int stringWidth;
 
     private Paint linePaint, textPaint;
     private Path crossPath;
@@ -69,7 +64,6 @@ public class CrossCheckBox extends View implements Checkable{
         });
     }
 
-    // measure : AT_MOST
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -78,7 +72,6 @@ public class CrossCheckBox extends View implements Checkable{
         int measuredWidth = widthMeasureSpec;
         int measureHeight = heightMeasureSpec;
         if (widthSpecMode == MeasureSpec.AT_MOST) {
-            int stringWidth = (int) textPaint.measureText(text);
             measuredWidth = startX + DEFAULT_SIZE + startX + stringWidth + startX;
         }
 
@@ -116,7 +109,8 @@ public class CrossCheckBox extends View implements Checkable{
     // ============== public method ==============
     public void setText(String txt){
         this.text = txt;
-        invalidate();
+        stringWidth = (int) textPaint.measureText(text);
+        requestLayout(); // invalidate() is okay, too
     }
 
     // ============== Checkable interface ==============
