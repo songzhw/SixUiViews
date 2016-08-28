@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathMeasure;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -20,20 +19,17 @@ import cn.six.open.util.UiUtil;
  *
  * TODO
  * 1. 其它MeasureMode
- * 2. 加onCheckChangedListener
+ * 2. <STRIKE>加onCheckChangedListener</STRIKE>
  * 3. 变色
- * 4. other TODO
  */
 public class CrossCheckBox extends View implements Checkable{
     public int DEFAULT_HEIGHT, DEFAULT_SIZE, DEFAULT_HALF;
 
     public int startX, startY;
     public String text = "Buy milk, orange and avocado";
-    public int textWidth, textHeight;
 
     private Paint linePaint, textPaint;
     private Path crossPath;
-    private PathMeasure pathMeasure;
 
     public ICrossChangeListener listener;
 
@@ -127,7 +123,7 @@ public class CrossCheckBox extends View implements Checkable{
         }
 
         if(listener != null){
-            listener.onCross(isChecked);
+            listener.onCrossChanged(isChecked);
         }
     }
 
@@ -142,4 +138,8 @@ public class CrossCheckBox extends View implements Checkable{
         setChecked(isChecked);
     }
 
+    // ============== Listener ==============
+    public interface ICrossChangeListener{
+        void onCrossChanged(boolean isCrossed);
+    }
 }

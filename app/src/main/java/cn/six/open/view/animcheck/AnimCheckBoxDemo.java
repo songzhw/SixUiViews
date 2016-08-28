@@ -23,6 +23,7 @@ public class AnimCheckBoxDemo extends Activity implements View.OnClickListener,
 
         this.cbCross = (CrossCheckBox) findViewById(R.id.cbAnim);
         this.cbCross.setOnClickListener(this);
+        cbCross.listener = this;
 
         this.cbTick = (TickCheckBox) findViewById(R.id.cbAnim2);
         this.cbTick.setOnClickListener(this);
@@ -35,6 +36,11 @@ public class AnimCheckBoxDemo extends Activity implements View.OnClickListener,
         } else if (v == cbTick) {
             cbTick.toggle();
         }
+    }
+
+    @Override
+    public void onCrossChanged(boolean isCrossed) {
+        System.out.println("szw onCrossChanged("+isCrossed+")");
     }
 
 }
