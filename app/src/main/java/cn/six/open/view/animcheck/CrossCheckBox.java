@@ -18,9 +18,10 @@ import cn.six.open.util.UiUtil;
  * Created by songzhw on 2016-08-17
  *
  * TODO
- * 1. 其它MeasureMode
- * 2. <STRIKE>加onCheckChangedListener</STRIKE>
- * 3. 变色
+ * 1. Width的wrap_content
+ * 2. 其它MeasureMode
+ * 3. <STRIKE>加onCheckChangedListener</STRIKE>
+ * 4. 变色
  */
 public class CrossCheckBox extends View implements Checkable{
     public int DEFAULT_HEIGHT, DEFAULT_SIZE, DEFAULT_HALF;
@@ -77,7 +78,9 @@ public class CrossCheckBox extends View implements Checkable{
         int measuredWidth = widthMeasureSpec;
         int measureHeight = heightMeasureSpec;
         if (widthSpecMode == MeasureSpec.AT_MOST) {
-            // TODO
+            int stringWidth = (int) textPaint.measureText(text);
+            measuredWidth = startX + DEFAULT_SIZE + startX + stringWidth + startX;
+            System.out.println("szw textSize = " + measuredWidth);
         }
 
         if (heightSpecMode == MeasureSpec.AT_MOST) {
