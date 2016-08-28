@@ -27,7 +27,7 @@ public class CrossCheckBox extends View implements Checkable{
     public int DEFAULT_HEIGHT, DEFAULT_SIZE, DEFAULT_HALF;
 
     public int startX, startY;
-    public String text = "Buy milk, orange and avocado";
+    private String text = "";
 
     private Paint linePaint, textPaint;
     private Path crossPath;
@@ -80,7 +80,6 @@ public class CrossCheckBox extends View implements Checkable{
         if (widthSpecMode == MeasureSpec.AT_MOST) {
             int stringWidth = (int) textPaint.measureText(text);
             measuredWidth = startX + DEFAULT_SIZE + startX + stringWidth + startX;
-            System.out.println("szw textSize = " + measuredWidth);
         }
 
         if (heightSpecMode == MeasureSpec.AT_MOST) {
@@ -88,6 +87,7 @@ public class CrossCheckBox extends View implements Checkable{
         }
         setMeasuredDimension(measuredWidth, measureHeight);
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -111,6 +111,12 @@ public class CrossCheckBox extends View implements Checkable{
         canvas.drawText(text, startX + DEFAULT_SIZE + startX,
                 (DEFAULT_HEIGHT - textPaint.descent() - textPaint.ascent()) / 2, textPaint);
 
+    }
+
+    // ============== public method ==============
+    public void setText(String txt){
+        this.text = txt;
+        invalidate();
     }
 
     // ============== Checkable interface ==============

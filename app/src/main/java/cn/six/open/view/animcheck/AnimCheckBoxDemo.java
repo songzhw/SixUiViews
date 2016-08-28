@@ -24,6 +24,7 @@ public class AnimCheckBoxDemo extends Activity implements View.OnClickListener,
         this.cbCross = (CrossCheckBox) findViewById(R.id.cbAnim);
         this.cbCross.setOnClickListener(this);
         cbCross.listener = this;
+        cbCross.setText("Play squash");
 
         this.cbTick = (TickCheckBox) findViewById(R.id.cbAnim2);
         this.cbTick.setOnClickListener(this);
