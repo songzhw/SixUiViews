@@ -85,8 +85,15 @@ Now the ScratchCardView is good to go!
 ## 8. Swipe-Delete EditText
 Swiping in the EditText will delete all the text in this EditText.
 
+## 9. AnimCheckBox
 
+This is a combination of two View : CrossCheckBox, TickCheckBox.
 
+Before                  |  After
+:-------------------------:|:-------------------------:
+![](/pic/AnimCheckBox01.jpg)  |  ![](/pic/AnimCheckBox02.jpg)
+
+This is a static picture. Actually these two views has animation. 
 
 ## Reference
 1. https://github.com/baoyongzhang/android-ActionSheet   ActionSheet for Android

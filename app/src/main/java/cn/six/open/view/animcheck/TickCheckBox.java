@@ -12,7 +12,6 @@ import android.graphics.PathMeasure;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.Checkable;
 
 import java.util.ArrayList;
@@ -93,7 +92,7 @@ public class TickCheckBox extends View implements Checkable {
         });
 
         animatorSet = new AnimatorSet();
-        animatorSet.setDuration(700);
+        animatorSet.setDuration(500);
         animatorSet.playSequentially(animRotate, animDisappear);
     }
 
@@ -171,7 +170,11 @@ public class TickCheckBox extends View implements Checkable {
             animatorSet.start();
         } else {
             // Note : animatorSet.reverse() is a @hide method !!!
-
+            ArrayList<Animator> anims =  animatorSet.getChildAnimations();
+            for(Animator anim : anims){
+                ValueAnimator valueAnimator = (ValueAnimator) anim;
+                valueAnimator.reverse();
+            }
         }
 
         if(listener != null){
