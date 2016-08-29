@@ -91,7 +91,7 @@ This is a combination of two View : CrossCheckBox, TickCheckBox.
 
 Before                  |  After
 :-------------------------:|:-------------------------:
-![](/pic/AnimCheckBox01.jpg)  |  ![](/pic/AnimCheckBox02.jpg)
+![](/pic/AnimCheckBox01.png)  |  ![](/pic/AnimCheckBox02.png)
 
 This is a static picture. Actually these two views has animation. 
 
