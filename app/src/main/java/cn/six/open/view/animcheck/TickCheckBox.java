@@ -1,5 +1,6 @@
 package cn.six.open.view.animcheck;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -11,7 +12,10 @@ import android.graphics.PathMeasure;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Checkable;
+
+import java.util.ArrayList;
 
 import cn.six.open.util.UiUtil;
 
@@ -37,6 +41,8 @@ public class TickCheckBox extends View implements Checkable {
     private AnimatorSet animatorSet;
     private int rotate;
     private float percentage = 0;
+
+    public ITickChangeListener listener;
 
 
     public TickCheckBox(Context context) {
@@ -87,7 +93,7 @@ public class TickCheckBox extends View implements Checkable {
         });
 
         animatorSet = new AnimatorSet();
-        animatorSet.setDuration(3700);
+        animatorSet.setDuration(700);
         animatorSet.playSequentially(animRotate, animDisappear);
     }
 
@@ -118,9 +124,9 @@ public class TickCheckBox extends View implements Checkable {
         squarePathLength = squarePathMeasure.getLength();
 
         Path origTickPath = new Path();
-        origTickPath.moveTo(DEFAULT_SIZE * 0.8f, DEFAULT_SIZE * 0.2f);
-        origTickPath.lineTo(DEFAULT_SIZE * 0.45f, DEFAULT_SIZE * 0.8f);
-        origTickPath.lineTo(DEFAULT_SIZE * 0.2f, DEFAULT_SIZE * 0.5f);
+        origTickPath.moveTo(DEFAULT_SIZE * 1f, DEFAULT_SIZE * 0f);
+        origTickPath.lineTo(DEFAULT_SIZE * 0.4f, DEFAULT_SIZE * 1f);
+        origTickPath.lineTo(DEFAULT_SIZE * 0.05f, DEFAULT_SIZE * 0.6f);
         tickPathMeasure.setPath(origTickPath, false);
         tickPathLength = tickPathMeasure.getLength();
 
@@ -164,8 +170,12 @@ public class TickCheckBox extends View implements Checkable {
         if (isChecked) { // false -> true
             animatorSet.start();
         } else {
-            // TODO no reverse() method?
-//            animatorSet.reverse();
+            // Note : animatorSet.reverse() is a @hide method !!!
+
+        }
+
+        if(listener != null){
+            listener.onTickChanged(isChecked);
         }
     }
 
@@ -178,5 +188,10 @@ public class TickCheckBox extends View implements Checkable {
     public void toggle() {
         isChecked = !isChecked;
         setChecked(isChecked);
+    }
+
+    // ============== Listener ==============
+    public interface ITickChangeListener{
+        void onTickChanged(boolean isCrossed);
     }
 }

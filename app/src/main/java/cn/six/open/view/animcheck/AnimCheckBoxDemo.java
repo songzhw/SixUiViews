@@ -13,7 +13,7 @@ import cn.six.open.R;
  * Created by songzhw on 2016-08-17
  */
 public class AnimCheckBoxDemo extends Activity implements View.OnClickListener,
-        CrossCheckBox.ICrossChangeListener{
+        CrossCheckBox.ICrossChangeListener, TickCheckBox.ITickChangeListener{
 
     private CrossCheckBox cbCross;
     private TickCheckBox cbTick;
@@ -30,9 +30,10 @@ public class AnimCheckBoxDemo extends Activity implements View.OnClickListener,
 
         this.cbTick = (TickCheckBox) findViewById(R.id.cbAnim2);
         this.cbTick.setOnClickListener(this);
+        cbTick.listener = this;
         cbTick.setText("Second line");
 
-        handler.sendEmptyMessageDelayed(11, 2000);
+//        handler.sendEmptyMessageDelayed(11, 2000);
     }
 
     @Override
@@ -49,6 +50,11 @@ public class AnimCheckBoxDemo extends Activity implements View.OnClickListener,
         System.out.println("szw onCrossChanged("+isCrossed+")");
     }
 
+    @Override
+    public void onTickChanged(boolean isCrossed) {
+        System.out.println("szw onTickChanged("+isCrossed+")");
+    }
+
 
 
     // Test the text and width when changing text
@@ -59,5 +65,6 @@ public class AnimCheckBoxDemo extends Activity implements View.OnClickListener,
             cbTick.setText("Another delayed task");
         }
     };
+
 
 }
