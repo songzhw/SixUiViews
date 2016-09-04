@@ -36,21 +36,18 @@ Four tabs:
 ## 3. LoginNameEditText
 (1). show account names you inputed before
 
-![](/pic/2016070301.png)
-
 (2). show suffix along with your input
 
-![](/pic/2016070302.png)
+![](/pic/LoginEditText.gif)
 
 
 
 
 ## 5. Color Mask
-How to make a transpanrent png picture to show different colors programmatically?
+It will make a transpanrent png picture to show different colors programmatically?
 
-This is an solution.
 
-![](/pic/ColorMask.jpg)
+![](/pic/ColorMask.gif)
 
 
 ## 6. Custom ActionSheet View
@@ -60,16 +57,16 @@ Reference : https://github.com/baoyongzhang/android-ActionSheet
 Since baoyongzhang's ActionSheet is restrict to a specific view, and I have to custom the view in ActionSheet.
 So I did some work to meet my need.
 
+![](/pic/CustomActionSheet.gif)
+
 
 # 7. Scratch Card
 
 A scratchcard is a small card, where one or more areas contain concealed information which can be revealed by scratching off an opaque covering.
 Applications include cards sold for gambling (especially lottery games and quizzes), or free-of-charge cards for quizzes, and to conceal confidential information such as PINs for telephone calling cards and other prepaid services.
 
-![](/pic/Scratch001.jpg)
-![](/pic/Scratch002.jpg)
-![](/pic/Scratch003.jpg)
-![](/pic/Scratch004.jpg)
+![](/pic/ScratchCard.gif)
+
 
 In some app, Scratch Card effect is used to conceal some lottery information.
 
@@ -89,11 +86,8 @@ Swiping in the EditText will delete all the text in this EditText.
 
 This is a combination of two View : CrossCheckBox, TickCheckBox.
 
-Before                  |  After
-:-------------------------:|:-------------------------:
-![](/pic/AnimCheckBox01.png)  |  ![](/pic/AnimCheckBox02.png)
+![](/pic/AnimCheckBox.gif)
 
-This is a static picture. Actually these two views has animation. 
 
 ## Reference
 1. https://github.com/baoyongzhang/android-ActionSheet   ActionSheet for Android

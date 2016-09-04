@@ -7,7 +7,7 @@
         android:label="A_SixUiViews"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.animcheck.AnimCheckBoxDemo">
+        <activity android:name=".view.scratchcard.ScratchCardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
