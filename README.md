@@ -88,7 +88,42 @@ This is a combination of two View : CrossCheckBox, TickCheckBox.
 
 ![](/pic/AnimCheckBox.gif)
 
+## 10. OneAdapter
+You do not need to write a bunch of specific Adapter for RecyclerView anymore. Now you have OneAdapter. What you need to do is just like this:
+
+```java
+OneAdapter<String> adapter = new OneAdapter<String>(this, R.layout.item_rv_simple) {
+  @Override
+  protected void apply(RvViewHolder vh, String s, int position) {
+      TextView tv = vh.getView(R.id.tv_rv_simple_item);
+      tv.setText("Position "+position+" : "+s);
+      if(position % 2 == 1){
+          tv.setBackgroundColor(0xffC7EDCC);
+      } else {
+          tv.setBackgroundColor(0xffffffff);
+      }
+  }
+};
+adapter.data = data;
+rv.setAdapter(adapter);
+```
+
+
+## 11. OneBindingAdapter: OneAdapter for data-binding
+For data-binding, you obivous need a different version of OneAdapter. Because now you do not need to use apply() method. You declaim a data in item's layout xml, hence the data-binding framework will do this job for you. 
+
+Here is how you can use OneBindingAdapter:
+
+```java
+    OneBindingAdapter<TmpItem> adapter = new OneBindingAdapter<>(this, R.layout.item_rv, BR.item, data);
+    RecyclerView rv = binding.rvBindingDemo;
+    rv.setLayoutManager(new LinearLayoutManager(this));
+    rv.setAdapter(adapter);
+```
+
+
 
 ## Reference
 1. https://github.com/baoyongzhang/android-ActionSheet   ActionSheet for Android
 2. http://blog.csdn.net/qq_16064871/article/details/50224635   Bounced ScrollView
+3. https://github.com/Doudada/DataBinding-Librar-RecyclerView-all-purpose-Adapter
