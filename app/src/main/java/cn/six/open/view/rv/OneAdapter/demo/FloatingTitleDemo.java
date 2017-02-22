@@ -27,7 +27,7 @@ public class FloatingTitleDemo extends Activity  {
         rv = (RecyclerView) findViewById(R.id.rvRefresh);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new OneAdapter<String>(R.layout.item_rv) {
+        adapter = new OneAdapter<String>(R.layout.item_rv_one) {
             @Override
             protected void apply(RvViewHolder vh, String value, int position) {
                 vh.setText(R.id.tv_rv_item, value);
