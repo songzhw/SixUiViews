@@ -13,7 +13,7 @@ import cn.six.open.view.rv.OneAdapter.OneAdapter;
 import cn.six.open.view.rv.OneAdapter.RvViewHolder;
 
 
-public class FloatingTitleDemo extends Activity  {
+public class OneAdaptersDemo extends Activity  {
     private RecyclerView rv;
     private OneAdapter adapter;
     private List<String> data;
