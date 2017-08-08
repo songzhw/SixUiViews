@@ -59,6 +59,10 @@ So I did some work to meet my need.
 
 ![](/pic/CustomActionSheet.gif)
 
+**2017.08.10** : update this view with a SpringAnimation. Now it support two animations :
+* show with alpha animation
+* show with spring animation
+
 
 # 7. Scratch Card
 
