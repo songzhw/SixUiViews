@@ -4,6 +4,8 @@ package cn.six.open.view.customactionsheet;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.animation.SpringAnimation;
+import android.support.animation.SpringForce;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ public class CustomActionSheet extends View implements View.OnClickListener {
         this.actv = actv;
     }
 
+    /** Show the ActionSheet with background alpha animation. 没动画会很突兀 */
     public void show(View sheetContentView){
         dismissInputMethod();
 
@@ -34,9 +37,26 @@ public class CustomActionSheet extends View implements View.OnClickListener {
 
         bgView.startAnimation(AnimationUtil.createAlphaInAnimation(ALPHA_DURATION));
         contentView.startAnimation(AnimationUtil.createTranslationInAnimation(TRANSLATE_DURATION));
-
-
     }
+
+    /** Show the ActionSheet with the bouncy animation. 没动画会很突兀*/
+    public void showWithSpring(View sheetContentView){
+        dismissInputMethod();
+
+        wholeView = createView(sheetContentView); // init the bgView and flayContent, too
+        decorView = (ViewGroup) actv.getWindow().getDecorView();
+        decorView.addView(wholeView);
+
+        int screenHeight = actv.getResources().getDisplayMetrics().heightPixels;
+        SpringForce springForce = new SpringForce(0)
+                .setStiffness(SpringForce.STIFFNESS_VERY_LOW) //调低，动画时间duration就更长些
+                .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
+        SpringAnimation springAnimation = new SpringAnimation(wholeView, SpringAnimation.TRANSLATION_Y);
+        springAnimation.setSpring(springForce);
+        springAnimation.setStartValue(screenHeight);
+        springAnimation.start();
+    }
+
 
     public void dismissInputMethod(){
         InputMethodManager imm = (InputMethodManager) actv.getSystemService(Context.INPUT_METHOD_SERVICE);

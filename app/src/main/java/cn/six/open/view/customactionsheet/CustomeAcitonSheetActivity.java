@@ -33,7 +33,8 @@ public class CustomeAcitonSheetActivity extends Activity implements View.OnClick
 
     public void onClickButton(View v){
         actionSheet = new CustomActionSheet(this);
-        actionSheet.show(sheetContentView);
+//        actionSheet.show(sheetContentView);
+        actionSheet.showWithSpring(sheetContentView);
     }
 
 
