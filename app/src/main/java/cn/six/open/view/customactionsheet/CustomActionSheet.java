@@ -28,24 +28,16 @@ public class CustomActionSheet extends View implements View.OnClickListener {
     }
 
     /** Show the ActionSheet with background alpha animation. 没动画会很突兀 */
-    public void show(View sheetContentView){
-        dismissInputMethod();
-
-        wholeView = createView(sheetContentView); // init the bgView and flayContent, too
-        decorView = (ViewGroup) actv.getWindow().getDecorView();
-        decorView.addView(wholeView);
+    public void showWithAlphaAnimation(View sheetContentView){
+        showActionSheetWithoutAnimation(sheetContentView);
 
         bgView.startAnimation(AnimationUtil.createAlphaInAnimation(ALPHA_DURATION));
         contentView.startAnimation(AnimationUtil.createTranslationInAnimation(TRANSLATE_DURATION));
     }
 
     /** Show the ActionSheet with the bouncy animation. 没动画会很突兀*/
-    public void showWithSpring(View sheetContentView){
-        dismissInputMethod();
-
-        wholeView = createView(sheetContentView); // init the bgView and flayContent, too
-        decorView = (ViewGroup) actv.getWindow().getDecorView();
-        decorView.addView(wholeView);
+    public void showWithSpringAnimation(View sheetContentView){
+        showActionSheetWithoutAnimation(sheetContentView);
 
         int screenHeight = actv.getResources().getDisplayMetrics().heightPixels;
         SpringForce springForce = new SpringForce(0)
@@ -55,6 +47,14 @@ public class CustomActionSheet extends View implements View.OnClickListener {
         springAnimation.setSpring(springForce);
         springAnimation.setStartValue(screenHeight);
         springAnimation.start();
+    }
+
+    private void showActionSheetWithoutAnimation(View sheetContentView) {
+        dismissInputMethod();
+
+        wholeView = createView(sheetContentView); // init the bgView and flayContent, too
+        decorView = (ViewGroup) actv.getWindow().getDecorView();
+        decorView.addView(wholeView);
     }
 
 
