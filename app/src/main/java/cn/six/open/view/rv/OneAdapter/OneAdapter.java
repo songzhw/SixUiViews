@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Created by songzhw on 2016-08-13
  */
@@ -17,6 +16,11 @@ public abstract class OneAdapter<T> extends RecyclerView.Adapter<RvViewHolder> {
     public OneAdapter(int layoutResId) {
         this.layoutResId = layoutResId;
         data = new ArrayList<>();
+    }
+
+    public OneAdapter(int layoutResId, List<T> data){
+        this.layoutResId = layoutResId;
+        this.data = data;
     }
 
     @Override
