@@ -125,6 +125,10 @@ Here is how you can use OneBindingAdapter:
     rv.setAdapter(adapter);
 ```
 
+## 12. StickyColumnTableView
+A tableView whose first column is stikcy at the left. 
+
+![](/pic/StickyColumnTableView.gif)
 
 
 ## Reference
