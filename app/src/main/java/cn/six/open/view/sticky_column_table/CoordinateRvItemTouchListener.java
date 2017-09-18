@@ -31,9 +31,11 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
             rv.addOnScrollListener(scrollListener);
         } else {
             // if this touch is not a scrolling action, remove the scroll listener
-            if (action == MotionEvent.ACTION_UP && rv.getScrollY() == lastY) {
+            boolean isTimeToRemoveListener = action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL;
+            if (isTimeToRemoveListener && rv.getScrollY() == lastY) {
                 rv.removeOnScrollListener(scrollListener);
             }
+
         }
     }
 
