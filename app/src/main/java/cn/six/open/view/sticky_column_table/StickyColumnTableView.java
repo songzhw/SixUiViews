@@ -45,6 +45,7 @@ public class StickyColumnTableView<T> extends LinearLayout {
         if (attrs != null) {
             TypedArray ta = ctx.obtainStyledAttributes(attrs, R.styleable.StickyColumnTableView);
             width = ta.getInteger(R.styleable.StickyColumnTableView_sctColumnNumber, DEFAULT_COLUMN_NUMBER);
+            ta.recycle();
         }
 
         LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
