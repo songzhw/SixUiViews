@@ -23,7 +23,6 @@ public class StickyColumnTableView<T> extends LinearLayout {
 
     private StickyColumnTableAdapter adapter;
     private RecyclerView rvLeft, rvRight;
-    private ObservableHorizontalScrollView rightScrollView;
     private CoordinateRvScrollListener rvLeftScrollListener, rvRightScrollListener;
     private IStickyColumnTableInflater<T> binder;
 
@@ -56,7 +55,6 @@ public class StickyColumnTableView<T> extends LinearLayout {
 
         rvLeft = (RecyclerView) findViewById(R.id.rvMultiRvLeft);
         rvRight = (RecyclerView) findViewById(R.id.rvMultiRvRight);
-        rightScrollView = (ObservableHorizontalScrollView) findViewById(R.id.hsvRight);
 
         rvLeft.setLayoutManager(new LinearLayoutManager(ctx));
         rvRight.setLayoutManager(new GridLayoutManager(ctx, width));
@@ -94,14 +92,6 @@ public class StickyColumnTableView<T> extends LinearLayout {
 
         rvRightScrollListener = new CoordinateRvScrollListener(rvLeft);
         rvRight.addOnItemTouchListener(new CoordinateRvItemTouchListener(rvLeft, rvRightScrollListener));
-
-        rightScrollView.setScrollViewListener(new ObservableHorizontalScrollView.ScrollViewListener() {
-            @Override
-            public void onScrollChanged(ObservableHorizontalScrollView scrollView, int x, int y, int oldx, int oldy) {
-                rvLeft.removeOnScrollListener(rvLeftScrollListener);
-                rvRight.removeOnScrollListener(rvRightScrollListener);
-            }
-        });
 
     }
 
