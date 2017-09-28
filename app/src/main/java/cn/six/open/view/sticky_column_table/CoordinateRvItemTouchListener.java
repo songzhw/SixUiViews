@@ -3,6 +3,9 @@ package cn.six.open.view.sticky_column_table;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 // 在rvOther是idle时， 才会真的能移动
 public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchListener {
     private RecyclerView rvOther;
@@ -35,7 +38,16 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
             if (isTimeToRemoveListener && rv.getScrollY() == lastY) {
                 rv.removeOnScrollListener(scrollListener);
             }
+        }
 
+        // debug code
+        try {
+            Field field = RecyclerView.class.getDeclaredField("mScrollListeners");
+            field.setAccessible(true);
+            List<RecyclerView.OnScrollListener> scrollListeners = (List<RecyclerView.OnScrollListener>) field.get(rv);
+            System.err.println("szw onTouchEvent() : listeners size = "+scrollListeners.size());
+        } catch(Exception ex){
+            System.err.println("szw error: "+ex);
         }
     }
 
