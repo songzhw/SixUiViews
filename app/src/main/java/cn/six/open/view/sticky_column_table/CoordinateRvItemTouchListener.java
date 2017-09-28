@@ -45,7 +45,9 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
             Field field = RecyclerView.class.getDeclaredField("mScrollListeners");
             field.setAccessible(true);
             List<RecyclerView.OnScrollListener> scrollListeners = (List<RecyclerView.OnScrollListener>) field.get(rv);
-            System.err.println("szw onTouchEvent() : listeners size = "+scrollListeners.size());
+            List<RecyclerView.OnScrollListener> scrollListeners2 = (List<RecyclerView.OnScrollListener>) field.get(rvOther);
+            System.err.println("szw onTouchEvent() : listeners size1 = "+ (scrollListeners == null? 0 : scrollListeners.size() )
+                    +" ; size2 = "+ (scrollListeners2 == null ? 0 : scrollListeners2.size()) );
         } catch(Exception ex){
             System.err.println("szw error: "+ex);
         }
