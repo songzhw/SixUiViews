@@ -10,7 +10,6 @@ import java.util.List;
 public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchListener {
     private RecyclerView rvOther;
     private CoordinateRvScrollListener scrollListener;
-    private int lastY;
 
     public CoordinateRvItemTouchListener(RecyclerView rvOther, CoordinateRvScrollListener scrollListener) {
         this.rvOther = rvOther;
@@ -30,12 +29,11 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
         int action = e.getAction();
         if (action == MotionEvent.ACTION_DOWN && rvOther.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
-            lastY = rv.getScrollY();
             rv.addOnScrollListener(scrollListener);
         } else {
             // if this touch is not a scrolling action, remove the scroll listener
             boolean isTimeToRemoveListener = action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL;
-            if (isTimeToRemoveListener && rv.getScrollY() == lastY) {
+            if (isTimeToRemoveListener) {
                 rv.removeOnScrollListener(scrollListener);
             }
         }
