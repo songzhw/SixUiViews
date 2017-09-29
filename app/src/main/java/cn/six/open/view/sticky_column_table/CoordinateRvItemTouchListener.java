@@ -28,9 +28,9 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
         int action = e.getAction();
-        boolean isActingWhenActionDown = action == MotionEvent.ACTION_DOWN && rvOther.getScrollState() == RecyclerView.SCROLL_STATE_IDLE;
-        System.out.println("szw onTouchEvent() : isActingWhenActionDown = "+isActingWhenActionDown +" ; other.state = "+getState(rvOther.getScrollState()));
-        System.out.println("szw onTouchEvent() : rvOther = "+rvOther);
+        boolean isActingWhenActionDown = action == MotionEvent.ACTION_DOWN && rvOther.getScrollState() != RecyclerView.SCROLL_STATE_DRAGGING;
+//        System.out.println("szw onTouchEvent() : isActingWhenActionDown = "+isActingWhenActionDown +" ; other.state = "+getState(rvOther.getScrollState()));
+//        System.out.println("szw onTouchEvent() : rvOther = "+rvOther);
         if (isActingWhenActionDown) {
             rv.addOnScrollListener(scrollListener);
         } else {
