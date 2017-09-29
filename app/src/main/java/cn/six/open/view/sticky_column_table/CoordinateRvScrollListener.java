@@ -31,6 +31,7 @@ public class CoordinateRvScrollListener extends RecyclerView.OnScrollListener {
 
 
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+            System.err.println("szw remove listener 222  scroll idle");
             recyclerView.removeOnScrollListener(this);
         }
     }
@@ -38,6 +39,8 @@ public class CoordinateRvScrollListener extends RecyclerView.OnScrollListener {
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
+        System.out.println("szw onScrolled()");
+
         rvOther.scrollBy(dx, dy);
     }
 
