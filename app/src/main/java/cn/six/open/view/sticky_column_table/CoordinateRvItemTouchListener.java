@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchListener {
     private RecyclerView rvOther;
     private CoordinateRvScrollListener scrollListener;
+    private float downRawY;
 
     public CoordinateRvItemTouchListener(RecyclerView rvOther, CoordinateRvScrollListener scrollListener) {
         this.rvOther = rvOther;
@@ -21,24 +22,23 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
         }
         return false;
     }
+
+
+
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
         int action = e.getAction();
         boolean isActingWhenActionDown = action == MotionEvent.ACTION_DOWN;
         if (isActingWhenActionDown) {
             System.out.println("szw action_down : add a scroll listener");
+            downRawY = e.getRawY();
             stopScrollForRvs(rv);
-
             rv.addOnScrollListener(scrollListener);
-        } else if(action == MotionEvent.ACTION_MOVE){
-            stopScrollForRvs(rv);
-
-        }
-        else {
+        } else {
             System.out.println("szw " + getActionString(e.getAction()));
             // if this touch is not a scrolling action, remove the scroll listener
             boolean isTimeToRemoveListener = action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL;
-            if (isTimeToRemoveListener) {
+            if (isTimeToRemoveListener && downRawY == e.getRawY()) {
                 System.err.println("szw remove listener 111 action up");
                 rv.removeOnScrollListener(scrollListener);
             }
@@ -52,6 +52,7 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
         rv.stopScroll();
         rv.clearOnScrollListeners();
     }
+
 
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
