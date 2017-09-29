@@ -29,8 +29,6 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
         int action = e.getAction();
         boolean isActingWhenActionDown = action == MotionEvent.ACTION_DOWN ;
-//        System.out.println("szw onTouchEvent() : isActingWhenActionDown = "+isActingWhenActionDown +" ; other.state = "+getState(rvOther.getScrollState()));
-//        System.out.println("szw onTouchEvent() : rvOther = "+rvOther);
         if (isActingWhenActionDown) {
             rvOther.stopScroll(); rvOther.clearOnScrollListeners();
             rv.stopScroll(); rv.clearOnScrollListeners();
@@ -61,14 +59,4 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
     }
 
-    private String getState(int state) {
-        if (state == RecyclerView.SCROLL_STATE_IDLE) {
-            return "idle";
-        } else if(state == RecyclerView.SCROLL_STATE_DRAGGING) {
-            return "dragging";
-        } else if(state == RecyclerView.SCROLL_STATE_SETTLING) {
-            return "settling";
-        }
-        return "null";
-    }
 }

@@ -13,11 +13,10 @@ public class CoordinateRvScrollListener extends RecyclerView.OnScrollListener {
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
         System.out.println("szw scoll listener: state = " + getState(newState) +" ; rv = "+recyclerView);
-        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+        if (newState != RecyclerView.SCROLL_STATE_DRAGGING) { //不能这样改, 不然fling时, rvRight还在滑动, rvLeft就不走了
             recyclerView.removeOnScrollListener(this);
         }
     }
-    private RecyclerView rv;
 
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
