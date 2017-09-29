@@ -28,7 +28,10 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
         int action = e.getAction();
-        if (action == MotionEvent.ACTION_DOWN && rvOther.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+        boolean isActingWhenActionDown = action == MotionEvent.ACTION_DOWN && rvOther.getScrollState() == RecyclerView.SCROLL_STATE_IDLE;
+        System.out.println("szw onTouchEvent() : isActingWhenActionDown = "+isActingWhenActionDown +" ; other.state = "+getState(rvOther.getScrollState()));
+        System.out.println("szw onTouchEvent() : rvOther = "+rvOther);
+        if (isActingWhenActionDown) {
             rv.addOnScrollListener(scrollListener);
         } else {
             // if this touch is not a scrolling action, remove the scroll listener
@@ -53,5 +56,16 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
 
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
+
+    private String getState(int state) {
+        if (state == RecyclerView.SCROLL_STATE_IDLE) {
+            return "idle";
+        } else if(state == RecyclerView.SCROLL_STATE_DRAGGING) {
+            return "dragging";
+        } else if(state == RecyclerView.SCROLL_STATE_SETTLING) {
+            return "settling";
+        }
+        return "null";
     }
 }
