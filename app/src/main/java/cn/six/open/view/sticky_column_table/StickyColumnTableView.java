@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import cn.six.open.R;
+import cn.six.open.view.rv.OnRvItemClickListener;
 import cn.six.open.view.rv.OneAdapter.OneAdapter;
 import cn.six.open.view.rv.OneAdapter.RvViewHolder;
 
@@ -58,6 +59,18 @@ public class StickyColumnTableView<T> extends LinearLayout {
 
         rvLeft.setLayoutManager(new LinearLayoutManager(ctx));
         rvRight.setLayoutManager(new GridLayoutManager(ctx, width));
+
+        rvRight.addOnItemTouchListener(new OnRvItemClickListener(rvRight) {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder vh) {
+                System.out.println("szw rvRight click "+vh.getLayoutPosition());
+            }
+
+            @Override
+            public void onLongClick(RecyclerView.ViewHolder vh) {
+
+            }
+        });
     }
 
     public void setAdapter(StickyColumnTableAdapter adapter) {
