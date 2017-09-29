@@ -21,20 +21,20 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
         }
         return false;
     }
-
     @Override
     public void onTouchEvent(RecyclerView rv, MotionEvent e) {
         int action = e.getAction();
         boolean isActingWhenActionDown = action == MotionEvent.ACTION_DOWN;
         if (isActingWhenActionDown) {
             System.out.println("szw action_down : add a scroll listener");
-            rvOther.stopScroll();
-            rvOther.clearOnScrollListeners();
-            rv.stopScroll();
-            rv.clearOnScrollListeners();
+            stopScrollForRvs(rv);
 
             rv.addOnScrollListener(scrollListener);
-        } else {
+        } else if(action == MotionEvent.ACTION_MOVE){
+            stopScrollForRvs(rv);
+
+        }
+        else {
             System.out.println("szw " + getActionString(e.getAction()));
             // if this touch is not a scrolling action, remove the scroll listener
             boolean isTimeToRemoveListener = action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL;
@@ -44,6 +44,13 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
             }
         }
 
+    }
+
+    private void stopScrollForRvs(RecyclerView rv){
+        rvOther.stopScroll();
+        rvOther.clearOnScrollListeners();
+        rv.stopScroll();
+        rv.clearOnScrollListeners();
     }
 
     @Override
