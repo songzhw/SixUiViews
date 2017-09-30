@@ -5,7 +5,7 @@
     <TextView android:layout_width="match_parent" android:layout_height="50dp"
         android:text="Symbol"  android:gravity="center"/>
 
-    <android.support.v7.widget.RecyclerView android:id="@+id/rvMultiRvLeft"
+    <cn.six.open.view.sticky_column_table.MeMoveRecyclerView android:id="@+id/rvMultiRvLeft"
         android:layout_width="match_parent" android:layout_height="match_parent"/>
 
 </LinearLayout>

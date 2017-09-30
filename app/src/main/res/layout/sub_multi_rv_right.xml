@@ -7,7 +7,7 @@
         <TextView android:layout_width="match_parent" android:layout_height="50dp"
             android:text="Details"  android:gravity="center"/>
 
-        <android.support.v7.widget.RecyclerView android:id="@+id/rvMultiRvRight"
+        <cn.six.open.view.sticky_column_table.MeMoveRecyclerView android:id="@+id/rvMultiRvRight"
             android:layout_width="match_parent" android:layout_height="match_parent"/>
 
     </LinearLayout>

@@ -23,7 +23,7 @@ public class StickyColumnTableView<T> extends LinearLayout {
     public static final int DEFAULT_COLUMN_NUMBER = 8;
 
     private StickyColumnTableAdapter adapter;
-    private RecyclerView rvLeft, rvRight;
+    private MeMoveRecyclerView rvLeft, rvRight;
     private CoordinateRvScrollListener rvLeftScrollListener, rvRightScrollListener;
     private IStickyColumnTableInflater<T> binder;
 
@@ -54,8 +54,11 @@ public class StickyColumnTableView<T> extends LinearLayout {
         this.addView(leftView);
         this.addView(rightView);
 
-        rvLeft = (RecyclerView) findViewById(R.id.rvMultiRvLeft);
-        rvRight = (RecyclerView) findViewById(R.id.rvMultiRvRight);
+        rvLeft = (MeMoveRecyclerView) findViewById(R.id.rvMultiRvLeft);
+        rvRight = (MeMoveRecyclerView) findViewById(R.id.rvMultiRvRight);
+        rvLeft.setCoordinateRecyclerView(rvRight);
+        rvRight.setCoordinateRecyclerView(rvLeft);
+
 
         rvLeft.setLayoutManager(new LinearLayoutManager(ctx));
         rvRight.setLayoutManager(new GridLayoutManager(ctx, width));
@@ -64,11 +67,6 @@ public class StickyColumnTableView<T> extends LinearLayout {
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
                 System.out.println("szw rvRight click "+vh.getLayoutPosition());
-            }
-
-            @Override
-            public void onLongClick(RecyclerView.ViewHolder vh) {
-
             }
         });
     }

@@ -59,7 +59,9 @@ public abstract class OnRvItemClickListener implements RecyclerView.OnItemTouchL
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
     }
 
+    public void onLongClick(RecyclerView.ViewHolder vh){}
+
     // ========================= abstract methods =================================
     public abstract void onItemClick(RecyclerView.ViewHolder vh);
-    public abstract void onLongClick(RecyclerView.ViewHolder vh);
+
 }
