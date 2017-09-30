@@ -33,13 +33,11 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
             downRawY = e.getRawY();
             stopScrollForRvs(rv);
             rv.addOnScrollListener(scrollListener);
-            rvOther.setEnabled(false);
         } else {
             // if this touch is not a scrolling action, remove the scroll listener
             boolean isTimeToRemoveListener = action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL;
             if (isTimeToRemoveListener && downRawY == e.getRawY()) {
                 rv.removeOnScrollListener(scrollListener);
-                rvOther.setEnabled(true);
             }
         }
 

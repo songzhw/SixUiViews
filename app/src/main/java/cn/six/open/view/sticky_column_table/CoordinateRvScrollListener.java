@@ -14,7 +14,6 @@ public class CoordinateRvScrollListener extends RecyclerView.OnScrollListener {
         super.onScrollStateChanged(recyclerView, newState);
         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
             recyclerView.removeOnScrollListener(this);
-            rvOther.setEnabled(true);
         }
     }
 

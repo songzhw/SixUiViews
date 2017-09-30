@@ -6,6 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+/**
+
+ 3个touch事件的被调用顺序:
+ szw MeMoveRecyclerView             dispatchTouchEvent
+ szw CoordinateRvItemTouchListener  onInterceptTouchEvent
+ szw CoordinateRvItemTouchListener  onTouchEvent
+
+ */
 public class MeMoveRecyclerView extends RecyclerView {
     private RecyclerView rvOther;
 
