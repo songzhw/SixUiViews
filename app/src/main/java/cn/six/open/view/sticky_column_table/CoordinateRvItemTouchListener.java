@@ -30,17 +30,16 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
         int action = e.getAction();
         boolean isActingWhenActionDown = action == MotionEvent.ACTION_DOWN;
         if (isActingWhenActionDown) {
-            System.out.println("szw action_down : add a scroll listener");
             downRawY = e.getRawY();
             stopScrollForRvs(rv);
             rv.addOnScrollListener(scrollListener);
+            rvOther.setEnabled(false);
         } else {
-            System.out.println("szw " + getActionString(e.getAction()));
             // if this touch is not a scrolling action, remove the scroll listener
             boolean isTimeToRemoveListener = action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL;
             if (isTimeToRemoveListener && downRawY == e.getRawY()) {
-                System.err.println("szw remove listener 111 action up");
                 rv.removeOnScrollListener(scrollListener);
+                rvOther.setEnabled(true);
             }
         }
 
@@ -56,20 +55,5 @@ public class CoordinateRvItemTouchListener implements RecyclerView.OnItemTouchLi
 
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-    }
-
-    private String getActionString(int action) {
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                return "action_down";
-            case MotionEvent.ACTION_MOVE:
-                return "action_move";
-            case MotionEvent.ACTION_UP:
-                return "action_up";
-            case MotionEvent.ACTION_CANCEL:
-                return "action_cancel";
-            default:
-                return " - " + action;
-        }
     }
 }

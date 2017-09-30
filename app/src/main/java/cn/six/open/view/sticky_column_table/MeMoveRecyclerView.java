@@ -11,16 +11,10 @@ public class MeMoveRecyclerView extends RecyclerView {
 
     public MeMoveRecyclerView(Context context) {
         super(context);
-        init();
     }
 
     public MeMoveRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
-
-    public void init() {
-
     }
 
     public void setCoordinateRecyclerView(RecyclerView rvOther) {
@@ -36,12 +30,10 @@ public class MeMoveRecyclerView extends RecyclerView {
             } else {
                 rvOther.setEnabled(false);
             }
+            return super.dispatchTouchEvent(ev);
+        } else {
+            return false;
         }
 
-        if (action == MotionEvent.ACTION_DOWN) {
-            rvOther.setEnabled(false);
-            this.setEnabled(true);
-        }
-        return super.dispatchTouchEvent(ev);
     }
 }
