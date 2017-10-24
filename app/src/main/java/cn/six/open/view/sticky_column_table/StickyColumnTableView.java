@@ -66,7 +66,7 @@ public class StickyColumnTableView<T> extends LinearLayout {
         rvRight.addOnItemTouchListener(new OnRvItemClickListener(rvRight) {
             @Override
             public void onItemClick(RecyclerView.ViewHolder vh) {
-                System.out.println("szw rvRight click "+vh.getLayoutPosition());
+                System.out.println("szw rvRight click " + vh.getLayoutPosition());
             }
         });
     }
@@ -79,7 +79,14 @@ public class StickyColumnTableView<T> extends LinearLayout {
         this.binder = binder;
     }
 
-    public void refresh() {
+    /**
+     * If this view's parent layout is a ScrollView/RecyclerView/...
+     * then you should use refresh(false);
+     * Otherwise, refresh() is good enough for you
+     *
+     * @param isNestedScrollingEnabled : false if this view's parent layout can scroll, like a ScrollView/RecyclerView/...
+     */
+    public void refresh(boolean isNestedScrollingEnabled) {
         if (adapter == null) {
             return;
         }
@@ -98,6 +105,10 @@ public class StickyColumnTableView<T> extends LinearLayout {
             }
         });
 
+        // add these two line to fix the touch issue when in "rv in rv" situation
+        rvLeft.setNestedScrollingEnabled(isNestedScrollingEnabled);
+        rvRight.setNestedScrollingEnabled(isNestedScrollingEnabled);
+
         rvLeftScrollListener = new CoordinateRvScrollListener(rvRight);
         rvLeft.addOnItemTouchListener(new CoordinateRvItemTouchListener(rvRight, rvLeftScrollListener));
 
@@ -106,5 +117,11 @@ public class StickyColumnTableView<T> extends LinearLayout {
 
     }
 
+    public void refresh() {
+        refresh(true);
+    }
+
 }
+
+
 
