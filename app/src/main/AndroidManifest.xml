@@ -7,7 +7,7 @@
         android:label="A_SixUiViews"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.sticky_column_table.demo.MultiRvDemo2">
+        <activity android:name=".view.expandable.demo.ExpandableViewDemo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

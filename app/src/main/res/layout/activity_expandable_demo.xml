@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Need two parts, head and content. Just like Drawerlayout -->
+    <cn.six.open.view.expandable.ExpandableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- header -->
+
+
+        <!-- content -->
+
+
+    </cn.six.open.view.expandable.ExpandableLayout>
+
+</LinearLayout>
