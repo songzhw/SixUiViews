@@ -24,14 +24,15 @@ public class ExpandableLayout extends LinearLayout {
         setOrientation(VERTICAL);
     }
 
-    //  onFinishInflate -> onMeasure -> onSizeChanged -> onLayout
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-    }
+    // ★★★  onFinishInflate -> onMeasure -> onSizeChanged -> onLayout  ★★★
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        if(getChildCount() != 2){
+            throw new RuntimeException("ExpandableLayout could only have two children: header and content!");
+        }
+        headerView = getChildAt(0);
+        contentView = getChildAt(1);
     }
 }
