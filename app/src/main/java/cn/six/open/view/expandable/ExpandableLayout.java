@@ -13,6 +13,8 @@ public class ExpandableLayout extends LinearLayout {
 
     private int contentHeight;
 
+    private boolean isExpanded = false;
+
     public ExpandableLayout(Context context) {
         super(context);
         init(context);
@@ -58,6 +60,20 @@ public class ExpandableLayout extends LinearLayout {
 
 
     public void toggle(){
+        if(isExpanded){
+            collapse();
+        } else {
+            expand();
+        }
+        isExpanded = !isExpanded;
+    }
+
+    public void collapse(){
 
     }
+
+    public void expand(){
+
+    }
+
 }
