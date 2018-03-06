@@ -30,6 +30,17 @@ public class ExpandableLayout extends LinearLayout {
     // ★★★  onFinishInflate -> onAttachedToWindow -> onMeasure -> onSizeChanged -> onLayout  ★★★
 
 
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        headerView = getChildAt(0);
+        contentView = getChildAt(1);
+
+        headerView.setOnClickListener(v -> {
+            toggle();
+        });
+
+    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -37,16 +48,16 @@ public class ExpandableLayout extends LinearLayout {
         if (getChildCount() != 2) {
             throw new RuntimeException("ExpandableLayout could only have two children: header and content!");
         }
-        headerView = getChildAt(0);
-        contentView = getChildAt(1);
-
 
         contentHeight = contentView.getMeasuredHeight(); //此时contentView.getHeight()仍是0
-
-        contentView.setVisibility(View.GONE);
-        headerView.setOnClickListener(v -> {
-            System.out.println("szw click header");
-        });
         System.out.println("szw onSizeChanged contentHeight = "+contentHeight);
+
+        contentView.setVisibility(View.GONE); //onMeasure()完后, 即有了正确的contentHeight后, 才能让它为gone.不然contentHeight就是0了.
+    }
+
+
+
+    public void toggle(){
+
     }
 }
