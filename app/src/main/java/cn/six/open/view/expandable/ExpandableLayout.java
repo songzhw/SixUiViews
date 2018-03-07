@@ -1,6 +1,5 @@
 package cn.six.open.view.expandable;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -15,7 +14,7 @@ public class ExpandableLayout extends LinearLayout {
 
     private View headerView, contentView;
 
-    private int contentHeight;
+    private int contentHeight = -1;
 
     private boolean isExpanded = false;
 
@@ -56,16 +55,17 @@ public class ExpandableLayout extends LinearLayout {
             throw new RuntimeException("ExpandableLayout could only have two children: header and content!");
         }
 
-        contentHeight = contentView.getMeasuredHeight(); //此时contentView.getHeight()仍是0
-        System.out.println("szw onSizeChanged contentHeight = "+contentHeight);
+        if (contentHeight == -1) {
+            contentHeight = contentView.getMeasuredHeight(); //此时contentView.getHeight()仍是0
+        }
+        System.out.println("szw onSizeChanged contentHeight = " + contentHeight);
 
         contentView.setVisibility(View.GONE); //onMeasure()完后, 即有了正确的contentHeight后, 才能让它为gone.不然contentHeight就是0了.
     }
 
 
-
-    public void toggle(){
-        if(isExpanded){
+    public void toggle() {
+        if (isExpanded) {
             collapse();
         } else {
             expand();
@@ -73,26 +73,27 @@ public class ExpandableLayout extends LinearLayout {
         isExpanded = !isExpanded;
     }
 
-    public void collapse(){
+    public void collapse() {
         ViewGroup.LayoutParams lp = contentView.getLayoutParams();
-        System.out.println("szw 1 : "+contentHeight);
+        System.out.println("szw 1 h = " + contentHeight);
         ValueAnimator animator = ObjectAnimator.ofInt(contentHeight, 0);
-        animator.addUpdateListener( anim -> {
+        animator.addUpdateListener(anim -> {
             lp.height = (int) anim.getAnimatedValue();
-            System.out.println("szw val1 = "+lp.height);
+            System.out.println("szw val1 = " + lp.height);
             contentView.setLayoutParams(lp);
         });
         animator.start();
     }
 
-    public void expand(){
+    public void expand() {
         contentView.setVisibility(View.VISIBLE);
 
         ViewGroup.LayoutParams lp = contentView.getLayoutParams();
+        System.out.println("szw 2 h = "+lp.height);
         ValueAnimator animator = ObjectAnimator.ofInt(0, contentHeight);
-        animator.addUpdateListener( anim -> {
+        animator.addUpdateListener(anim -> {
             lp.height = (int) anim.getAnimatedValue();
-            System.out.println("szw val2 = "+lp.height);
+            System.out.println("szw val2 = " + lp.height);
             contentView.setLayoutParams(lp);
         });
         animator.start();
