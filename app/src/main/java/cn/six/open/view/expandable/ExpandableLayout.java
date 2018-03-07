@@ -80,6 +80,7 @@ public class ExpandableLayout extends LinearLayout {
             lp.height = (int) anim.getAnimatedValue();
             contentView.setLayoutParams(lp);
         });
+        animator.start();
     }
 
     public void expand(){
@@ -89,6 +90,7 @@ public class ExpandableLayout extends LinearLayout {
             lp.height = (int) anim.getAnimatedValue();
             contentView.setLayoutParams(lp);
         });
+        animator.start();
     }
 
 }
