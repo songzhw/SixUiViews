@@ -75,9 +75,11 @@ public class ExpandableLayout extends LinearLayout {
 
     public void collapse(){
         ViewGroup.LayoutParams lp = contentView.getLayoutParams();
+        System.out.println("szw 1 : "+contentHeight);
         ValueAnimator animator = ObjectAnimator.ofInt(contentHeight, 0);
         animator.addUpdateListener( anim -> {
             lp.height = (int) anim.getAnimatedValue();
+            System.out.println("szw val1 = "+lp.height);
             contentView.setLayoutParams(lp);
         });
         animator.start();
@@ -90,9 +92,26 @@ public class ExpandableLayout extends LinearLayout {
         ValueAnimator animator = ObjectAnimator.ofInt(0, contentHeight);
         animator.addUpdateListener( anim -> {
             lp.height = (int) anim.getAnimatedValue();
+            System.out.println("szw val2 = "+lp.height);
             contentView.setLayoutParams(lp);
         });
         animator.start();
     }
 
 }
+
+/*
+ No animation. Because :
+
+szw click
+szw val2 = 0
+szw val2 = 0
+szw onSizeChanged contentHeight = 0
+szw val2 = 5
+szw val2 = 19
+szw val2 = 44
+szw val2 = 78
+szw val2 = 120
+
+
+ */
