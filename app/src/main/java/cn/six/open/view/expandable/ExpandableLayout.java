@@ -1,9 +1,13 @@
 package cn.six.open.view.expandable;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 
@@ -39,6 +43,7 @@ public class ExpandableLayout extends LinearLayout {
         contentView = getChildAt(1);
 
         headerView.setOnClickListener(v -> {
+            System.out.println("szw click");
             toggle();
         });
 
@@ -69,11 +74,21 @@ public class ExpandableLayout extends LinearLayout {
     }
 
     public void collapse(){
-
+        ViewGroup.LayoutParams lp = contentView.getLayoutParams();
+        ValueAnimator animator = ObjectAnimator.ofInt(contentHeight, 0);
+        animator.addUpdateListener( anim -> {
+            lp.height = (int) anim.getAnimatedValue();
+            contentView.setLayoutParams(lp);
+        });
     }
 
     public void expand(){
-
+        ViewGroup.LayoutParams lp = contentView.getLayoutParams();
+        ValueAnimator animator = ObjectAnimator.ofInt(0, contentHeight);
+        animator.addUpdateListener( anim -> {
+            lp.height = (int) anim.getAnimatedValue();
+            contentView.setLayoutParams(lp);
+        });
     }
 
 }
