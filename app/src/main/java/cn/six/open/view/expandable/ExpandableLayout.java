@@ -84,6 +84,8 @@ public class ExpandableLayout extends LinearLayout {
     }
 
     public void expand(){
+        contentView.setVisibility(View.VISIBLE);
+
         ViewGroup.LayoutParams lp = contentView.getLayoutParams();
         ValueAnimator animator = ObjectAnimator.ofInt(0, contentHeight);
         animator.addUpdateListener( anim -> {
