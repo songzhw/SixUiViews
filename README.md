@@ -131,6 +131,11 @@ A tableView whose first column is stikcy at the left.
 ![](/pic/StickyColumnTableView.gif)
 
 
+## 13. ExpandableLayout
+![](/pic/expandable_layout.gif)
+
+
+
 ## Reference
 1. https://github.com/baoyongzhang/android-ActionSheet   ActionSheet for Android
 2. http://blog.csdn.net/qq_16064871/article/details/50224635   Bounced ScrollView
