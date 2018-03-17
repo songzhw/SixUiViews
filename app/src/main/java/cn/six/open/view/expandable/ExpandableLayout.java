@@ -65,16 +65,6 @@ public class ExpandableLayout extends LinearLayout {
         contentView.setLayoutParams(lp);
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        if (getChildCount() != 2) {
-            throw new RuntimeException("ExpandableLayout could only have two children: header and content!");
-        }
-
-        System.out.println("szw onSizeChanged()");
-    }
-
 
     public void toggle() {
         if (isExpanded) {
