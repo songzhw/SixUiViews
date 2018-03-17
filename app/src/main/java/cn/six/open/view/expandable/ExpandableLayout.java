@@ -48,13 +48,21 @@ public class ExpandableLayout extends LinearLayout {
         });
 
     }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         System.out.println("szw onMeasure");
 
+        // add this if condition, to make sure the contentHeight will not get back to 0 when visibility is changed
+        if (contentHeight == -1) {
+            contentHeight = contentView.getMeasuredHeight(); //此时contentView.getHeight()仍是0
+        }
+        System.out.println("szw onMeasure contentHeight = " + contentHeight);
 
+//        contentView.setVisibility(View.GONE); //onMeasure()完后, 即有了正确的contentHeight后, 才能让它为gone.不然contentHeight就是0了.
+        lp = contentView.getLayoutParams();
+        lp.height = 0;
+        contentView.setLayoutParams(lp);
     }
 
     @Override
@@ -64,16 +72,7 @@ public class ExpandableLayout extends LinearLayout {
             throw new RuntimeException("ExpandableLayout could only have two children: header and content!");
         }
 
-        // add this if condition, to make sure the contentHeight will not get back to 0 when visibility is changed
-        if (contentHeight == -1) {
-            contentHeight = contentView.getMeasuredHeight(); //此时contentView.getHeight()仍是0
-        }
-        System.out.println("szw onSizeChanged contentHeight = " + contentHeight);
-
-//        contentView.setVisibility(View.GONE); //onMeasure()完后, 即有了正确的contentHeight后, 才能让它为gone.不然contentHeight就是0了.
-        lp = contentView.getLayoutParams();
-        lp.height = 0;
-        contentView.setLayoutParams(lp);
+        System.out.println("szw onSizeChanged()");
     }
 
 
