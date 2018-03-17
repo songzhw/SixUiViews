@@ -17,6 +17,7 @@ public class ExpandableLayout extends LinearLayout {
     private int contentHeight = -1;
 
     private boolean isExpanded = false;
+    private ViewGroup.LayoutParams lp;
 
     public ExpandableLayout(Context context) {
         super(context);
@@ -32,8 +33,8 @@ public class ExpandableLayout extends LinearLayout {
         setOrientation(VERTICAL);
     }
 
-    // ★★★  onFinishInflate -> onAttachedToWindow -> onMeasure -> onSizeChanged -> onLayout  ★★★
-
+    // ★★★  onFinishInflate -> onAttachedToWindow -> onMeasure(可能2次,都在onSizeChanged前) -> onSizeChanged -> onLayout  ★★★
+    // ★★★  visibility的改变也会让onSizeChanged()被调用  ★★★
 
     @Override
     protected void onFinishInflate() {
@@ -49,18 +50,30 @@ public class ExpandableLayout extends LinearLayout {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        System.out.println("szw onMeasure");
+
+
+    }
+
+    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         if (getChildCount() != 2) {
             throw new RuntimeException("ExpandableLayout could only have two children: header and content!");
         }
 
+        // add this if condition, to make sure the contentHeight will not get back to 0 when visibility is changed
         if (contentHeight == -1) {
             contentHeight = contentView.getMeasuredHeight(); //此时contentView.getHeight()仍是0
         }
         System.out.println("szw onSizeChanged contentHeight = " + contentHeight);
 
-        contentView.setVisibility(View.GONE); //onMeasure()完后, 即有了正确的contentHeight后, 才能让它为gone.不然contentHeight就是0了.
+//        contentView.setVisibility(View.GONE); //onMeasure()完后, 即有了正确的contentHeight后, 才能让它为gone.不然contentHeight就是0了.
+        lp = contentView.getLayoutParams();
+        lp.height = 0;
+        contentView.setLayoutParams(lp);
     }
 
 
@@ -74,26 +87,18 @@ public class ExpandableLayout extends LinearLayout {
     }
 
     public void collapse() {
-        ViewGroup.LayoutParams lp = contentView.getLayoutParams();
-        System.out.println("szw 1 h = " + contentHeight);
         ValueAnimator animator = ObjectAnimator.ofInt(contentHeight, 0);
         animator.addUpdateListener(anim -> {
             lp.height = (int) anim.getAnimatedValue();
-            System.out.println("szw val1 = " + lp.height);
             contentView.setLayoutParams(lp);
         });
         animator.start();
     }
 
     public void expand() {
-        contentView.setVisibility(View.VISIBLE);
-
-        ViewGroup.LayoutParams lp = contentView.getLayoutParams();
-        System.out.println("szw 2 h = "+lp.height);
         ValueAnimator animator = ObjectAnimator.ofInt(0, contentHeight);
         animator.addUpdateListener(anim -> {
             lp.height = (int) anim.getAnimatedValue();
-            System.out.println("szw val2 = " + lp.height);
             contentView.setLayoutParams(lp);
         });
         animator.start();
