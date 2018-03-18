@@ -39,6 +39,10 @@ public class ExpandableLayout extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+
+        if (getChildCount() != 2) {
+            throw new RuntimeException("ExpandableLayout could only have two children: header and content!");
+        }
         headerView = getChildAt(0);
         contentView = getChildAt(1);
 
