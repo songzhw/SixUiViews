@@ -18,15 +18,15 @@ import cn.six.open.R;
 
 public class LoginSuffixAdapter extends BaseAdapter implements Filterable {
 	private Context context;
-	private ArrayFilter mFilter;
+	private ArrayFilter filter;
 	private ArrayList<String> suffixList; // 所有的Item
 	private List<String> filterResult;    // 过滤后的Item
 	private LayoutInflater inflater;
 	private final Object mLock = new Object();
 
-	public LoginSuffixAdapter(Context context, ArrayList<String> mOriginalValues) {
+	public LoginSuffixAdapter(Context context, ArrayList<String> originalValues) {
 		this.context = context;
-		this.suffixList = mOriginalValues;
+		this.suffixList = originalValues;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -72,10 +72,10 @@ public class LoginSuffixAdapter extends BaseAdapter implements Filterable {
 
 	@Override
 	public Filter getFilter() {
-		if (mFilter == null) {
-			mFilter = new ArrayFilter();
+		if (filter == null) {
+			filter = new ArrayFilter();
 		}
-		return mFilter;
+		return filter;
 	}
 
 	private class ArrayFilter extends Filter {
