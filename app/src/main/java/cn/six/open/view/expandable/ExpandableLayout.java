@@ -21,15 +21,15 @@ public class ExpandableLayout extends LinearLayout {
 
     public ExpandableLayout(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
     public ExpandableLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
-    private void init(Context context) {
+    private void init() {
         setOrientation(VERTICAL);
     }
 
@@ -48,6 +48,7 @@ public class ExpandableLayout extends LinearLayout {
         });
 
     }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -91,19 +92,3 @@ public class ExpandableLayout extends LinearLayout {
     }
 
 }
-
-/*
- No animation. Because :
-
-szw click
-szw val2 = 0
-szw val2 = 0
-szw onSizeChanged contentHeight = 0
-szw val2 = 5
-szw val2 = 19
-szw val2 = 44
-szw val2 = 78
-szw val2 = 120
-
-
- */
