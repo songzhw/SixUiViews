@@ -113,12 +113,12 @@ public class LoginNameView extends RelativeLayout implements View.OnClickListene
                         etName.setText("");
                     } else{
                         //2.2 如果是自己输入的， 就完整展现
+                        // do nothing
                     }
                 }
             }
         }
-        return false;
-
+        return false; //不consume掉这个touch事件
     }
 
     @Override
