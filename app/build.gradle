@@ -27,14 +27,12 @@ android {
     }
 }
 
-def v = "27.0.2"
+def v = "27.1.1"
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:$v"
-    compile "com.android.support:design:$v"
-    compile "com.android.support:cardview-v7:$v"
-    compile "com.android.support:recyclerview-v7:$v"
-    compile "com.android.support:support-dynamic-animation:$v"
-
-    compile 'com.facebook.fresco:fresco:0.9.0+'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:appcompat-v7:$v"
+    implementation "com.android.support:design:$v"
+    implementation "com.android.support:cardview-v7:$v"
+    implementation "com.android.support:recyclerview-v7:$v"
+    implementation "com.android.support:support-dynamic-animation:$v"
 }

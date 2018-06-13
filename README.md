@@ -135,6 +135,56 @@ A tableView whose first column is stikcy at the left.
 ![](/pic/expandable_layout.gif)
 
 
+## 14. ExpandableLayout
+![](/pic/rv_swipe_menu.gif)
+
+To use it, just wrap it as the root layout of your RecyclerView Item.
+It should has two, and only two, children. One is the content, the another is the menu.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout >
+
+    <cn.six.open.view.rv.SideMenu.SwipeMenuLayout >
+        <LinearLayout android:id="@+id/llayContent">
+            <ImageView  />
+            <TextView/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/llayMenu">
+            <TextView/>
+        </LinearLayout>
+    </cn.six.open.view.rv.SideMenu.SwipeMenuLayout>
+
+</LinearLayout>
+```
+
+
+### Problems with the RecyclerView
+If you open the menu of item01, and scroll RecyclerView vertically, you may find item10's menu is open as well.
+
+To fix this, you should add a if block to close the menu every time you show a item .
+
+This if block should be added to your Adapter.onBindViewHolder(), or OneAdapter.apply()
+
+```java
+        adapter = new OneAdapter<String>(R.layout.item_swipe_menu_demo, data) {
+            @Override
+            protected void apply(RvViewHolder vh, String value, int position) {
+                // IMPORTANT: othewise, the recycled item will be a problem when this item is open already
+                SwipeMenuLayout swipeMenuLayout = vh. getView(R.id.swipeMenuLayout);
+                if(swipeMenuLayout.isOpen){
+                    swipeMenuLayout.close();
+                }
+
+                vh.setSrc(R.id.ivRvItemSwipe, R.drawable.ic_launcher);
+                vh.setText(R.id.tvRvItemSwipe, value);
+            }
+        };
+```
+
+
+
 
 ## Reference
 1. https://github.com/baoyongzhang/android-ActionSheet   ActionSheet for Android
