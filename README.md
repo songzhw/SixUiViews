@@ -135,7 +135,7 @@ A tableView whose first column is stikcy at the left.
 ![](/pic/expandable_layout.gif)
 
 
-## 14. ExpandableLayout
+## 14. RecyclerView's SwipeMenuLayout
 ![](/pic/rv_swipe_menu.gif)
 
 To use it, just wrap it as the root layout of your RecyclerView Item.

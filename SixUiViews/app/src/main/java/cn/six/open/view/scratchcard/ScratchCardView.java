@@ -1,5 +1,6 @@
 package cn.six.open.view.scratchcard;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 /**
  * Created by songzhw on 2016/01/03.
  */
+@SuppressLint("AppCompatCustomView")
 public class ScratchCardView extends ImageView {
     private Bitmap tempBitamp;
     private Canvas tempCanvas;
