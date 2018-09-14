@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import ca.six.one.lib.RvBindingViewHolder
 
-class OneBindingTypesAdapter(private val rows: List<BindingTypesRow<*>>)
+class OneBindingTypesAdapter(private val rows: List<BindingTypesRow>)
     : RecyclerView.Adapter<RvBindingViewHolder>() {
 
     override fun getItemCount(): Int {
@@ -26,7 +26,9 @@ class OneBindingTypesAdapter(private val rows: List<BindingTypesRow<*>>)
 
     override fun onBindViewHolder(holder: RvBindingViewHolder, position: Int) {
         val row = rows.get(position)
-        holder.binding.setVariable(row.bindingId, row.data)
+        for (detail in row.details) {
+            holder.binding.setVariable(detail.bindingId, detail.data)
+        }
         holder.binding.executePendingBindings()
     }
 
