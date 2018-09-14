@@ -34,4 +34,5 @@ class DevOnlyRvActivity : AppCompatActivity() {
         list.add(BindingTypesRow(R.layout.item_dev_only_person, ID_Model(BR.person, DevOnlyPerson(10, "dd", false))))
         return list
     }
+
 }
