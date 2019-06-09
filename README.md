@@ -44,7 +44,7 @@ Four tabs:
 
 
 ## 5. Color Mask
-It will make a transpanrent png picture to show different colors programmatically?
+It will make a transpanrent png picture to show different colors programmatically, which is perfectly fit for your app/sdk if your app/sdk needs to support different brand, and each brand has their own primary color.
 
 
 ![](/pic/ColorMask.gif)
