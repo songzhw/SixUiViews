@@ -27,7 +27,7 @@ class MultipleRvTypesDemo : Activity() {
         val typeContent = object : IRvType {
             override fun getLayoutResId(): Int = R.layout.item_rv_content
             override fun render(vh: RvViewHolder, datum: Any, position: Int) {
-                vh.setText(R.id.tvRvTitle, (datum as Yin).name)
+                vh.setText(R.id.tvRvContent, (datum as Yin).name)
             }
         }
         val types = mapOf(Yang::class.java to typeTitle, Yin::class.java to typeContent)

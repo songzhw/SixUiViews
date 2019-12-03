@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".view.rv.SideMenu.demo.SwipeMenuRvDemo">
+        <activity android:name=".view.rv.MultiAdapter.demo.MultipleRvTypesDemo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

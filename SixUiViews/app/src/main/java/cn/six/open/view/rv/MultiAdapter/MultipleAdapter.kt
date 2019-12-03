@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import cn.six.open.view.rv.OneAdapter.RvViewHolder
 
-class MultipleAdapter(val data: List<Any>, val types: Map<Class<Any>, IRvType>) : RecyclerView.Adapter<RvViewHolder>() {
+class MultipleAdapter(val data: List<Any>, val types: Map<Class<out Any>, IRvType>) : RecyclerView.Adapter<RvViewHolder>() {
     override fun getItemViewType(position: Int): Int {
         val datum = data.get(position)
         val clazz = datum::class.java
