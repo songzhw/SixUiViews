@@ -125,17 +125,50 @@ Here is how you can use OneBindingAdapter:
     rv.setAdapter(adapter);
 ```
 
-## 12. StickyColumnTableView
+## 12. MultiAdapter
+OneAdapter only works for the Adapter with one ItemViewType.
+`MultiAdapter` is a general adapter for RecyclerView with multiple different ItemViewTypes.
+
+How to use it?
+: You have to define different type support class first, then pass these types to MultiAdater.
+
+For example, I want to show a RecyclerView with a title and content. Aka, I have two ItemViewTypes.
+
+```kotlin
+        val data = arrayListOf(
+                Title("001"), Content("1A"), Content("1B"), Content("1C"),
+                Title("002"), Content("2A"), Content("2B"), Content("2C"), Content("2D")
+        )
+        val typeTitle = object : IRvType {
+            override fun getLayoutResId(): Int = R.layout.item_rv_title
+            override fun render(vh: RvViewHolder, datum: Any, position: Int) {
+                vh.setText(R.id.tvRvTitle, (datum as Title).title)
+            }
+        }
+        val typeContent = object : IRvType {
+            override fun getLayoutResId(): Int = R.layout.item_rv_content
+            override fun render(vh: RvViewHolder, datum: Any, position: Int) {
+                vh.setText(R.id.tvRvContent, (datum as Content).name)
+            }
+        }
+        val types = mapOf(Title::class.java to typeTitle, Content::class.java to typeContent)
+
+        rvRefresh.setLayoutManager(LinearLayoutManager(this))
+        val adapter = MultipleAdapter(data, types)
+        rvRefresh.adapter = adapter
+```
+
+## 13. StickyColumnTableView
 A tableView whose first column is stikcy at the left. 
 
 ![](/pic/StickyColumnTableView.gif)
 
 
-## 13. ExpandableLayout
+## 14. ExpandableLayout
 ![](/pic/expandable_layout.gif)
 
 
-## 14. RecyclerView's SwipeMenuLayout
+## 15. RecyclerView's SwipeMenuLayout
 ![](/pic/rv_swipe_menu.gif)
 
 To use it, just wrap it as the root layout of your RecyclerView Item.
@@ -160,7 +193,7 @@ It should has two, and only two, children. One is the content, the another is th
 ```
 
 
-### Problems with the RecyclerView
+### 15.1 Problems with the RecyclerView
 If you open the menu of item01, and scroll RecyclerView vertically, you may find item10's menu is open as well.
 
 To fix this, you should add a if block to close the menu every time you show a item .
