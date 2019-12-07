@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable name="person" type="ca.six.one.demo.DevOnlyPerson"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent" android:layout_height="140dp"
+        android:background="#bdbdbd">
+
+        <TextView android:layout_width="100dp" android:layout_height="match_parent"
+            android:gravity="center" android:textSize="20dp"
+            android:text="@{String.valueOf(person.id)}"
+            />
+        <TextView android:layout_width="100dp" android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center" android:textSize="20dp"
+            android:text="@{person.name}"
+            />
+        <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center" android:textSize="20dp"
+            android:text="@{String.valueOf(person.male)}"
+            />
+    </RelativeLayout>
+</layout>
