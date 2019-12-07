@@ -33,6 +33,9 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 
+    implementation "androidx.dynamicanimation:dynamicanimation:1.0.0"
+    implementation "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03"
+
     testImplementation 'junit:junit:4.12'
     
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

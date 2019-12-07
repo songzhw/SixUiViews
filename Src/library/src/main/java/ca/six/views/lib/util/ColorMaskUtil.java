@@ -9,7 +9,6 @@ import android.graphics.PorterDuff;
 /**
  * Created by songzhw on 2015/12/21
  * <p>
- * see : https://github.com/rengwuxian/MaterialEditText
  */
 public class ColorMaskUtil {
 
