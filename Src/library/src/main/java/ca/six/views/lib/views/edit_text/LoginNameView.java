@@ -67,8 +67,6 @@ public class LoginNameView extends RelativeLayout implements View.OnClickListene
         etName.setAdapter(adapterHistory);
         etName.setOnItemClickListener(this);
 
-
-
     }
 
     private TextWatcher watcherName = new TextWatcher() {
