@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ca.six.views.lib.views.custom_action_sheet.CustomActionSheet;
+import ca.six.views.lib.views.CustomActionSheet;
 
 public class CustomeAcitonSheetActivity extends Activity implements View.OnClickListener {
     private View sheetContentView;

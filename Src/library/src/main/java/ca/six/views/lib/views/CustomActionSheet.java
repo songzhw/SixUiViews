@@ -1,4 +1,4 @@
-package ca.six.views.lib.views.custom_action_sheet;
+package ca.six.views.lib.views;
 
 import android.app.Activity;
 import android.content.Context;
