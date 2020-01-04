@@ -14,7 +14,7 @@ import cn.six.open.R;
 /**
  * Created by songzhw on 2016/2/4
  */
-public class PorterDuffClearTest extends Activity {
+public class PorterDuffClearDemo extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
