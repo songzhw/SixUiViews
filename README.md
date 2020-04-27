@@ -83,6 +83,12 @@ Now the ScratchCardView is good to go!
 
 (More details of PorterDuff.Mode.CLEAR is MyClear01View and MyClear02View)
 
+## 16. TutorialView
+
+It is used to highlight some new element in some of our new functionality. You can highlight some specfic views and add a description to describe what's new in it. 
+(p.s. click this mask view, it will go disappear automatically)
+![](/pic/TutorialView.png)
+
 ## 8. Swipe-Delete EditText
 Swiping in the EditText will delete all the text in this EditText.
 
