@@ -87,7 +87,7 @@ Now the ScratchCardView is good to go!
 
 It is used to highlight some new element in some of our new functionality. You can highlight some specfic views and add a description to describe what's new in it. 
 (p.s. click this mask view, it will go disappear automatically)
-<img src="./pic/TutorialView.png" width="600" height="1000" align=center/>
+<img src="./pic/TutorialView.png" width="400" height="600" align=center/>
 
 ## 8. Swipe-Delete EditText
 Swiping in the EditText will delete all the text in this EditText.
