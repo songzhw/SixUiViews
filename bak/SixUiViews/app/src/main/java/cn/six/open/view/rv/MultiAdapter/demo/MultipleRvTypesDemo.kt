@@ -33,7 +33,7 @@ class MultipleRvTypesDemo : Activity() {
         val types = mapOf(Yang::class.java to typeTitle, Yin::class.java to typeContent)
 
         rvRefresh.setLayoutManager(LinearLayoutManager(this))
-        val adapter = MultipleAdapter(data, types)
+        val adapter = MultipleAdapter<Yin>(data, types)
         rvRefresh.adapter = adapter
 
     }
