@@ -4,7 +4,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import cn.six.open.view.rv.OneAdapter.RvViewHolder
 
-class MultipleAdapter(val data: List<Any>, val types: Map<Class<out Any>, IRvType>) : RecyclerView.Adapter<RvViewHolder>() {
+// @parameter types:  mapOf(Yang::class.java to rvType1, Yin::class.java to rvType1)
+class MultipleAdapter(val data: List<Any>, val types: Map<Class<out Any>, IRvType<out Any>>) : RecyclerView.Adapter<RvViewHolder>() {
+
     override fun getItemViewType(position: Int): Int {
         val datum = data.get(position)
         val clazz = datum::class.java
@@ -21,7 +23,7 @@ class MultipleAdapter(val data: List<Any>, val types: Map<Class<out Any>, IRvTyp
         if (data.size > position) {
             val datum = data.get(position)
             val clazz = datum::class.java
-            val rvType: IRvType? = types.get(clazz)
+            val rvType = types.get(clazz)
             rvType?.render(holder, datum, position)
         }
     }
@@ -34,7 +36,7 @@ class MultipleAdapter(val data: List<Any>, val types: Map<Class<out Any>, IRvTyp
 }
 
 
-interface IRvType {
+interface IRvType<T> {
     fun getLayoutResId(): Int
-    fun render(vh: RvViewHolder, datum: Any, position: Int)
+    fun render(vh: RvViewHolder, datum: T, position: Int)
 }
