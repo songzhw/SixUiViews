@@ -13,6 +13,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btn1.setOnClickListener { nav<ColorMaskActivity>() }
+        btn2.setOnClickListener { nav<CustomeAcitonSheetActivity>() }
+        btn3.setOnClickListener { nav<LoginNameDemo>() }
+        btn4.setOnClickListener { nav<MyTabsViewActivity>() }
+
+        btn11.setOnClickListener { nav<AnimatableCheckDemo>() }
+        btn12.setOnClickListener { nav<ExpandableViewDemo>() }
+        btn13.setOnClickListener { nav<ScratchCardActivity>() }
     }
 
 }

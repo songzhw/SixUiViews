@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ca.six.views.lib.views.edit_text.LoginNameView
+    <ca.six.views.views.edit_text.LoginNameView
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/food"/>
 
-    <ca.six.views.lib.views.porterduff_clear.MyClear02View
+    <ca.six.views.views.porterduff_clear.MyClear02View
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 

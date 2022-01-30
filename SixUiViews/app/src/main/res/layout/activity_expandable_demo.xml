@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <!-- Need two parts, head and content. Just like Drawerlayout -->
-    <ca.six.views.lib.views.ExpandableLayout
+    <ca.six.views.views.ExpandableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -38,6 +38,6 @@
 
 
 
-    </ca.six.views.lib.views.ExpandableLayout>
+    </ca.six.views.views.ExpandableLayout>
 
 </LinearLayout>
