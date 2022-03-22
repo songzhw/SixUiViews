@@ -14,8 +14,6 @@ bin/
 gen/
 build/
 .gradle/
-gradle/
-gradlew
 gradlew.bat
 .externalNativeBuild/
 .idea/
