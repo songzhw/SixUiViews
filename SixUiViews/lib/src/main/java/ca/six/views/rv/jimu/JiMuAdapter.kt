@@ -3,42 +3,37 @@ package ca.six.views.rv.jimu
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ca.six.views.rv.RvViewHolder
+import ca.six.views.rv.multi.MultipleAdapter
 
-class JiMuAdapter : RecyclerView.Adapter<RvViewHolder>() {
+class JiMuAdapter {
     val list = arrayListOf<JiMuItem>()
 
-    fun add(item: JiMuItem){
+    fun add(item: JiMuItem) {
         list.add(item)
     }
 
-    fun clear(){
+    fun clear() {
         list.clear()
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return list[position].getViewType(position)
-    }
+    fun generateAdapter()/*: RecyclerView.Adapter<RvViewHolder>*/ {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvViewHolder {
-        return RvViewHolder.createViewHolder(parent, viewType)
-    }
-
-    override fun onBindViewHolder(holder: RvViewHolder, position: Int) {
-        if (list.size > position) {
-            val item = list[position]
-            item.render(holder, position)
+        // reduce()不带initValue的, 只有fold()才带
+        val data = list.fold(arrayListOf<Any>()) { accu, item ->
+            accu.add(item.data)
+            accu
         }
-    }
+        println("szw data = $data")
 
-    override fun getItemCount(): Int = list.count()
+    }
 }
 
-class JiMuItem {
-    fun getViewType(position: Int) : Int  {
+class JiMuItem(val data: Any) {
+    fun getViewType(position: Int): Int {
         return 0
     }
 
-    fun render(holder: RvViewHolder, position: Int){
+    fun render(holder: RvViewHolder, position: Int) {
 
     }
 }
