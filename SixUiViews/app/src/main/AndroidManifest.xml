@@ -29,6 +29,7 @@
         <activity android:name=".ScratchCardActivity" />
 
         <activity android:name=".rv.OneAdapterDemo"/>
+        <activity android:name=".rv.MultiAdapterDemo"/>
 
     </application>
 

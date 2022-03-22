@@ -1,9 +1,8 @@
 package ca.six.demo.sixuiviews
 
-import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ca.six.demo.sixuiviews.rv.MultiAdapterDemo
 import ca.six.demo.sixuiviews.rv.OneAdapterDemo
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -24,12 +23,8 @@ class MainActivity : AppCompatActivity() {
 
         // [rv]
         btn21.setOnClickListener { nav<OneAdapterDemo>() }
+        btn22.setOnClickListener { nav<MultiAdapterDemo>() }
+
     }
 
-}
-
-
-inline fun <reified T> Activity.nav() {
-    val intent2 = Intent(this, T::class.java)
-    startActivity(intent2)
 }
