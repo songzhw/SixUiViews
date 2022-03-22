@@ -14,18 +14,18 @@ class JiMuAdapterDemo : AppCompatActivity(R.layout.activity_rv) {
 
         rv.layoutManager = LinearLayoutManager(this)
 
-        val d1 = JiMuItem("title")
-        val d2 = JiMuItem(23)
-        val d3 = JiMuItem(true)
-        val d4 = JiMuItem("hello")
-        val d5 = JiMuItem(314159L)
+        val d1 = Description("scratch card", R.drawable.forest1)
+        val d2 = Description("folder view", R.drawable.food)
+        val d3 = Description("jimu rv", R.drawable.coin)
+
         val adapter = JiMuAdapter()
-        adapter.add(d1)
-        adapter.add(d2)
-        adapter.add(d3)
-        adapter.add(d4)
-        adapter.add(d5)
-        adapter.generateAdapter()
+        adapter.add(TitleItem("views"))
+        adapter.add(DescriptionItem(d1))
+        adapter.add(DescriptionItem(d2))
+        adapter.add(TitleItem("recyclerviews"))
+        adapter.add(DescriptionItem(d3))
+
+        rv.adapter = adapter.generateAdapter()
 
 
     }
