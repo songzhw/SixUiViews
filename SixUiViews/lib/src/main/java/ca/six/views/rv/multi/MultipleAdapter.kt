@@ -8,9 +8,9 @@ class MultipleAdapter(val data: List<Any>, val types: Map<Class<out Any>, IRvTyp
     RecyclerView.Adapter<RvViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
-        val datum = data.get(position)
+        val datum = data[position]
         val clazz = datum::class.java
-        return types.get(clazz)?.getLayoutResId()!!
+        return types[clazz]?.getLayoutResId()!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvViewHolder {
@@ -20,7 +20,7 @@ class MultipleAdapter(val data: List<Any>, val types: Map<Class<out Any>, IRvTyp
 
     override fun onBindViewHolder(holder: RvViewHolder, position: Int) {
         if (data.size > position) {
-            val datum = data.get(position)
+            val datum = data[position]
             val clazz = datum::class.java
             val rvType: IRvType? = types.get(clazz)
             rvType?.render(holder, datum, position)

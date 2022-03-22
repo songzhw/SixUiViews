@@ -3,13 +3,11 @@ package ca.six.views.rv.jimu
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ca.six.views.rv.RvViewHolder
-import ca.six.views.rv.multi.IRvType
-import ca.six.views.rv.multi.MultipleAdapter
 
-class JiMuAdapter {
-    val list = arrayListOf<JiMuItem>()
+class BuilderAdapterWrapper {
+    val list = arrayListOf<BuilderItem>()
 
-    fun add(item: JiMuItem) {
+    fun add(item: BuilderItem) {
         list.add(item)
     }
 
@@ -18,26 +16,36 @@ class JiMuAdapter {
     }
 
     fun generateAdapter(): RecyclerView.Adapter<RvViewHolder> {
-
-        // reduce()不带initValue的, 只有fold()才带
-        val data = list.fold(arrayListOf<Any>()) { accu, item ->
-            accu.add(item.data)
-            accu
-        }
-
-        //TODO 数量上对上了. 但是render这里不对了
-        val types = list.fold(hashMapOf<Class<out Any>, IRvType>()) { accu, item ->
-            accu[item.data::class.java] = item
-            accu
-        }
-
-        println("szw data = $data")
-        println("szw type = $types")
-        return MultipleAdapter(data, types)
+        return BuilderAdapter(list)
     }
+
 }
 
+class BuilderAdapter(val data: List<BuilderItem>) : RecyclerView.Adapter<RvViewHolder>() {
 
+    override fun getItemViewType(position: Int): Int {
+        val datum = data[position]
+        return datum.getViewType()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvViewHolder =
+        RvViewHolder.createViewHolder(parent, viewType)
+
+    override fun onBindViewHolder(holder: RvViewHolder, position: Int) {
+        if (data.size > position) {
+            val datum = data[position]
+            datum.render(holder)
+        }
+    }
+
+    override fun getItemCount() = data.size
+
+}
+
+abstract class BuilderItem(var data: Any) {
+    abstract fun getViewType(): Int
+    abstract fun render(holder: RvViewHolder)
+}
 
 /*
 szw data = [
@@ -60,7 +68,6 @@ szw type = {
     class ca.six.demo.sixuiviews.rv.jimu.Description    =   ca.six.demo.sixuiviews.rv.jimu.DescriptionItem@c12ff94
 }
  */
-
 
 
 /*

@@ -2,7 +2,7 @@ package ca.six.demo.sixuiviews
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import ca.six.demo.sixuiviews.rv.jimu.JiMuAdapterDemo
+import ca.six.demo.sixuiviews.rv.jimu.BuilderAdapterDemo
 import ca.six.demo.sixuiviews.rv.MultiAdapterDemo
 import ca.six.demo.sixuiviews.rv.OneAdapterDemo
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         // [rv]
         btn21.setOnClickListener { nav<OneAdapterDemo>() }
         btn22.setOnClickListener { nav<MultiAdapterDemo>() }
-        btn23.setOnClickListener { nav<JiMuAdapterDemo>() }
+        btn23.setOnClickListener { nav<BuilderAdapterDemo>() }
     }
 
 }
