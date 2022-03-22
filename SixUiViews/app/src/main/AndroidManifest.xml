@@ -30,6 +30,7 @@
 
         <activity android:name=".rv.OneAdapterDemo"/>
         <activity android:name=".rv.MultiAdapterDemo"/>
+        <activity android:name=".rv.JiMuAdapterDemo"/>
 
     </application>
 

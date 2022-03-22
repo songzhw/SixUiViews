@@ -76,7 +76,7 @@
         tools:ignore="MissingConstraints" />
 
     <Button android:id="@+id/btn23"
-        style="@style/tv_wrap2" android:text="***"
+        style="@style/tv_wrap2" android:text="组合式Rv"
         tools:ignore="MissingConstraints" />
 
     <androidx.constraintlayout.helper.widget.Flow android:id="@+id/flow3"
