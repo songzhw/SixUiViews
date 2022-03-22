@@ -7,7 +7,7 @@ import ca.six.views.rv.jimu.JiMuItem
 class TitleItem(val title: String) : JiMuItem(title) {
     override fun getViewType() = R.layout.item_rv_one
 
-    override fun render(holder: RvViewHolder, position: Int) {
+    override fun render(holder: RvViewHolder) {
         holder.setText(R.id.tv_rv_item, title)
     }
 
@@ -19,7 +19,7 @@ data class Description(val desp: String, val imageResId: Int)
 class DescriptionItem(val despcription: Description) : JiMuItem(despcription) {
     override fun getViewType() = R.layout.item_desp
 
-    override fun render(holder: RvViewHolder, position: Int) {
+    override fun render(holder: RvViewHolder) {
         holder.setText(R.id.tvItem, despcription.desp)
         holder.setSrc(R.id.ivItem, despcription.imageResId)
     }

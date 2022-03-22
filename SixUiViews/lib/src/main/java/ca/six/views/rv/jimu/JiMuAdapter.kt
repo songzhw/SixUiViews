@@ -37,6 +37,8 @@ class JiMuAdapter {
     }
 }
 
+
+
 /*
 szw data = [
     views,
@@ -52,15 +54,25 @@ szw types = [
     ca.six.demo.sixuiviews.rv.jimu.TitleItem@c12ff94,
     ca.six.demo.sixuiviews.rv.jimu.DescriptionItem@e6e1a3d
 ]
+
+szw type = {
+    class java.lang.String                              =   ca.six.demo.sixuiviews.rv.jimu.TitleItem@a8757e7,
+    class ca.six.demo.sixuiviews.rv.jimu.Description    =   ca.six.demo.sixuiviews.rv.jimu.DescriptionItem@c12ff94
+}
  */
 
+
+
+/*
 // 要有CF参数, 所以不能是interface
 // TODO 要有个toIRvType()的方法才行
-abstract class JiMuItem(val data: Any) : IRvType {
+abstract class JiMuItem(var data: Any) : IRvType {
     abstract fun getViewType(): Int
-    abstract fun render(holder: RvViewHolder, position: Int)
+    abstract fun render(holder: RvViewHolder)
 
     override fun getLayoutResId() = getViewType()
 
-    override fun render(vh: RvViewHolder, datum: Any, position: Int) = render(vh, position)
+    override fun render(vh: RvViewHolder, datum: Any, position: Int) = render(vh)
+
 }
+*/
