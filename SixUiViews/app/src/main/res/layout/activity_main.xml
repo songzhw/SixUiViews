@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".MainActivity">
 
     <TextView android:id="@+id/tvViews"
@@ -34,10 +35,10 @@
         app:layout_constraintTop_toTopOf="parent" app:layout_constraintLeft_toLeftOf="parent"
         />
 
-    <!-- Divider -->
+    <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
 
     <TextView android:id="@+id/tvAnims"
-        style="@style/tv_wrap1" android:text="Anim"
+        style="@style/tv_wrap1" android:text="Views with Animation"
         tools:ignore="MissingConstraints" />
 
     <Button android:id="@+id/btn11"
@@ -59,5 +60,33 @@
         app:flow_wrapMode="aligned"
         app:layout_constraintTop_toBottomOf="@id/flow1" app:layout_constraintLeft_toLeftOf="parent"
         />
+
+    <!-- = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = -->
+
+    <TextView android:id="@+id/tvRv"
+        style="@style/tv_wrap1" android:text="RecyclerView"
+        tools:ignore="MissingConstraints" />
+
+    <Button android:id="@+id/btn21"
+        style="@style/tv_wrap2" android:text="OneAdapter"
+        tools:ignore="MissingConstraints" />
+
+    <Button android:id="@+id/btn22"
+        style="@style/tv_wrap2" android:text="MultiAdapter"
+        tools:ignore="MissingConstraints" />
+
+    <Button android:id="@+id/btn23"
+        style="@style/tv_wrap2" android:text="***"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.constraintlayout.helper.widget.Flow android:id="@+id/flow3"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tvRv, btn21, btn22, btn23"
+        app:flow_horizontalGap="2dp" android:layout_marginTop="20dp"
+        app:flow_wrapMode="aligned"
+        app:layout_constraintTop_toBottomOf="@id/flow2" app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

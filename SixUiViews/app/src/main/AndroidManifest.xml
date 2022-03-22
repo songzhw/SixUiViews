@@ -28,6 +28,8 @@
         <activity android:name=".ResideMenuActivity" />
         <activity android:name=".ScratchCardActivity" />
 
+        <activity android:name=".rv.OneAdapterDemo"/>
+
     </application>
 
 </manifest>
