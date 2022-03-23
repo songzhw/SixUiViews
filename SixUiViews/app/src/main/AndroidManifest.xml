@@ -18,12 +18,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AnimatableCheckDemo" />
+
         <activity android:name=".ColorMaskActivity" />
         <activity android:name=".CustomeAcitonSheetActivity" />
-        <activity android:name=".ExpandableViewDemo" />
         <activity android:name=".LoginNameDemo" />
         <activity android:name=".MyTabsViewActivity" />
+        <activity android:name=".GuideActivity"/>
+
+        <activity android:name=".AnimatableCheckDemo" />
+        <activity android:name=".ExpandableViewDemo" />
         <activity android:name=".PorterDuffClearDemo" />
         <activity android:name=".ResideMenuActivity" />
         <activity android:name=".ScratchCardActivity" />

@@ -27,11 +27,14 @@
         style="@style/tv_wrap2" android:text="TopTabs"
         tools:ignore="MissingConstraints" />
 
+    <Button android:id="@+id/btn5"
+        style="@style/tv_wrap2" android:text="Guider"
+        tools:ignore="MissingConstraints" />
+
     <androidx.constraintlayout.helper.widget.Flow android:id="@+id/flow1"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        app:constraint_referenced_ids="tvViews, btn1, btn2, btn3, btn4"
-        app:flow_horizontalGap="8dp"
-        app:flow_wrapMode="aligned"
+        app:constraint_referenced_ids="tvViews, btn1, btn2, btn3, btn4, btn5"
+        app:flow_wrapMode="chain"
         app:layout_constraintTop_toTopOf="parent" app:layout_constraintLeft_toLeftOf="parent"
         />
 
@@ -53,11 +56,12 @@
         style="@style/tv_wrap2" android:text="ScratchCard"
         tools:ignore="MissingConstraints" />
 
+
     <androidx.constraintlayout.helper.widget.Flow android:id="@+id/flow2"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         app:constraint_referenced_ids="tvAnims, btn11, btn12, btn13"
         app:flow_horizontalGap="8dp" android:layout_marginTop="20dp"
-        app:flow_wrapMode="aligned"
+        app:flow_wrapMode="chain"
         app:layout_constraintTop_toBottomOf="@id/flow1" app:layout_constraintLeft_toLeftOf="parent"
         />
 
@@ -83,7 +87,7 @@
         android:layout_width="match_parent" android:layout_height="wrap_content"
         app:constraint_referenced_ids="tvRv, btn21, btn22, btn23"
         app:flow_horizontalGap="2dp" android:layout_marginTop="20dp"
-        app:flow_wrapMode="aligned"
+        app:flow_wrapMode="chain"
         app:layout_constraintTop_toBottomOf="@id/flow2" app:layout_constraintLeft_toLeftOf="parent"
         />
 

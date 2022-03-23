@@ -1,6 +1,5 @@
 package ca.six.views.rv
 
-
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import androidx.core.view.GestureDetectorCompat

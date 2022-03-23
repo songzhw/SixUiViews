@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnGuide3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/colorPrimaryDark"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Visit"
+        android:textColor="#fff"
+        android:textSize="26dp" />
+
+    <ImageView
+        android:id="@+id/ivGuide1"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/wlake" />
+
+    <TextView
+        android:id="@+id/tvGuide2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Hangzhou, also romanized as Hangchow, is the capital and most populous city of Zhejiang Province, People's Republic of China. It sits at the head of Hangzhou Bay, which separates Shanghai and Ningbo. "
+        android:textColor="#000"
+        android:textSize="23dp" />
+</LinearLayout>

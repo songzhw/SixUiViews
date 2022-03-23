@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         btn2.setOnClickListener { nav<CustomeAcitonSheetActivity>() }
         btn3.setOnClickListener { nav<LoginNameDemo>() }
         btn4.setOnClickListener { nav<MyTabsViewActivity>() }
+        btn5.setOnClickListener { nav<GuideActivity>() }
 
         btn11.setOnClickListener { nav<AnimatableCheckDemo>() }
         btn12.setOnClickListener { nav<ExpandableViewDemo>() }
