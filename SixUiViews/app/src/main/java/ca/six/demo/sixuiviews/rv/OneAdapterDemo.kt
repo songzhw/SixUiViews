@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.six.demo.sixuiviews.R
+import ca.six.views.rv.OnRvItemClickListener
 import ca.six.views.rv.RvViewHolder
 import ca.six.views.rv.single.OneAdapter
 import kotlinx.android.synthetic.main.activity_rv.*
@@ -29,6 +30,14 @@ class OneAdapterDemo : AppCompatActivity(R.layout.activity_rv) {
             data.add("Item : $i")
         }
         adapter.data = data
-        rv.setAdapter(adapter)
+        rv.adapter = adapter
+
+        rv.addOnItemTouchListener(object : OnRvItemClickListener(rv) {
+            override fun onItemClick(vh: RecyclerView.ViewHolder) {
+                val pos = vh.layoutPosition
+                val datum = data[pos]
+                println("click $pos : data = $datum")
+            }
+        })
     }
 }
