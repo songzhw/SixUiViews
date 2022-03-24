@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         btn11.setOnClickListener { nav<AnimatableCheckDemo>() }
         btn12.setOnClickListener { nav<ExpandableViewDemo>() }
         btn13.setOnClickListener { nav<ScratchCardActivity>() }
+        btn14.setOnClickListener { nav<ResideMenuActivity>() }
 
         // [rv]
         btn21.setOnClickListener { nav<OneAdapterDemo>() }

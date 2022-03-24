@@ -56,10 +56,14 @@
         style="@style/tv_wrap2" android:text="ScratchCard"
         tools:ignore="MissingConstraints" />
 
+    <Button android:id="@+id/btn14"
+        style="@style/tv_wrap2" android:text="ResideMenu"
+        tools:ignore="MissingConstraints" />
+
 
     <androidx.constraintlayout.helper.widget.Flow android:id="@+id/flow2"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        app:constraint_referenced_ids="tvAnims, btn11, btn12, btn13"
+        app:constraint_referenced_ids="tvAnims, btn11, btn12, btn13, btn14"
         app:flow_horizontalGap="8dp" android:layout_marginTop="20dp"
         app:flow_wrapMode="chain"
         app:layout_constraintTop_toBottomOf="@id/flow1" app:layout_constraintLeft_toLeftOf="parent"

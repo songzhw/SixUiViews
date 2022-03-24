@@ -1,5 +1,6 @@
 package ca.six.demo.sixuiviews.rv.jimu
 
+import android.widget.Toast
 import ca.six.demo.sixuiviews.R
 import ca.six.views.rv.RvViewHolder
 import ca.six.views.rv.builder.BuilderItem
@@ -22,5 +23,8 @@ class DescriptionItem(val despcription: Description) : BuilderItem(despcription)
     override fun render(holder: RvViewHolder) {
         holder.setText(R.id.tvItem, despcription.desp)
         holder.setSrc(R.id.ivItem, despcription.imageResId)
+        holder.setClickListener(R.id.tvItem) {
+            Toast.makeText(it.context, "click: ${despcription.desp}", Toast.LENGTH_SHORT).show()
+        }
     }
 }
