@@ -12,8 +12,18 @@
     <TextView style="@style/tv_title_content_title"
         android:text="Third Item : Home Activity"/>
 
+    <EditText style="@style/tv_title_content_title"
+        android:hint="input your message here"/>
+
     <Button android:id="@+id/btnRmenuOpen" style="@style/tv_title_content_title"
         android:text="Open the menus"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/beauty"
+        />
 
 
 

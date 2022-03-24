@@ -125,10 +125,7 @@ public class ResideMenu extends FrameLayout implements View.OnClickListener {
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
             // middleView is the "changedView" arg
             System.out.println("szw onViewPositionChanged : changedView = "+changedView+" ; left = "+left);
-
-
         }
     };
-
 
 }
