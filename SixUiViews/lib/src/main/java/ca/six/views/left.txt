@@ -1,5 +1,8 @@
 Guide
 
-ResideMenu
+ResideMenu:
+    - 处理EditText
+    - 处理ViewDrag
+    - touch disable area
 
 stickyHeaderTable

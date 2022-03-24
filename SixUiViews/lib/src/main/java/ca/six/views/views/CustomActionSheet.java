@@ -13,6 +13,7 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
 import ca.six.views.util.AnimationUtil;
+import ca.six.views.util.UiUtil;
 
 public class CustomActionSheet extends View implements View.OnClickListener {
     private static final int TRANSLATE_DURATION = 200;
@@ -56,23 +57,13 @@ public class CustomActionSheet extends View implements View.OnClickListener {
     }
 
     private void showActionSheetWithoutAnimation(View sheetContentView) {
-        dismissInputMethod();
+        UiUtil.dismissInputMethod(this.actv);
 
         wholeView = createView(sheetContentView); // init the bgView and flayContent, too
         decorView = (ViewGroup) actv.getWindow().getDecorView();
         decorView.addView(wholeView);
     }
 
-
-    public void dismissInputMethod() {
-        InputMethodManager imm = (InputMethodManager) actv.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            View focusView = actv.getCurrentFocus();
-            if (focusView != null) {
-                imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
-            }
-        }
-    }
 
     public FrameLayout createView(View content) {
         FrameLayout parent = new FrameLayout(actv);

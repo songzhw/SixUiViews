@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 public class UiUtil {
 	public static int dp2px(Context ctx, float dp) {
@@ -29,6 +31,16 @@ public class UiUtil {
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		return displayMetrics.widthPixels;
+	}
+
+	public static void dismissInputMethod(Activity activity) {
+		InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm.isActive()) {
+			View focusView = activity.getCurrentFocus();
+			if (focusView != null) {
+				imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+			}
+		}
 	}
 
 }

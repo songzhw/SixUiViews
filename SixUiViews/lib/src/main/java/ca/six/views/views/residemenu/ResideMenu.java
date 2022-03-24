@@ -49,6 +49,9 @@ public class ResideMenu extends FrameLayout implements View.OnClickListener {
 
 
     public void openMenu() {
+        // if we have soft keyboard, dismiss it before we do the animation below
+        UiUtil.dismissInputMethod(this.actv);
+
         // set the pivot x and y , or the scale anim is wrong
         int screenWidth = UiUtil.getScreenWidth(actv);
         int screeenHeight = UiUtil.getScreenHeight(actv);
