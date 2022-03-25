@@ -34,6 +34,7 @@
         <activity android:name=".rv.OneAdapterDemo"/>
         <activity android:name=".rv.MultiAdapterDemo"/>
         <activity android:name=".rv.jimu.BuilderAdapterDemo"/>
+        <activity android:name=".rv.StickyHeaderRvPage"/>
 
     </application>
 

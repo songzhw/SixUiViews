@@ -45,6 +45,7 @@ public class ResideMenu extends FrameLayout implements View.OnClickListener {
 
         dragHelper = ViewDragHelper.create(this, callback);
         dragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
+
     }
 
 

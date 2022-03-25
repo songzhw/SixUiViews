@@ -56,14 +56,14 @@
         style="@style/tv_wrap2" android:text="ScratchCard"
         tools:ignore="MissingConstraints" />
 
-    <Button android:id="@+id/btn14"
-        style="@style/tv_wrap2" android:text="ResideMenu"
-        tools:ignore="MissingConstraints" />
+<!--    <Button android:id="@+id/btn14"-->
+<!--        style="@style/tv_wrap2" android:text="ResideMenu"-->
+<!--        tools:ignore="MissingConstraints" />-->
 
 
     <androidx.constraintlayout.helper.widget.Flow android:id="@+id/flow2"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        app:constraint_referenced_ids="tvAnims, btn11, btn12, btn13, btn14"
+        app:constraint_referenced_ids="tvAnims, btn11, btn12, btn13"
         app:flow_horizontalGap="8dp" android:layout_marginTop="20dp"
         app:flow_wrapMode="chain"
         app:layout_constraintTop_toBottomOf="@id/flow1" app:layout_constraintLeft_toLeftOf="parent"
@@ -87,9 +87,13 @@
         style="@style/tv_wrap2" android:text="组合式Rv"
         tools:ignore="MissingConstraints" />
 
+    <Button android:id="@+id/btn24"
+        android:text="StickyHeader" style="@style/tv_wrap2"
+        tools:ignore="MissingConstraints" />
+
     <androidx.constraintlayout.helper.widget.Flow android:id="@+id/flow3"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        app:constraint_referenced_ids="tvRv, btn21, btn22, btn23"
+        app:constraint_referenced_ids="tvRv, btn21, btn22, btn23, btn24"
         app:flow_horizontalGap="2dp" android:layout_marginTop="20dp"
         app:flow_wrapMode="chain"
         app:layout_constraintTop_toBottomOf="@id/flow2" app:layout_constraintLeft_toLeftOf="parent"

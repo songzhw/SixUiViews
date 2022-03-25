@@ -1,7 +1,7 @@
-Guide
+✔ Guide
 
 ResideMenu:
-    - 处理EditText
+    - ✔ 处理EditText
     - 处理ViewDrag
     - touch disable area
 
