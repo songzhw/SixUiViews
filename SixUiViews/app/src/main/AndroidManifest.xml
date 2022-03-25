@@ -24,6 +24,7 @@
         <activity android:name=".LoginNameDemo" />
         <activity android:name=".MyTabsViewActivity" />
         <activity android:name=".GuideActivity"/>
+        <activity android:name=".MaxHeightDemo"/>
 
         <activity android:name=".AnimatableCheckDemo" />
         <activity android:name=".ExpandableViewDemo" />

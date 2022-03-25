@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         btn3.setOnClickListener { nav<LoginNameDemo>() }
         btn4.setOnClickListener { nav<MyTabsViewActivity>() }
         btn5.setOnClickListener { nav<GuideActivity>() }
+        btn6.setOnClickListener { nav<MaxHeightDemo>() }
 
         btn11.setOnClickListener { nav<AnimatableCheckDemo>() }
         btn12.setOnClickListener { nav<ExpandableViewDemo>() }

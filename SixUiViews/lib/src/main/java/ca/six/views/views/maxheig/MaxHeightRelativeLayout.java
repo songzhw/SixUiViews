@@ -5,14 +5,12 @@
  */
 package ca.six.views.views.maxheig;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import ca.six.views.R;
-
 
 public class MaxHeightRelativeLayout extends RelativeLayout {
 	private int maxHeight;

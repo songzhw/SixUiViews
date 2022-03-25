@@ -31,9 +31,13 @@
         style="@style/tv_wrap2" android:text="Guider"
         tools:ignore="MissingConstraints" />
 
+    <Button android:id="@+id/btn6"
+        android:text="MaxHeight" style="@style/tv_wrap2"
+        tools:ignore="MissingConstraints" />
+
     <androidx.constraintlayout.helper.widget.Flow android:id="@+id/flow1"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        app:constraint_referenced_ids="tvViews, btn1, btn2, btn3, btn4, btn5"
+        app:constraint_referenced_ids="tvViews, btn1, btn2, btn3, btn4, btn5, btn6"
         app:flow_wrapMode="chain"
         app:layout_constraintTop_toTopOf="parent" app:layout_constraintLeft_toLeftOf="parent"
         />
