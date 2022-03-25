@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Need two parts, head and content. Just like Drawerlayout -->
+    <ca.six.views.lib.views.ExpandableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- header -->
+        <RelativeLayout android:id="@+id/rlayHeader"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView android:text="Title" android:textSize="24dp" android:textColor="#000" android:gravity="center_vertical"
+                android:layout_width="match_parent" android:layout_height="match_parent" android:paddingLeft="20dp"/>
+            <ImageView android:id="@+id/ivExpHeader"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_centerVertical="true" android:layout_alignParentRight="true" android:layout_marginRight="20dp"
+                android:src="@drawable/ic_arrow_down"/>
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#ccc"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+
+        <!-- content -->
+        <LinearLayout android:id="@+id/llayContent" android:orientation="vertical"
+            android:layout_width="match_parent" android:layout_height="190dp"
+            android:background="#9e9e9e">
+            <ImageView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" android:layout_margin="30dp"
+                android:src="@drawable/coin"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Content" android:textColor="#fff" android:textSize="18dp"/>
+        </LinearLayout>
+
+
+
+    </ca.six.views.lib.views.ExpandableLayout>
+
+</LinearLayout>
