@@ -131,6 +131,33 @@ Here is how you can use OneBindingAdapter:
     rv.setAdapter(adapter);
 ```
 
+## 12. OneListAdapter: OneAdapter for ListAdapter + DiffUtils
+With the entrance of DiffUtils, it became easier for our dev to submit new data. So this is a new version of OneAdapter. 
+
+Here is how you use it: 
+```kotlin
+data class Food(...) {
+    companion object {
+        val diff = object : DiffUtil.ItemCallback<Food>() {
+            override fun areItemsTheSame(old: Food, now: Food) = old.id == now.id
+            override fun areContentsTheSame(old: Food, now: Food) = old == now 
+        }
+    }
+}
+
+// Activity
+        val adapter = object : OneListAdapter<Food>(R.layout.item_simple_texts, Food.diff) {
+            override fun apply(holder: RvViewHolder, value: Food, position: Int) {
+                holder.setText(R.id.tvTitle, value.id.toString())
+                holder.setText(R.id.tvDesp, value.name)
+            }
+        }
+        adapter.submitList(food)
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(this)
+
+```
+
 ## 12. MultiAdapter
 OneAdapter only works for the Adapter with one ItemViewType.
 `MultiAdapter` is a general adapter for RecyclerView with multiple different ItemViewTypes.

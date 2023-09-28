@@ -9,6 +9,8 @@ import ca.six.views.rv.RvViewHolder
 import ca.six.views.rv.single.OneListAdapter
 import kotlinx.android.synthetic.main.activity_rv_btn.*
 
+// 要点一: 要自己写DiffUtils.ItemCallback
+// 要点二: 为了方便深拷贝, 最好写一个clone方法出来
 data class Food(
     val id: Int,
     val name: String,
