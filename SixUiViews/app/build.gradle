@@ -1,16 +1,16 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "ca.six.demo.sixuiviews"
-        minSdk 23
-        targetSdk 32
+        minSdk 24
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -30,16 +30,23 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'ca.six.demo.sixuiviews'
 }
 
 dependencies {
-
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation project(path: ':lib')
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // core-ktx 1.9.0与ANdroid 13 (API 33)更兼容;  版本再高如1.10.0就编译出错, 因为它需要kotlin 1.8版本
+    implementation 'androidx.core:core-ktx:1.9.0'
+    //targetSDK = 33后, 可以从1.4.1升到最新的1.6.1
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    // targetSDK = 33后, 从1.6.0可升到最新的1.9.0.    // 再也没这个编译错误了: "Can't determine type for tag '<macro name="m3_comp_assist_chip_container_shape">?attr/shapeAppearanceCornerSmall</macro>'"
+    implementation 'com.google.android.material:material:1.9.0'
+
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    testImplementation 'junit:junit:4.13.2'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
