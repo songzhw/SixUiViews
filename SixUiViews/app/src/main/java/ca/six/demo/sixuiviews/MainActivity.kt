@@ -5,6 +5,7 @@ import android.os.Bundle
 import ca.six.demo.sixuiviews.rv.jimu.BuilderAdapterDemo
 import ca.six.demo.sixuiviews.rv.MultiAdapterDemo
 import ca.six.demo.sixuiviews.rv.OneAdapterDemo
+import ca.six.demo.sixuiviews.rv.OneListAdapterDemo
 import ca.six.demo.sixuiviews.rv.StickyHeaderRvPage
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         btn22.setOnClickListener { nav<MultiAdapterDemo>() }
         btn23.setOnClickListener { nav<BuilderAdapterDemo>() }
         btn24.setOnClickListener { nav<StickyHeaderRvPage>() }
+        btn25.setOnClickListener { nav<OneListAdapterDemo>() }
 
     }
 
